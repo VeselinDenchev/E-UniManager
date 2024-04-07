@@ -1,0 +1,69 @@
+version: '3'
+
+networks:
+  backend-network: {}
+  web-network: {}
+  
+services:
+  client:
+    container_name: client
+    build: 
+      context: ./EUniManager.Client
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL}
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_NODE_ENV=${CLIENT_NODE_ENV}
+    depends_on:
+      - api
+    networks:
+      - web-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f ${CLIENT_HEALTHCHECK_URL}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  api:
+    container_name: api
+    build: ./EUniManager.API/EUniManager.Api
+    command: ["./wait-for-sql.sh"]
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - SA_PASSWORD=${MSSQL_SA_PASSWORD}
+      - CLIENT_BASE_URL=${CLIENT_BASE_URL}
+    depends_on:
+      - sqlserver
+    networks:
+      - backend-network
+      - web-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f ${API_BASE_URL}/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  sqlserver:
+    container_name: sqlserver
+    image: mcr.microsoft.com/mssql/server:latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -U SA -P \"$MSSQL_SA_PASSWORD\" -Q \"SELECT 1\""]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  sql_data:
