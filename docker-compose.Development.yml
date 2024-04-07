@@ -1,25 +1,25 @@
 version: '3'
 
 services:
-  client:
-    image: client-development
-    build:
-      dockerfile: Dockerfile.Development
-    volumes:
-      - /app/node_modules
-      - ./EUniManager.Client:/app
-    environment:
-      - CHOKIDAR_USEPOLLING=true # create-ui-app <= 5.x
-      - WATCHPACK_POLLING=true # create-ui-app >= 5.x
-      - FAST_REFRESH=false
-      - WDS_SOCKET_PORT=3000
+  # client:
+  #   image: client-development
+  #   build:
+  #     dockerfile: Dockerfile.Development
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./EUniManager.Client:/app
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true # create-ui-app <= 5.x
+  #     - WATCHPACK_POLLING=true # create-ui-app >= 5.x
+  #     - FAST_REFRESH=false
+  #     - WDS_SOCKET_PORT=3000
       
   api:
     image: api-development
     build:
       dockerfile: Dockerfile.Development
     volumes:
-      - ./EUniManager.Api/EUniManager.Api:/src
+      - ./EUniManager.Api/src/:/src
       - ~/.aspnet/https:/https:ro
     environment:
       - DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSER=true
