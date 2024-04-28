@@ -36,5 +36,8 @@ public class TeacherConfiguration : BaseEntityConfiguration<Teacher, Guid>
         entity.HasMany(t => t.LecturingSubjects).WithOne(s => s.Lecturer);
 
         entity.HasMany(t => t.AssistingSubjects).WithMany(s => s.Assistants);
+
+        entity.HasMany(t => t.Assignments).WithOne(a => a.Teacher)
+              .OnDelete(DeleteBehavior.ClientCascade);
     }
 }

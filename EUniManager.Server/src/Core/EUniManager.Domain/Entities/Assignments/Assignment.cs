@@ -14,7 +14,7 @@ public class Assignment : BaseEntity<Guid>
     
     public string? Description { get; set; }
 
-    public List<AssignmentSolution> Solutions { get; set; } = null!; // Add to config
+    public List<AssignmentSolution> Solutions { get; set; } = null!;
 
-    // Teacher????
+    public Teacher Teacher { get; set; } = null!;
 }

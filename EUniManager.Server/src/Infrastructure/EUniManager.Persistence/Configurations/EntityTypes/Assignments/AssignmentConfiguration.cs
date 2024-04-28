@@ -1,6 +1,7 @@
 ﻿using EUniManager.Domain.Entities.Assignments;
 using EUniManager.Persistence.Configurations.EntityTypes.Base;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using static EUniManager.Persistence.Constants.Entities.Assignments.AssignmentConstant;
@@ -23,9 +24,12 @@ public sealed class AssignmentConfiguration : BaseEntityConfiguration<Assignment
         entity.HasMany(a => a.Students).WithMany(s => s.Assignments);
 
         entity.Property(a => a.Description).IsRequired(false)
-                                               .IsUnicode()
-                                               .HasMaxLength(DESCRIPTION_MAX_STRING_LENGTH);
+                                           .IsUnicode()
+                                           .HasMaxLength(DESCRIPTION_MAX_STRING_LENGTH);
 
         entity.HasMany(a => a.Solutions).WithOne(s => s.Assignment);
+
+        entity.HasOne(a => a.Teacher).WithMany(t => t.Assignments)
+              .OnDelete(DeleteBehavior.NoAction);
     }
 }

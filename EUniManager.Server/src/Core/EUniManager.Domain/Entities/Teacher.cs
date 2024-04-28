@@ -1,4 +1,5 @@
 ﻿using EUniManager.Domain.Abstraction.Base;
+using EUniManager.Domain.Entities.Assignments;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -19,4 +20,6 @@ public class Teacher : BaseEntity<Guid>
     public List<Subject> LecturingSubjects { get; set; } = null!;
     
     public List<Subject> AssistingSubjects { get; set; } = null!;
+
+    public List<Assignment> Assignments { get; set; } = null!;
 }
