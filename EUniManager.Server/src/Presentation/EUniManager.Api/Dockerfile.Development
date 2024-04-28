@@ -1,0 +1,39 @@
+﻿# Use SDK image for the base to have development tools available
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
+WORKDIR /app
+
+# No need to change the user to root and back as we can install dependencies directly
+# Install curl and any other development dependencies
+RUN apt-get update && \
+    apt-get install -y curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy the certificate into the Docker image
+COPY ["src/Presentation/EUniManager.Api/aspnetapp.pfx", "/https/"]
+
+ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+ENV ASPNETCORE_Kestrel__Certificates__Default__Password="123456"
+
+# Expose ports (if needed for development tools or application)
+EXPOSE 8080
+EXPOSE 8081
+
+# Copy everything and build in the same stage to simplify for development
+COPY . /src
+WORKDIR /src
+
+# Restore and build using the .NET CLI, consider using the Debug configuration for better debugging support
+ARG BUILD_CONFIGURATION=Debug
+
+RUN dotnet restore "src/Core/EUniManager.Domain/EUniManager.Domain.csproj"
+RUN dotnet build "src/Core/EUniManager.Domain/EUniManager.Domain.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+RUN dotnet restore "src/Infrastructure/EUniManager.Persistence/EUniManager.Persistence.csproj"
+RUN dotnet build "src/Infrastructure/EUniManager.Persistence/EUniManager.Persistence.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+RUN dotnet restore "src/Presentation/EUniManager.Api/EUniManager.Api.csproj"
+RUN dotnet build "src/Presentation/EUniManager.Api/EUniManager.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# The ENTRYPOINT remains the same, but you might want to run a different command for development.
+# For example, you could start the dotnet watch command for hot reloading:
+ENTRYPOINT ["dotnet", "watch", "run", "--project", "src/Presentation/EUniManager.Api/EUniManager.Api.csproj", "--urls", "https://*:8080;http://*:8081"]

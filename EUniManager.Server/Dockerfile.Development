@@ -9,7 +9,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy the certificate into the Docker image
-COPY ["aspnetapp.pfx", "/https/"]
+COPY ["src/Presentation/EUniManager.Api/aspnetapp.pfx", "/https/"]
 
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password="123456"
@@ -19,14 +19,21 @@ EXPOSE 8080
 EXPOSE 8081
 
 # Copy everything and build in the same stage to simplify for development
-COPY . /src
-WORKDIR /src
+COPY . /app
+WORKDIR /app
 
 # Restore and build using the .NET CLI, consider using the Debug configuration for better debugging support
 ARG BUILD_CONFIGURATION=Debug
-RUN dotnet restore "EUniManager.Api.csproj"
-RUN dotnet build "EUniManager.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# RUN dotnet restore "src/Core/EUniManager.Domain/EUniManager.Domain.csproj"
+RUN dotnet build "src/Core/EUniManager.Domain/EUniManager.Domain.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+# RUN dotnet restore "src/Infrastructure/EUniManager.Persistence/EUniManager.Persistence.csproj"
+RUN dotnet build "src/Infrastructure/EUniManager.Persistence/EUniManager.Persistence.csproj" -c $BUILD_CONFIGURATION -o /app/build
+
+RUN dotnet restore "src/Presentation/EUniManager.Api/EUniManager.Api.csproj"
+RUN dotnet build "src/Presentation/EUniManager.Api/EUniManager.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # The ENTRYPOINT remains the same, but you might want to run a different command for development.
 # For example, you could start the dotnet watch command for hot reloading:
-ENTRYPOINT ["dotnet", "watch", "run", "--project", "./Presentation/EUniManager.Api/EUniManager.Api.csproj", "--urls", "https://*:8080;http://*:8081"]
+ENTRYPOINT ["dotnet", "watch", "run", "--project", "src/Presentation/EUniManager.Api/EUniManager.Api.csproj", "--urls", "https://*:8080;http://*:8081"]

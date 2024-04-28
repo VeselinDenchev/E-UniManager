@@ -1,9 +1,21 @@
+using EUniManager.Persistence;
+using EUniManager.Persistence.Migrations;
+using EUniManager.Persistence.Seed;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<EUniManagerDbContext>();
+builder.Services.AddIdentity<IdentityUser<Guid>, IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<EUniManagerDbContext>()
+                .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
@@ -35,6 +47,13 @@ app.MapGet("/weatherforecast", () =>
     })
     .WithName("GetWeatherForecast")
     .WithOpenApi();
+
+// Update database
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    await DatabaseMigrator.MigrateUpAsync(scope.ServiceProvider);
+    await DatabaseSeeder.SeedAsync(scope.ServiceProvider);
+}
 
 app.Run();
 
