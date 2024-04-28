@@ -7,7 +7,7 @@ using static EUniManager.Persistence.Constants.Entities.ResourceConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
-public class ResourceConfiguration : BaseEntityConfiguration<Resource, Guid>
+public sealed class ResourceConfiguration : BaseEntityConfiguration<Resource, Guid>
 {
     public override void Configure(EntityTypeBuilder<Resource> entity)
     {

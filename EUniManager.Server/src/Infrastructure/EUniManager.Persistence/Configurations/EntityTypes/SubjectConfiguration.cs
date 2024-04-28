@@ -8,7 +8,7 @@ using static EUniManager.Persistence.Constants.Entities.SubjectConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
-public class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid>
+public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid>
 {
     public override void Configure(EntityTypeBuilder<Subject> entity)
     {

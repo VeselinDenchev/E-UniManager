@@ -10,7 +10,7 @@ using static EUniManager.Persistence.Constants.Entities.SemesterConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
-public class PayedTaxConfiguration : BaseEntityConfiguration<PayedTax, Guid>
+public sealed class PayedTaxConfiguration : BaseEntityConfiguration<PayedTax, Guid>
 {
     public override void Configure(EntityTypeBuilder<PayedTax> entity)
     {

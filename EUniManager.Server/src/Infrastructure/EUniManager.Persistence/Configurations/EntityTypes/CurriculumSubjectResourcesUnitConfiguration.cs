@@ -9,7 +9,8 @@ using static EUniManager.Persistence.Constants.SqlConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
-public class CurriculumSubjectResourcesUnitConfiguration : BaseEntityConfiguration<CurriculumSubjectResourcesUnit, Guid>
+public sealed class CurriculumSubjectResourcesUnitConfiguration 
+    : BaseEntityConfiguration<CurriculumSubjectResourcesUnit, Guid>
 {
     public override void Configure(EntityTypeBuilder<CurriculumSubjectResourcesUnit> entity)
     {

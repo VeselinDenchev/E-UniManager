@@ -9,7 +9,7 @@ using static EUniManager.Persistence.Constants.Entities.TeacherConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
-public class TeacherConfiguration : BaseEntityConfiguration<Teacher, Guid>
+public sealed class TeacherConfiguration : BaseEntityConfiguration<Teacher, Guid>
 {
     public override void Configure(EntityTypeBuilder<Teacher> entity)
     {

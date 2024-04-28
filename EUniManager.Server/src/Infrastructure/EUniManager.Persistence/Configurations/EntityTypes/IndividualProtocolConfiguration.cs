@@ -7,7 +7,7 @@ using static EUniManager.Persistence.Constants.Entities.IndividualProtocolConsta
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
-public class IndividualProtocolConfiguration: BaseEntityConfiguration<IndividualProtocol, Guid>
+public sealed class IndividualProtocolConfiguration: BaseEntityConfiguration<IndividualProtocol, Guid>
 {
     public override void Configure(EntityTypeBuilder<IndividualProtocol> entity)
     {

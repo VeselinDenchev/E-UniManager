@@ -19,7 +19,7 @@ using static EUniManager.Persistence.Constants.Entities.Students.EnrollmentConst
 
 namespace EUniManager.Persistence.Configurations.EntityTypes.Students;
 
-public class StudentConfiguration : BaseEntityConfiguration<Student, Guid>
+public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid>
 {
     public override void Configure(EntityTypeBuilder<Student> entity)
     {

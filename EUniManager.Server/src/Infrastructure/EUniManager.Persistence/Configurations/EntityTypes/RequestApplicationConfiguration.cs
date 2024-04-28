@@ -9,7 +9,7 @@ using static EUniManager.Persistence.Constants.Entities.RequestApplicationConsta
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
-public class RequestApplicationConfiguration : BaseEntityConfiguration<RequestApplication, Guid>
+public sealed class RequestApplicationConfiguration : BaseEntityConfiguration<RequestApplication, Guid>
 {
     public override void Configure(EntityTypeBuilder<RequestApplication> entity)
     {

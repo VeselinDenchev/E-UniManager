@@ -8,7 +8,7 @@ using static EUniManager.Persistence.Constants.Entities.SpecialtyConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
-public class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, Guid>
+public sealed class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, Guid>
 {
     public override void Configure(EntityTypeBuilder<Specialty> entity)
     {

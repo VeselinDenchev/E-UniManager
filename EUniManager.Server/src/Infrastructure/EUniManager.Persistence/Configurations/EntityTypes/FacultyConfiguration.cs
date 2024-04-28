@@ -7,7 +7,7 @@ using static EUniManager.Persistence.Constants.Entities.FacultyConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
-public class FacultyConfiguration : BaseEntityConfiguration<Faculty, Guid>
+public sealed class FacultyConfiguration : BaseEntityConfiguration<Faculty, Guid>
 {
     public override void Configure(EntityTypeBuilder<Faculty> entity)
     {

@@ -11,7 +11,7 @@ using static EUniManager.Persistence.Constants.Entities.ExamConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
-public class ExamConfiguration : BaseEntityConfiguration<Exam, Guid>
+public sealed class ExamConfiguration : BaseEntityConfiguration<Exam, Guid>
 {
     public override void Configure(EntityTypeBuilder<Exam> entity)
     {
