@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EUniManager.Domain", "src\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EUniManager.Persistence", "src\Infrastructure\EUniManager.Persistence\EUniManager.Persistence.csproj", "{47424F5A-80A5-4046-BB4D-0A50FC6F357B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EUniManager.Application", "src\Core\EUniManager.Application\EUniManager.Application.csproj", "{C10FBA02-058D-4FE1-996E-5FF6B1EA33E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{47424F5A-80A5-4046-BB4D-0A50FC6F357B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47424F5A-80A5-4046-BB4D-0A50FC6F357B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47424F5A-80A5-4046-BB4D-0A50FC6F357B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C10FBA02-058D-4FE1-996E-5FF6B1EA33E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C10FBA02-058D-4FE1-996E-5FF6B1EA33E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C10FBA02-058D-4FE1-996E-5FF6B1EA33E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C10FBA02-058D-4FE1-996E-5FF6B1EA33E6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
