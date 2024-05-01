@@ -2,17 +2,17 @@
 
 namespace EUniManager.Application.Models.Teachers.Dtos;
 
-public sealed record TeacherDetailsDto : IDetailsDto
+public sealed class TeacherDetailsDto : IDetailsDto
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
     
-    public string? Rank { get; set; }
+    public string? Rank { get; init; }
     
-    public string FirstName { get; set; } = null!;
+    public string FirstName { get; init; } = null!;
 
-    public string MiddleName { get; set; } = null!;
+    public string MiddleName { get; init; } = null!;
     
-    public string LastName { get; set; } = null!;
+    public string LastName { get; init; } = null!;
 
     public List<string> LecturingSubjects { get; set; } = new();
 
