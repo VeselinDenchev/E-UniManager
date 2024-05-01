@@ -5,7 +5,7 @@ using EUniManager.Domain.Entities;
 
 namespace EUniManager.Api.CarterModules;
 
-public class TeacherModule() 
+public sealed class TeacherModule() 
     : CrudCarterModule<
         ITeacherService, 
         Teacher, 
