@@ -2,7 +2,7 @@
 
 namespace EUniManager.Application.Models.Teachers.Dtos;
 
-public record UpdateTeacherDto : IUpdateDto
+public sealed record UpdateTeacherDto : IUpdateDto
 {
     public string? Rank { get; init; }
     

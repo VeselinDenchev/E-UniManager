@@ -2,7 +2,7 @@
 
 namespace EUniManager.Application.Models.Teachers.Dtos;
 
-public record CreateTeacherDto : ICreateDto
+public sealed record CreateTeacherDto : ICreateDto
 {
     public string? Rank { get; init; }
     

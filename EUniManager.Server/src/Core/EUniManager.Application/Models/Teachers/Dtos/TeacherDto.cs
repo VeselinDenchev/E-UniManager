@@ -2,7 +2,7 @@
 
 namespace EUniManager.Application.Models.Teachers.Dtos;
 
-public record TeacherDto :  IEntityDto
+public sealed record TeacherDto :  IEntityDto
 {
     public Guid Id { get; set; }
     
