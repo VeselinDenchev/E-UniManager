@@ -13,6 +13,4 @@ public class TeacherModule()
         TeacherDetailsDto, 
         CreateTeacherDto, 
         UpdateTeacherDto>
-        ($"/{nameof(Teacher).ToLower()}")
-{
-}
+        ($"/{nameof(Teacher).ToLower()}");
