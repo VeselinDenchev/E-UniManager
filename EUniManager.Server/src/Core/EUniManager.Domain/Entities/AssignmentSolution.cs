@@ -2,7 +2,7 @@
 using EUniManager.Domain.Entities.Students;
 using EUniManager.Domain.Enums;
 
-namespace EUniManager.Domain.Entities.Assignments;
+namespace EUniManager.Domain.Entities;
 
 public class AssignmentSolution : BaseEntity<Guid>
 {

@@ -2,13 +2,12 @@
 
 using EUniManager.Domain.Abstraction.Base;
 using EUniManager.Domain.Entities;
-using EUniManager.Domain.Entities.Assignments;
-using EUniManager.Domain.Entities.Courses;
 using EUniManager.Domain.Entities.Students;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace EUniManager.Persistence;
 
@@ -54,19 +53,42 @@ public class EUniManagerDbContext : IdentityDbContext<IdentityUser<Guid>, Identi
 
     public override int SaveChanges()
     {
-        var entities = ChangeTracker.Entries<BaseEntity<string>>();
-        foreach (var entity in entities)
+        SequentialGuidValueGenerator idGenerator = new();
+        var entries = ChangeTracker.Entries<BaseEntity<Guid>>();
+        foreach (var entry in entries)
         {
-            if (entity.State != EntityState.Added && entity.State != EntityState.Modified) continue;
+            if (entry.State != EntityState.Added && entry.State != EntityState.Modified) continue;
             
-            entity.Entity.ModifiedAt = DateTime.Now;
+            entry.Entity.ModifiedAt = DateTime.Now;
             
-            if (entity.State != EntityState.Added) continue;
-            
-            entity.Entity.CreatedAt = DateTime.Now;
+            if (entry.State != EntityState.Added) continue;
+
+            entry.Entity.Id = idGenerator.Next(entry);
+            entry.Entity.CreatedAt = DateTime.Now;
         }
 
         return base.SaveChanges();
+    }
+    
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        SequentialGuidValueGenerator idGenerator = new();
+        var entries = ChangeTracker.Entries<BaseEntity<Guid>>();
+        foreach (var entry in entries)
+        {
+            if (entry.State != EntityState.Added && entry.State != EntityState.Modified) continue;
+            
+            DateTime now = DateTime.Now;
+            
+            entry.Entity.ModifiedAt = now;
+            
+            if (entry.State != EntityState.Added) continue;
+
+            entry.Entity.Id = await idGenerator.NextAsync(entry, cancellationToken);
+            entry.Entity.CreatedAt = now;
+        }
+
+        return await base.SaveChangesAsync(cancellationToken);
     }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -1,9 +1,9 @@
-﻿using EUniManager.Domain.Entities.Courses;
+﻿using EUniManager.Domain.Entities;
 using EUniManager.Persistence.Configurations.EntityTypes.Base;
 
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace EUniManager.Persistence.Configurations.EntityTypes.Courses;
+namespace EUniManager.Persistence.Configurations.EntityTypes;
 
 public sealed class CourseScheduleConfiguration : BaseEntityConfiguration<CourseSchedule, Guid>
 {

@@ -1,4 +1,4 @@
-﻿using EUniManager.Domain.Entities.Assignments;
+﻿using EUniManager.Domain.Entities;
 using EUniManager.Persistence.Configurations.EntityTypes.Base;
 
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using static EUniManager.Persistence.Constants.Entities.Assignments.AssignmentConstant;
 
-namespace EUniManager.Persistence.Configurations.EntityTypes.Assignments;
+namespace EUniManager.Persistence.Configurations.EntityTypes;
 
 public sealed class AssignmentConfiguration : BaseEntityConfiguration<Assignment, Guid>
 {

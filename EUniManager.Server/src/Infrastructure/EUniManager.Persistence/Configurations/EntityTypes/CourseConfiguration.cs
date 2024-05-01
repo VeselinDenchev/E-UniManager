@@ -1,4 +1,4 @@
-﻿using EUniManager.Domain.Entities.Courses;
+﻿using EUniManager.Domain.Entities;
 using EUniManager.Persistence.Configurations.EntityTypes.Base;
 
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static EUniManager.Persistence.Constants.SqlConstant;
 using static EUniManager.Persistence.Constants.Entities.Courses.CourseConstant;
 
-namespace EUniManager.Persistence.Configurations.EntityTypes.Courses;
+namespace EUniManager.Persistence.Configurations.EntityTypes;
 
 public sealed class CourseConfiguration : BaseEntityConfiguration<Course, Guid>
 {

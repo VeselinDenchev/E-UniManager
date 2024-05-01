@@ -1,5 +1,4 @@
 ﻿using EUniManager.Domain.Abstraction.Base;
-using EUniManager.Domain.Entities.Courses;
 using EUniManager.Domain.Entities.Students;
 using EUniManager.Domain.Enums;
 

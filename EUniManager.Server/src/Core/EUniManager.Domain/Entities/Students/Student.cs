@@ -1,7 +1,5 @@
 ﻿using EUniManager.Domain.Abstraction.Base;
 using EUniManager.Domain.Abstraction.Student;
-using EUniManager.Domain.Entities.Assignments;
-using EUniManager.Domain.Entities.Courses;
 
 using Microsoft.AspNetCore.Identity;
 

@@ -1,7 +1,7 @@
 ﻿using EUniManager.Domain.Abstraction.Base;
 using EUniManager.Domain.Enums;
 
-namespace EUniManager.Domain.Entities.Courses;
+namespace EUniManager.Domain.Entities;
 
 public class Course : BaseEntity<Guid>
 {

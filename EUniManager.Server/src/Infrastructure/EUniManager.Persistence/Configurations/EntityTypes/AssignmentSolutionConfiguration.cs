@@ -1,5 +1,5 @@
 ﻿using EUniManager.Domain.Abstraction.Base.Interfaces;
-using EUniManager.Domain.Entities.Assignments;
+using EUniManager.Domain.Entities;
 using EUniManager.Domain.Enums;
 using EUniManager.Persistence.Configurations.EntityTypes.Base;
 
@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static EUniManager.Persistence.Constants.SqlConstant;
 using static EUniManager.Persistence.Constants.Entities.Assignments.AssignmentSolutionConstant;
 
-namespace EUniManager.Persistence.Configurations.EntityTypes.Assignments;
+namespace EUniManager.Persistence.Configurations.EntityTypes;
 
 public sealed class AssignmentSolutionConfiguration : BaseEntityConfiguration<AssignmentSolution, Guid>
 {
