@@ -4,7 +4,7 @@ namespace EUniManager.Domain.Abstraction.Base;
 
 public abstract class BaseEntity<TId> : IIdentity<TId>, IAuditable where TId : IEquatable<TId>
 {
-    public required TId Id { get; set; }
+    public TId Id { get; set; }
     
     public DateTime CreatedAt { get; set; }
     
