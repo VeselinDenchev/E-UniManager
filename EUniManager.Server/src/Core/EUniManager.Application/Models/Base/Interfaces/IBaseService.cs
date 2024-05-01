@@ -2,13 +2,13 @@
 
 namespace EUniManager.Application.Models.Base.Interfaces;
 
-public interface IBaseService<TEntity, in TId, TListElementDto, TDetailsDto>
+public interface IBaseService<TEntity, in TId, TEntityDto, TDetailsDto>
     where TEntity : BaseEntity<TId>
     where TId : IEquatable<TId>
-    where TListElementDto: class, IEntityDto
+    where TEntityDto: class, IEntityDto
     where TDetailsDto: class, IDetailsDto
 {
-     Task<List<TListElementDto>> GetAllAsync(CancellationToken cancellationToken);
+     Task<List<TEntityDto>> GetAllAsync(CancellationToken cancellationToken);
 
      ValueTask<TDetailsDto> GetByIdAsync(TId id, CancellationToken cancellationToken);
 
