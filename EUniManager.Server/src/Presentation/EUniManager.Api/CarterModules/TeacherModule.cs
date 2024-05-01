@@ -12,6 +12,7 @@ public class TeacherModule()
         TeacherDto, 
         TeacherDetailsDto, 
         CreateTeacherDto, 
-        UpdateTeacherDto>($"/{nameof(Teacher).ToLower()}")
+        UpdateTeacherDto>
+        ($"/{nameof(Teacher).ToLower()}")
 {
 }
