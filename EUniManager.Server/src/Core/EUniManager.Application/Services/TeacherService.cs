@@ -7,6 +7,7 @@ using EUniManager.Domain.Entities;
 using EUniManager.Persistence;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace EUniManager.Application.Services;
 
@@ -52,9 +53,14 @@ public sealed class TeacherService : BaseService<Teacher, Guid, TeacherDto, Teac
     
     public override async Task UpdateAsync(Guid id, IUpdateDto dto, CancellationToken cancellationToken)
     {
+        bool exists = await _dbSet.AnyAsync(t => t.Id == id, cancellationToken);
+
+        if (!exists) throw new ArgumentException("Such teacher doesn't exist!");
+        
         Teacher teacher = _mapper.Map((dto as UpdateTeacherDto)!);
         teacher.Id = id;
         
+        // Set user
         var admin = await _userManager.FindByNameAsync("admin@email.com");
         teacher.User = admin;
 
