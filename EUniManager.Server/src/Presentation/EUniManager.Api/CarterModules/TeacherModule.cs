@@ -13,4 +13,4 @@ public sealed class TeacherModule()
         TeacherDetailsDto, 
         CreateTeacherDto, 
         UpdateTeacherDto>
-        ($"/{nameof(Teacher).ToLower()}");
+        (string.Format(BASE_PATH_TEMPLATE, nameof(Teacher).ToLowerInvariant()));

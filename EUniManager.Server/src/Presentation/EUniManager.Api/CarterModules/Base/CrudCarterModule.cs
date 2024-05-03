@@ -21,6 +21,7 @@ public abstract class CrudCarterModule<TService, TEntity, TEntityDto, TEntityDet
         WithTags(typeof(TEntity).Name);
     }
     
+    protected const string BASE_PATH_TEMPLATE = "/{0}";
     protected const string GET_ALL_ROUTE = "/all";
     protected const string GET_BY_ID_ROUTE = "/{id}";
     protected const string CREATE_ROUTE = "/create";

@@ -13,4 +13,4 @@ public sealed class AssignmentModule()
         AssignmentDetailsDto, 
         CreateAssignmentDto, 
         UpdateAssignmentDto>
-        ($"/{nameof(Assignment).ToLower()}");
+        (string.Format(BASE_PATH_TEMPLATE, nameof(Assignment).ToLowerInvariant()));
