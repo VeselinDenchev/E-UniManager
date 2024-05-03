@@ -18,11 +18,11 @@ public class BaseEntityConfiguration<TEntity, TId> : IEntityTypeConfiguration<TE
         entity.HasKey(e => e.Id);
 
         entity.Property(e => e.CreatedAt).IsRequired()
-                                            .ValueGeneratedOnAdd()
-                                            .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Throw);
+                                         .ValueGeneratedOnAdd()
+                                         .Metadata.SetAfterSaveBehavior(PropertySaveBehavior.Throw);
 
         entity.Property(e => e.ModifiedAt).IsRequired()
-                                             .HasDefaultValueSql(GET_DATE_FUNCTION);
+                                          .HasDefaultValueSql(GET_DATE_FUNCTION);
 
         entity.ToTable(table =>
         {
