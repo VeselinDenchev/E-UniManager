@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 
+using EUniManager.Application.Models.Assignments.Interfaces;
 using EUniManager.Application.Models.Teachers.Interfaces;
 using EUniManager.Application.Services;
 
@@ -12,6 +13,7 @@ public static class ApplicationLayerConfiguration
     public static IServiceCollection AddApplicationLayerConfiguration(this IServiceCollection services)
     {
         services.AddScoped<ITeacherService, TeacherService>();
+        services.AddScoped<IAssignmentService, AssignmentService>();
 
         return services;
     }

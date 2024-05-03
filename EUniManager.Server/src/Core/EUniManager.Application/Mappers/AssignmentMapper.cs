@@ -1,32 +1,30 @@
-﻿using Riok.Mapperly.Abstractions;
+﻿using EUniManager.Application.Models.Assignments.Dtos;
+using EUniManager.Domain.Entities;
+
+using Riok.Mapperly.Abstractions;
 
 namespace EUniManager.Application.Mappers;
 
 [Mapper]
 public partial class AssignmentMapper
 {
-    [MapperIgnoreTarget(nameof(Teacher.Id))]
-    [MapperIgnoreTarget(nameof(Teacher.CreatedAt))]
-    [MapperIgnoreTarget(nameof(Teacher.ModifiedAt))]
-    [MapperIgnoreTarget(nameof(Teacher.User))]
-    [MapperIgnoreTarget(nameof(Teacher.LecturingSubjects))]
-    [MapperIgnoreTarget(nameof(Teacher.AssistingSubjects))]
-    [MapperIgnoreTarget(nameof(Teacher.Assignments))]
-    public partial Assignment Map(CreateTeacherDto dto);
+    [MapperIgnoreTarget(nameof(Assignment.Id))]
+    [MapperIgnoreTarget(nameof(Assignment.CreatedAt))]
+    [MapperIgnoreTarget(nameof(Assignment.ModifiedAt))]
+    [MapperIgnoreTarget(nameof(Assignment.Resource))]
+    [MapperIgnoreTarget(nameof(Assignment.Students))]
+    [MapperIgnoreTarget(nameof(Assignment.Teacher))] // just necessary data
+    public partial Assignment Map(CreateAssignmentDto dto);
     
-    [MapperIgnoreTarget(nameof(Teacher.Id))]
-    [MapperIgnoreTarget(nameof(Teacher.CreatedAt))]
-    [MapperIgnoreTarget(nameof(Teacher.ModifiedAt))]
-    [MapperIgnoreTarget(nameof(Teacher.User))]
-    [MapperIgnoreTarget(nameof(Teacher.LecturingSubjects))]
-    [MapperIgnoreTarget(nameof(Teacher.AssistingSubjects))]
-    [MapperIgnoreTarget(nameof(Teacher.Assignments))]
-    public partial Assignment Map(UpdateTeacherDto dto);
+    // [MapperIgnoreTarget(nameof(Assignment.Id))]
+    // [MapperIgnoreTarget(nameof(Assignment.CreatedAt))]
+    // [MapperIgnoreTarget(nameof(Assignment.ModifiedAt))]
+    // [MapperIgnoreTarget(nameof(Assignment.Resource))]
+    // [MapperIgnoreTarget(nameof(Assignment.Students))]
+    // [MapperIgnoreTarget(nameof(Assignment.Teacher))] // just necessary data
+    // public partial Assignment Map(UpdateAssignmentDto dto);
     
-    public partial List<TeacherDto> Map(List<Assignment> entities);
+    public partial List<AssignmentDto> Map(List<Assignment> entities);
     
-    [MapperIgnoreTarget(nameof(TeacherDetailsDto.LecturingSubjects))]
-    [MapperIgnoreTarget(nameof(TeacherDetailsDto.AssistingSubjects))]
-    [MapperIgnoreTarget(nameof(TeacherDetailsDto.Assignments))]
-    public partial TeacherDetailsDto Map(Assignment entity);
+    public partial AssignmentDetailsDto Map(Assignment entity);
 }
