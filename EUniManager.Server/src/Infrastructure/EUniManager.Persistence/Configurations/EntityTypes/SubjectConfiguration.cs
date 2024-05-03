@@ -35,7 +35,7 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
 
         entity.HasMany(s => s.CourseScheduleUnits).WithOne(csu => csu.Subject);
 
-        entity.HasMany(s => s.CurriculumSubjectResources).WithOne(csr => csr.Subject);
+        entity.HasMany(s => s.SubjectResources).WithOne(csr => csr.Subject);
 
         entity.HasOne(s => s.Exam).WithOne(e => e.Subject)
               .HasForeignKey<Exam>();

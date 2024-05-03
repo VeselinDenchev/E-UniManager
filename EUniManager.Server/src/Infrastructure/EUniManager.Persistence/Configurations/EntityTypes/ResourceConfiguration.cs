@@ -22,7 +22,7 @@ public sealed class ResourceConfiguration : BaseEntityConfiguration<Resource, Gu
                                     .IsUnicode(false)
                                     .HasMaxLength(TYPE_MAX_STRING_LENGTH);
 
-        entity.HasOne(r => r.CurriculumSubjectResourcesUnit).WithMany(csru => csru.Resources);
+        entity.HasOne(r => r.SubjectResourcesUnit).WithMany(csru => csru.Resources);
 
         entity.HasMany(r => r.Assignments).WithOne(a => a.Resource);
     }

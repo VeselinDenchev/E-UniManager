@@ -9,27 +9,26 @@ using static EUniManager.Persistence.Constants.SqlConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
-public sealed class CurriculumSubjectResourcesUnitConfiguration 
-    : BaseEntityConfiguration<CurriculumSubjectResourcesUnit, Guid>
+public sealed class SubjectResourcesUnitConfiguration : BaseEntityConfiguration<SubjectResourcesUnit, Guid>
 {
-    public override void Configure(EntityTypeBuilder<CurriculumSubjectResourcesUnit> entity)
+    public override void Configure(EntityTypeBuilder<SubjectResourcesUnit> entity)
     {
         entity.Property(u => u.Semester).IsRequired();
 
-        entity.HasOne(u => u.Subject).WithMany(s => s.CurriculumSubjectResources);
+        entity.HasOne(u => u.Subject).WithMany(s => s.SubjectResources);
 
-        entity.HasMany(u => u.Resources).WithOne(r => r.CurriculumSubjectResourcesUnit);
+        entity.HasMany(u => u.Resources).WithOne(r => r.SubjectResourcesUnit);
         
         entity.ToTable(table =>
         {
             string[] checkConstraintTokens = 
             [
-                nameof(CurriculumSubjectResourcesUnit), 
-                nameof(CurriculumSubjectResourcesUnit.Semester)
+                nameof(SubjectResourcesUnit), 
+                nameof(SubjectResourcesUnit.Semester)
             ];
             string checkConstraintTableColumn = string.Join('_', checkConstraintTokens);
             table.HasCheckConstraint(string.Format(CHECK_CONSTRAINT_TEMPLATE, checkConstraintTableColumn), 
-                $"{nameof(CurriculumSubjectResourcesUnit.Semester)} BETWEEN {MIN_SEMESTER} AND {MAX_SEMESTER}");
+                $"{nameof(SubjectResourcesUnit.Semester)} BETWEEN {MIN_SEMESTER} AND {MAX_SEMESTER}");
         });
     }
 }

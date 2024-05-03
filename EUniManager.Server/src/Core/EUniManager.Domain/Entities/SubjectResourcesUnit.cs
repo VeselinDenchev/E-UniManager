@@ -2,7 +2,7 @@
 
 namespace EUniManager.Domain.Entities;
 
-public class CurriculumSubjectResourcesUnit : BaseEntity<Guid>
+public class SubjectResourcesUnit : BaseEntity<Guid>
 {
     public byte Semester { get; set; }
 

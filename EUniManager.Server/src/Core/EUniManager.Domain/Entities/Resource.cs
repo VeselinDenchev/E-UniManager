@@ -11,7 +11,7 @@ public class Resource : BaseEntity<Guid>
 
     public CloudinaryFile File { get; set; } = null!;
 
-    public CurriculumSubjectResourcesUnit CurriculumSubjectResourcesUnit { get; set; }
+    public SubjectResourcesUnit SubjectResourcesUnit { get; set; } = null!;
 
     public List<Assignment> Assignments { get; set; } = null!;
 }

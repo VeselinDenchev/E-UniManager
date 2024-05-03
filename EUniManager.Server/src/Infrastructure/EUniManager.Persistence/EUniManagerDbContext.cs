@@ -32,8 +32,6 @@ public class EUniManagerDbContext : IdentityDbContext<IdentityUser<Guid>, Identi
     public DbSet<CourseSchedule> CourseSchedules { get; set; }
     
     public DbSet<CourseScheduleUnit> CourseScheduleUnits { get; set; }
-
-    public DbSet<CurriculumSubjectResourcesUnit> CurriculumSubjectResourcesUnits { get; set; }
     
     public DbSet<Exam> Exams { get; set; }
     
@@ -50,6 +48,8 @@ public class EUniManagerDbContext : IdentityDbContext<IdentityUser<Guid>, Identi
     public DbSet<Specialty> Specialties { get; set; }
     
     public DbSet<Subject> Subjects { get; set; }
+    
+    public DbSet<SubjectResourcesUnit> SubjectResourcesUnits { get; set; }
 
     public override int SaveChanges()
     {
