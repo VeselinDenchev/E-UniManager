@@ -7,6 +7,7 @@ using EUniManager.Persistence;
 using Microsoft.AspNetCore.Identity;
 
 using static EUniManager.Api.Configurations.SwaggerGenConfiguration;
+using static EUniManager.Api.Constants.IdentityConstant;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,7 +44,8 @@ app.UseHttpsRedirection();
 
 await app.UpdateDatabaseAsync();
 
-app.MapIdentityApi<IdentityUser<Guid>>();
+app.MapIdentityApi<IdentityUser<Guid>>()
+   .WithTags(IDENTITY_TAG_NAME);
 
 app.MapCarter();
 
