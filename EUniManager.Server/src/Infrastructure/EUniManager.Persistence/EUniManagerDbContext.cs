@@ -94,7 +94,7 @@ public class EUniManagerDbContext : IdentityDbContext<IdentityUser<Guid>, Identi
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         string[] commandLineArgs = Environment.GetCommandLineArgs();
-        bool isMigrationCommand = commandLineArgs.Any(a => a.Contains("migrations") || a.Contains("database"));
+        bool isMigrationCommand = commandLineArgs.Any(a => a.Contains("migrations"));
         if (isMigrationCommand)
         {
             optionsBuilder.UseSqlServer();
