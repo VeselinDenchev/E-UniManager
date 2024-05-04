@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\Core\EUniManager.Application\EUniManager.Application.csproj" />
       <ProjectReference Include="..\..\Core\EUniManager.Domain\EUniManager.Domain.csproj" />
     </ItemGroup>
 

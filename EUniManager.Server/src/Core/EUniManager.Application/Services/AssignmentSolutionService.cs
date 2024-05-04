@@ -2,9 +2,9 @@
 using EUniManager.Application.Models.AssigmentSolutions.Dtos;
 using EUniManager.Application.Models.AssigmentSolutions.Interfaces;
 using EUniManager.Application.Models.Base.Interfaces;
+using EUniManager.Application.Models.DbContexts;
 using EUniManager.Application.Services.Base;
 using EUniManager.Domain.Entities;
-using EUniManager.Persistence;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -17,7 +17,7 @@ public sealed class AssignmentSolutionService
     private readonly AssignmentSolutionMapper _mapper = new();
     private readonly UserManager<IdentityUser<Guid>> _userManager;
     
-    public AssignmentSolutionService(EUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager) 
+    public AssignmentSolutionService(IEUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager) 
         : base(dbContext)
     {
         _userManager = userManager;

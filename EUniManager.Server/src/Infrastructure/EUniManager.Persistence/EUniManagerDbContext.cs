@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 
+using EUniManager.Application.Models.DbContexts;
 using EUniManager.Domain.Abstraction.Base;
 using EUniManager.Domain.Entities;
 using EUniManager.Domain.Entities.Students;
@@ -9,9 +10,12 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 
+using static EUniManager.Application.Constants.EnviromentalVariablesConstant;
+
 namespace EUniManager.Persistence;
 
-public class EUniManagerDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
+public class EUniManagerDbContext 
+    : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>, IEUniManagerDbContext
 {
     public DbSet<Student> Students { get; set; }
     
@@ -101,20 +105,19 @@ public class EUniManagerDbContext : IdentityDbContext<IdentityUser<Guid>, Identi
 
             return;
         }
-
-        const string CAN_NOT_LOAD_ENV_VARIABLE_MESSAGE_TEMPLATE = "Can't load environmental variable {0}!";
+        
         const string DATABASE_NAME_ENV_VARIABLE_NAME = "DATABASE_NAME";
         const string SA_PASSWORD_ENV_VARIABLE_NAME = "SA_PASSWORD";
 
-        string canNotLoadDatabaseNameMessage =
+        string canNotLoadEnvVariableMessage =
             string.Format(CAN_NOT_LOAD_ENV_VARIABLE_MESSAGE_TEMPLATE, DATABASE_NAME_ENV_VARIABLE_NAME);
         string databaseName = Environment.GetEnvironmentVariable(DATABASE_NAME_ENV_VARIABLE_NAME) ?? 
-                              throw new ArgumentNullException(canNotLoadDatabaseNameMessage);
-        
-        string canNotLoadSaPasswordMessage =
-            string.Format(CAN_NOT_LOAD_ENV_VARIABLE_MESSAGE_TEMPLATE, SA_PASSWORD_ENV_VARIABLE_NAME);
+                              throw new ArgumentNullException(canNotLoadEnvVariableMessage);
+
+        canNotLoadEnvVariableMessage =
+            canNotLoadEnvVariableMessage.Replace(DATABASE_NAME_ENV_VARIABLE_NAME, SA_PASSWORD_ENV_VARIABLE_NAME);
         string saPassword = Environment.GetEnvironmentVariable(SA_PASSWORD_ENV_VARIABLE_NAME) ?? 
-                            throw new ArgumentNullException(canNotLoadSaPasswordMessage);
+                            throw new ArgumentNullException(canNotLoadEnvVariableMessage);
         
         string connectionString = $"Data Source=sqlserver;Initial Catalog={databaseName};TrustServerCertificate=True;User ID=SA;Password={saPassword}";
         

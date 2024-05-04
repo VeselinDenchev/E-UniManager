@@ -2,6 +2,7 @@ using Carter;
 
 using EUniManager.Api.Extensions;
 using EUniManager.Application.Extensions;
+using EUniManager.Application.Models.DbContexts;
 using EUniManager.Persistence;
 
 using Microsoft.AspNetCore.Identity;
@@ -25,7 +26,7 @@ builder.Services.AddIdentityCore<IdentityUser<Guid>>()
                 .AddEntityFrameworkStores<EUniManagerDbContext>()
                 .AddApiEndpoints();
 
-builder.Services.AddDbContext<EUniManagerDbContext>();
+builder.Services.AddDbContext<IEUniManagerDbContext, EUniManagerDbContext>();
 
 builder.Services.AddApplicationLayerConfiguration();
 

@@ -1,10 +1,10 @@
 ﻿using EUniManager.Application.Mappers;
 using EUniManager.Application.Models.Base.Interfaces;
+using EUniManager.Application.Models.DbContexts;
 using EUniManager.Application.Models.Students.Dtos;
 using EUniManager.Application.Models.Students.Interfaces;
 using EUniManager.Application.Services.Base;
 using EUniManager.Domain.Entities.Students;
-using EUniManager.Persistence;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -16,7 +16,7 @@ public sealed class StudentService
     private readonly StudentMapper _mapper = new();
     private readonly UserManager<IdentityUser<Guid>> _userManager;
     
-    public StudentService(EUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager)
+    public StudentService(IEUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager)
         : base(dbContext)
     {
         _userManager = userManager;

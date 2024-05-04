@@ -1,10 +1,10 @@
 ﻿using EUniManager.Application.Mappers;
 using EUniManager.Application.Models.Base.Interfaces;
+using EUniManager.Application.Models.DbContexts;
 using EUniManager.Application.Models.Teachers.Dtos;
 using EUniManager.Application.Models.Teachers.Interfaces;
 using EUniManager.Application.Services.Base;
 using EUniManager.Domain.Entities;
-using EUniManager.Persistence;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ public sealed class TeacherService
     private readonly TeacherMapper _mapper = new();
     private readonly UserManager<IdentityUser<Guid>> _userManager;
 
-    public TeacherService(EUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager)
+    public TeacherService(IEUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager)
         : base(dbContext)
     {
         _userManager = userManager;

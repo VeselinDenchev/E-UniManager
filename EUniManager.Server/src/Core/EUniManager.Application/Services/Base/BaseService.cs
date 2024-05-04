@@ -1,6 +1,6 @@
 ﻿using EUniManager.Application.Models.Base.Interfaces;
+using EUniManager.Application.Models.DbContexts;
 using EUniManager.Domain.Abstraction.Base;
-using EUniManager.Persistence;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -13,10 +13,10 @@ public abstract class BaseService<TEntity, TId, TEntityDto, TDetailsDto>
     where TEntityDto: class, IEntityDto
     where TDetailsDto: class, IDetailsDto
 {
-    protected readonly EUniManagerDbContext _dbContext;
+    protected readonly IEUniManagerDbContext _dbContext;
     protected readonly DbSet<TEntity> _dbSet;
 
-    protected BaseService(EUniManagerDbContext dbContext)
+    protected BaseService(IEUniManagerDbContext dbContext)
     {
         _dbContext = dbContext;
         _dbSet = _dbContext.Set<TEntity>();

@@ -1,10 +1,10 @@
 ﻿using EUniManager.Application.Mappers;
 using EUniManager.Application.Models.Base.Interfaces;
+using EUniManager.Application.Models.DbContexts;
 using EUniManager.Application.Models.Subjects.Dtos;
 using EUniManager.Application.Models.Subjects.Interfaces;
 using EUniManager.Application.Services.Base;
 using EUniManager.Domain.Entities;
-using EUniManager.Persistence;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -17,7 +17,7 @@ public sealed class SubjectService
     private readonly SubjectMapper _mapper = new();
     private readonly UserManager<IdentityUser<Guid>> _userManager;
     
-    public SubjectService(EUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager)
+    public SubjectService(IEUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager)
         : base(dbContext)
     {
         _userManager = userManager;

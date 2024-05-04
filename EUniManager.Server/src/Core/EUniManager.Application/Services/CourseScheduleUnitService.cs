@@ -2,9 +2,9 @@
 using EUniManager.Application.Models.Base.Interfaces;
 using EUniManager.Application.Models.CourseScheduleUnits.Dtos;
 using EUniManager.Application.Models.CourseScheduleUnits.Interfaces;
+using EUniManager.Application.Models.DbContexts;
 using EUniManager.Application.Services.Base;
 using EUniManager.Domain.Entities;
-using EUniManager.Persistence;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -17,7 +17,7 @@ public sealed class CourseScheduleUnitService
     private readonly CourseScheduleMapper _mapper = new();
     private readonly UserManager<IdentityUser<Guid>> _userManager;
     
-    public CourseScheduleUnitService(EUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager) 
+    public CourseScheduleUnitService(IEUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager) 
         : base(dbContext)
     {
         _userManager = userManager;

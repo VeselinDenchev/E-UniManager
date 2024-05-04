@@ -2,9 +2,9 @@
 using EUniManager.Application.Models.Base.Interfaces;
 using EUniManager.Application.Models.Courses.Dtos;
 using EUniManager.Application.Models.Courses.Interfaces;
+using EUniManager.Application.Models.DbContexts;
 using EUniManager.Application.Services.Base;
 using EUniManager.Domain.Entities;
-using EUniManager.Persistence;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -15,7 +15,7 @@ public sealed class CourseService : BaseService<Course, Guid, CourseDto, CourseD
     private readonly CourseMapper _mapper = new();
     private readonly UserManager<IdentityUser<Guid>> _userManager;
     
-    public CourseService(EUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager) 
+    public CourseService(IEUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager) 
         : base(dbContext)
     {
         _userManager = userManager;

@@ -2,9 +2,9 @@
 using EUniManager.Application.Models.Assignments.Dtos;
 using EUniManager.Application.Models.Assignments.Interfaces;
 using EUniManager.Application.Models.Base.Interfaces;
+using EUniManager.Application.Models.DbContexts;
 using EUniManager.Application.Services.Base;
 using EUniManager.Domain.Entities;
-using EUniManager.Persistence;
 
 using Microsoft.AspNetCore.Identity;
 
@@ -16,7 +16,7 @@ public sealed class AssignmentService
     private readonly AssignmentMapper _mapper = new();
     private readonly UserManager<IdentityUser<Guid>> _userManager;
     
-    public AssignmentService(EUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager) 
+    public AssignmentService(IEUniManagerDbContext dbContext, UserManager<IdentityUser<Guid>> userManager) 
         : base(dbContext)
     {
         _userManager = userManager;
