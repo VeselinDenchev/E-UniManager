@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EUniManager.Application.Services.Base;
 
-public abstract class BaseService<TEntity, TId, TListElementDto, TDetailsDto> 
-    : IBaseService<TEntity, TId, TListElementDto, TDetailsDto>
+public abstract class BaseService<TEntity, TId, TEntityDto, TDetailsDto> 
+    : IBaseService<TEntity, TId, TEntityDto, TDetailsDto>
     where TEntity : BaseEntity<TId>
     where TId : IEquatable<TId>
-    where TListElementDto: class, IEntityDto
+    where TEntityDto: class, IEntityDto
     where TDetailsDto: class, IDetailsDto
 {
     protected readonly EUniManagerDbContext _dbContext;
@@ -22,7 +22,7 @@ public abstract class BaseService<TEntity, TId, TListElementDto, TDetailsDto>
         _dbSet = _dbContext.Set<TEntity>();
     }
 
-    public abstract Task<List<TListElementDto>> GetAllAsync(CancellationToken cancellationToken);
+    public abstract Task<List<TEntityDto>> GetAllAsync(CancellationToken cancellationToken);
 
     public abstract ValueTask<TDetailsDto> GetByIdAsync(TId id, CancellationToken cancellationToken);
 
