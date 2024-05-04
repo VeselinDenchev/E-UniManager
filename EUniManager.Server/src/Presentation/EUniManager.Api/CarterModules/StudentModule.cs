@@ -13,4 +13,4 @@ public class StudentModule()
             StudentDetailsDto,
             CreateStudentDto,
             UpdateStudentDto>
-        (string.Format(BASE_PATH_TEMPLATE, nameof(Student).ToLowerInvariant()));
+            (string.Format(BASE_PATH_TEMPLATE, nameof(Student).ToLowerInvariant()));
