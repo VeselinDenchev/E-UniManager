@@ -11,7 +11,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EUniManager.Application.Services;
 
-public sealed class TeacherService : BaseService<Teacher, Guid, TeacherDto, TeacherDetailsDto>, ITeacherService
+public sealed class TeacherService 
+    : BaseService<Teacher, Guid, TeacherDto, TeacherDetailsDto>, ITeacherService
 {
     private readonly TeacherMapper _mapper = new();
     private readonly UserManager<IdentityUser<Guid>> _userManager;

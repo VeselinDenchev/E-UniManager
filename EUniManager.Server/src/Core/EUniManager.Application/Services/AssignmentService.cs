@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EUniManager.Application.Services;
 
-public sealed class AssignmentService : BaseService<Assignment, Guid, AssignmentDto, AssignmentDetailsDto>, IAssignmentService
+public sealed class AssignmentService 
+    : BaseService<Assignment, Guid, AssignmentDto, AssignmentDetailsDto>, IAssignmentService
 {
     private readonly AssignmentMapper _mapper = new();
     private readonly UserManager<IdentityUser<Guid>> _userManager;
