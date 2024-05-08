@@ -17,49 +17,49 @@ public sealed class DiplomaConfiguration : BaseEntityConfiguration<Diploma, Guid
         base.Configure(entity);
 
         entity.HasOne(d => d.Student).WithOne(s => s.DiplomaOwned)
-               .HasForeignKey<Student>();
+              .HasForeignKey<Student>();
         
         entity.Property(d => d.EducationalAndQualificationalDegree).IsRequired()
-                                                                    .HasConversion<string>()
-                                                                    .IsUnicode(false)
-                                                                    .HasMaxLength(EDUCATIONAL_AND_QUALIFICATIONAL_DEGREE_MAX_STRING_LENGTH);
+                                                                   .HasConversion<string>()
+                                                                   .IsUnicode(false)
+                                                                   .HasMaxLength(EDUCATIONAL_AND_QUALIFICATIONAL_DEGREE_MAX_STRING_LENGTH);
         
         entity.Property(d => d.Series).IsRequired()
-                                       .IsUnicode(false)
-                                       .HasMaxLength(SERIES_MAX_STRING_LENGTH);
+                                      .IsUnicode(false)
+                                      .HasMaxLength(SERIES_MAX_STRING_LENGTH);
         
         entity.Property(d => d.Number).IsRequired()
-                                       .IsUnicode(false)
-                                       .HasMaxLength(NUMBER_MAX_STRING_LENGTH);
+                                      .IsUnicode(false)
+                                      .HasMaxLength(NUMBER_MAX_STRING_LENGTH);
         
         entity.Property(d => d.RegistrationNumber).IsRequired(false)
-                                                   .IsUnicode(false)
-                                                   .HasMaxLength(REGISTRATION_NUMBER_MAX_STRING_LENGTH);
+                                                  .IsUnicode(false)
+                                                  .HasMaxLength(REGISTRATION_NUMBER_MAX_STRING_LENGTH);
 
         entity.Property(d => d.Date).IsRequired();
 
         entity.Property(d => d.Year).IsRequired();
         
         entity.Property(d => d.IssuedByInstitutionType).IsRequired()
-                                                        .HasConversion<string>()
-                                                        .HasMaxLength(ISSUED_BY_INSTITUTION_TYPE_MAX_STRING_LENGTH);
+                                                       .HasConversion<string>()
+                                                       .HasMaxLength(ISSUED_BY_INSTITUTION_TYPE_MAX_STRING_LENGTH);
 
         entity.Property(d => d.InstitutionName).IsRequired()
-                                                .IsUnicode()
-                                                .HasMaxLength(INSTITUTION_NAME_MAX_STRING_LENGTH);
+                                               .IsUnicode()
+                                               .HasMaxLength(INSTITUTION_NAME_MAX_STRING_LENGTH);
 
-        entity.OwnsOne(d => d.CityArea, ConfigureCityArea);
+        entity.ComplexProperty(d => d.CityArea, ConfigureCityArea);
 
         entity.Property(d => d.Specialty).IsRequired()
-                                          .IsUnicode()
-                                          .HasMaxLength(SPECIALTY_MAX_STRING_LENGTH);
+                                         .IsUnicode()
+                                         .HasMaxLength(SPECIALTY_MAX_STRING_LENGTH);
 
         entity.Property(d => d.ProfessionalQualification).IsRequired(false)
-                                                          .IsUnicode()
-                                                          .HasMaxLength(PROFESSIONAL_QUALIFICATION_MAX_STRING_LENGTH);
+                                                         .IsUnicode()
+                                                         .HasMaxLength(PROFESSIONAL_QUALIFICATION_MAX_STRING_LENGTH);
     }
 
-    private void ConfigureCityArea(OwnedNavigationBuilder<Diploma, CityArea> cityArea)
+    private void ConfigureCityArea(ComplexPropertyBuilder<CityArea> cityArea)
     {
         cityArea.Property(ca => ca.City).IsRequired(false)
                                         .IsUnicode()

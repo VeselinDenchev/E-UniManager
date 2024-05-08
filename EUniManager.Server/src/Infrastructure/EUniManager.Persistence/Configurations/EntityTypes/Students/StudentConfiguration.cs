@@ -28,20 +28,20 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
         entity.HasOne(s => s.User);
         
         entity.HasOne(s => s.Faculty).WithMany(f => f.Students);
-        
+
         entity.OwnsOne(s => s.ServiceData, ConfigureServiceData);
 
         entity.OwnsOne(s => s.PersonalData, ConfigurePersonalData);
 
-        entity.OwnsOne(s => s.PermanentResidence, ConfigurePermanentResidence);
+        entity.ComplexProperty(s => s.PermanentResidence, ConfigurePermanentResidence);
 
-        entity.OwnsOne(s => s.TemporaryResidence, ConfigureTemporaryResidence);
+        entity.ComplexProperty(s => s.TemporaryResidence, ConfigureTemporaryResidence);
 
         entity.Property(s => s.UsualResidenceCountry).IsRequired()
                                                      .IsUnicode()
                                                      .HasMaxLength(USUAL_RESIDENCE_COUNTRY_MAX_STRING_LENGTH);
 
-        entity.OwnsOne(s => s.Enrollment, ConfigureEnrollment);
+        entity.ComplexProperty(s => s.Enrollment, ConfigureEnrollment);
 
         entity.HasOne(s => s.DiplomaOwned).WithOne(d => d.Student)
               .HasForeignKey<Diploma>();
@@ -142,9 +142,19 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
                                              .IsUnicode(false);
     }
 
-    private void ConfigurePersonalDataCityArea(OwnedNavigationBuilder<PersonalData, CityArea> cityArea) =>
-        ConfigureCityAreaBase(cityArea, PERSONAL_DATA_CITY_COLUMN_NAME, PERSONAL_DATA_AREA_COLUMN_NAME);
-    
+    private void ConfigurePersonalDataCityArea(OwnedNavigationBuilder<PersonalData, CityArea> cityArea)
+    {
+        cityArea.Property(ca => ca.City).IsRequired(false)
+            .IsUnicode()
+            .HasColumnName(PERSONAL_DATA_CITY_COLUMN_NAME)
+            .HasMaxLength(CITY_MAX_STRING_LENGTH);
+        
+        cityArea.Property(ca => ca.Area).IsRequired(false)
+            .IsUnicode()
+            .HasColumnName(PERSONAL_DATA_AREA_COLUMN_NAME)
+            .HasMaxLength(AREA_MAX_STRING_LENGTH);
+    }
+
     private void ConfigureUniqueIdentifier(OwnedNavigationBuilder<PersonalData, UniqueIdentifier> uniqueIdentifier)
     {
         uniqueIdentifier.Property(ui => ui.UniqueIdentifierType).IsRequired()
@@ -170,20 +180,20 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
                         .HasDatabaseName(uniqueIdentifierUniqueConstraintName);
     }
 
-    private void ConfigurePermanentResidence(OwnedNavigationBuilder<Student, Residence> permanentResidence) =>
+    private void ConfigurePermanentResidence(ComplexPropertyBuilder<Residence> permanentResidence) =>
         ConfigureResidenceBase(permanentResidence, ConfigurePermanentResidenceCityArea,
             PERMANENT_RESIDENCE_STREET_COLUMN_NAME, PERMANENT_RESIDENCE_PHONE_NUMBER_COLUMN_NAME);
     
-    private void ConfigureTemporaryResidence(OwnedNavigationBuilder<Student, Residence> temporaryResidence) => 
+    private void ConfigureTemporaryResidence(ComplexPropertyBuilder<Residence> temporaryResidence) => 
         ConfigureResidenceBase(temporaryResidence, ConfigureTemporaryResidenceCityArea,
             TEMPORARY_RESIDENCE_STREET_COLUMN_NAME, TEMPORARY_RESIDENCE_PHONE_NUMBER_COLUMN_NAME);
 
-    private void ConfigureResidenceBase(OwnedNavigationBuilder<Student, Residence> residence,
-                                        Action<OwnedNavigationBuilder<Residence, CityArea>> configureCityArea, 
+    private void ConfigureResidenceBase(ComplexPropertyBuilder<Residence> residence,
+                                        Action<ComplexPropertyBuilder<CityArea>> configureCityArea, 
                                         string streetColumnName, 
                                         string phoneNumberColumnName)
     {
-        residence.OwnsOne(r => r.CityArea, configureCityArea);
+        residence.ComplexProperty(r => r.CityArea, configureCityArea);
 
         residence.Property(r => r.Street).IsUnicode()
                                          .HasMaxLength(STREET_MAX_STRING_LENGTH)
@@ -195,21 +205,16 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
                                               .HasColumnName(phoneNumberColumnName);
     }
 
-    private void ConfigurePermanentResidenceCityArea(OwnedNavigationBuilder<Residence, CityArea> cityArea) =>
-        ConfigureResidenceCityAreaBase(cityArea, PERMANENT_RESIDENCE_CITY_COLUMN_NAME, PERMANENT_RESIDENCE_AREA_COLUMN_NAME);
+    private void ConfigurePermanentResidenceCityArea(ComplexPropertyBuilder<CityArea> cityArea) =>
+        ConfigureCityAreaBase(cityArea, PERMANENT_RESIDENCE_CITY_COLUMN_NAME, PERMANENT_RESIDENCE_AREA_COLUMN_NAME);
     
-    private void ConfigureTemporaryResidenceCityArea(OwnedNavigationBuilder<Residence, CityArea> cityArea) =>
-        ConfigureResidenceCityAreaBase(cityArea, TEMPORARY_RESIDENCE_CITY_COLUMN_NAME, TEMPORARY_RESIDENCE_AREA_COLUMN_NAME);
-
-    private void ConfigureResidenceCityAreaBase(OwnedNavigationBuilder<Residence, CityArea> cityArea, string cityColumnName, string areaColumnName) => 
-        ConfigureCityAreaBase(cityArea, cityColumnName, areaColumnName);
-
-    private void ConfigureCityAreaBase<T>(OwnedNavigationBuilder<T, CityArea> cityArea, string cityColumnName, string areaColumnName)
-        where T : class
+    private void ConfigureTemporaryResidenceCityArea(ComplexPropertyBuilder<CityArea> cityArea) =>
+        ConfigureCityAreaBase(cityArea, TEMPORARY_RESIDENCE_CITY_COLUMN_NAME, TEMPORARY_RESIDENCE_AREA_COLUMN_NAME);
+    
+    private void ConfigureCityAreaBase(ComplexPropertyBuilder<CityArea> cityArea, string cityColumnName, string areaColumnName)
     {
         cityArea.Property(ca => ca.City).IsRequired(false)
                                         .IsUnicode()
-                                   
                                         .HasColumnName(cityColumnName)
                                         .HasMaxLength(CITY_MAX_STRING_LENGTH);
         
@@ -219,10 +224,8 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
                                         .HasMaxLength(AREA_MAX_STRING_LENGTH);
     }
     
-    private void ConfigureEnrollment(OwnedNavigationBuilder<Student, Enrollment> enrollment)
+    private void ConfigureEnrollment(ComplexPropertyBuilder<Enrollment> enrollment)
     {
-        enrollment.WithOwner();
-        
         enrollment.Property(e => e.Date).IsRequired()
                                         .HasColumnName(ENROLLMENT_DATE_COLUMN_NAME);
 
