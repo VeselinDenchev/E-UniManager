@@ -1,7 +1,6 @@
-﻿using EUniManager.Application.Models.Base.Interfaces;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-using Microsoft.Extensions.DependencyInjection;
-
+using static EUniManager.Application.Constants.ServiceConstant;
 
 namespace EUniManager.Application.Extensions;
 
@@ -10,7 +9,7 @@ public static class ApplicationLayerConfiguration
     public static IServiceCollection AddApplicationLayerConfiguration(this IServiceCollection services)
     {
         services.Scan(s => s.FromCallingAssembly()
-                            .AddClasses(c => c.AssignableTo(typeof(IBaseService<,,,>)))
+                            .AddClasses(c => c.Where(type => type.Name.EndsWith(SERVICE_SUFFIX_STRING)))
                             .AsImplementedInterfaces()
                             .WithScopedLifetime());
 

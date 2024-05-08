@@ -30,6 +30,8 @@ builder.Services.AddDbContext<IEUniManagerDbContext, EUniManagerDbContext>();
 
 builder.Services.AddApplicationLayerConfiguration();
 
+builder.Services.AddAntiforgery();
+
 builder.Services.AddCarter();
 
 var app = builder.Build();
@@ -44,6 +46,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 await app.UpdateDatabaseAsync();
+
+app.UseAntiforgery();
 
 app.MapIdentityApi<IdentityUser<Guid>>()
    .WithTags(IDENTITY_TAG_NAME);

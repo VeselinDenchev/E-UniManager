@@ -9,7 +9,7 @@ public class Resource : BaseEntity<Guid>
 
     public ResourceType Type { get; set; }
 
-    public CloudinaryFile File { get; set; } = null!;
+    public CloudinaryFile? File { get; set; }
 
     public SubjectResourcesUnit SubjectResourcesUnit { get; set; } = null!;
 

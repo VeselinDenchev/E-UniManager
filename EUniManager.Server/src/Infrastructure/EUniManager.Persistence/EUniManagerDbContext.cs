@@ -57,40 +57,14 @@ public class EUniManagerDbContext
 
     public override int SaveChanges()
     {
-        SequentialGuidValueGenerator idGenerator = new();
-        var entries = ChangeTracker.Entries<BaseEntity<Guid>>();
-        foreach (var entry in entries)
-        {
-            if (entry.State != EntityState.Added && entry.State != EntityState.Modified) continue;
-            
-            entry.Entity.ModifiedAt = DateTime.Now;
-            
-            if (entry.State != EntityState.Added) continue;
-
-            entry.Entity.Id = idGenerator.Next(entry);
-            entry.Entity.CreatedAt = DateTime.Now;
-        }
-
+        SetBaseEntityData();
+        
         return base.SaveChanges();
     }
     
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        SequentialGuidValueGenerator idGenerator = new();
-        var entries = ChangeTracker.Entries<BaseEntity<Guid>>();
-        foreach (var entry in entries)
-        {
-            if (entry.State != EntityState.Added && entry.State != EntityState.Modified) continue;
-            
-            DateTime now = DateTime.Now;
-            
-            entry.Entity.ModifiedAt = now;
-            
-            if (entry.State != EntityState.Added) continue;
-
-            entry.Entity.Id = await idGenerator.NextAsync(entry, cancellationToken);
-            entry.Entity.CreatedAt = now;
-        }
+        SetBaseEntityData();
 
         return await base.SaveChangesAsync(cancellationToken);
     }
@@ -130,5 +104,45 @@ public class EUniManagerDbContext
         
         Assembly persistenceAssembly = Assembly.GetExecutingAssembly();
         modelBuilder.ApplyConfigurationsFromAssembly(persistenceAssembly);
+    }
+
+    private void SetBaseEntityData()
+    {
+        var newGuidIdEntries = ChangeTracker.Entries<BaseEntity<Guid>>().ToList();
+        var newStringIdEntries = ChangeTracker.Entries<BaseEntity<string>>().ToList();
+        
+        DateTime now = DateTime.Now;
+        
+        if (newGuidIdEntries.Any(e => e.State == EntityState.Added) || 
+            newStringIdEntries.Any(e => e.State == EntityState.Added))
+        {
+            SequentialGuidValueGenerator idGenerator = new();
+            
+            foreach (var guidIdEntry in newGuidIdEntries.Where(e => e.State == EntityState.Added))
+            {
+                guidIdEntry.Entity.Id = idGenerator.Next(guidIdEntry);
+                guidIdEntry.Entity.CreatedAt = now;
+                guidIdEntry.Entity.ModifiedAt = now;
+            }
+            foreach (var stringIdEntry in newStringIdEntries.Where(e => e.State == EntityState.Added))
+            {
+                if (string.IsNullOrWhiteSpace(stringIdEntry.Entity.Id))
+                {
+                    stringIdEntry.Entity.Id = idGenerator.Next(stringIdEntry).ToString();
+                }
+                
+                stringIdEntry.Entity.CreatedAt = now;
+                stringIdEntry.Entity.ModifiedAt = now;
+            }
+        }
+        
+        foreach (var modifiedGuidIdEntry in newGuidIdEntries.Where(e => e.State == EntityState.Modified))
+        {
+            modifiedGuidIdEntry.Entity.ModifiedAt = now;
+        }
+        foreach (var modifiedStringIdEntry in newStringIdEntries.Where(e => e.State == EntityState.Modified))
+        {
+            modifiedStringIdEntry.Entity.ModifiedAt = now;
+        }
     }
 }
