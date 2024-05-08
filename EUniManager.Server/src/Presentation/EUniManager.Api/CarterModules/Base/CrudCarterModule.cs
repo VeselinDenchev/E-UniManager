@@ -4,6 +4,7 @@ using EUniManager.Application.Models.Base.Interfaces;
 using EUniManager.Domain.Abstraction.Base;
 
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EUniManager.Api.CarterModules.Base;
 
@@ -70,9 +71,9 @@ public abstract class CrudCarterModule<TService, TEntity, TEntityDto, TEntityDet
     
     protected virtual async Task<Results<Ok, BadRequest, NotFound, UnprocessableEntity>> Update
     (
-        Guid id,
-        TUpdateDto dto,
-        TService service, 
+        TService service,
+        [FromRoute] Guid id,
+        [FromBody] TUpdateDto dto,
         CancellationToken cancellationToken
     )
     {
@@ -83,8 +84,8 @@ public abstract class CrudCarterModule<TService, TEntity, TEntityDto, TEntityDet
     
     protected virtual async Task<Results<Ok, BadRequest, NotFound>> Delete
     (
-        Guid id,
-        TService service, 
+        TService service,
+        [FromRoute] Guid id,
         CancellationToken cancellationToken
     )
     {
