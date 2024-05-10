@@ -1,4 +1,4 @@
-﻿namespace EUniManager.Persistence.Constants.Entities.Courses;
+﻿namespace EUniManager.Persistence.Constants.Entities;
 
 public static class CourseConstant
 {

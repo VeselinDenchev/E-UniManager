@@ -1,4 +1,4 @@
-﻿namespace EUniManager.Persistence.Constants.Entities.Assignments;
+﻿namespace EUniManager.Persistence.Constants.Entities;
 
 public static class AssignmentConstant
 {

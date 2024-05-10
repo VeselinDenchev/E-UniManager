@@ -4,8 +4,6 @@ using EUniManager.Persistence.Configurations.EntityTypes.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using static EUniManager.Persistence.Constants.Entities.SubjectConstant;
-
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
 public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid>
@@ -25,11 +23,6 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
         
         entity.HasMany(s => s.Assistants).WithMany(a => a.AssistingSubjects);
 
-        entity.Property(s => s.Type).IsRequired()
-                                    .HasConversion<string>()
-                                    .IsUnicode(false)
-                                    .HasMaxLength(TYPE_MAX_STRING_LENGTH);
-
         entity.HasOne(sub => sub.Specialty).WithMany(sp => sp.Subjects)
               .OnDelete(DeleteBehavior.NoAction)
               .IsRequired();
@@ -37,15 +30,13 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
         entity.HasOne(s => s.Course).WithMany(c => c.Subjects)
               .IsRequired();
 
-        entity.HasMany(s => s.CourseScheduleUnits).WithOne(csu => csu.Subject)
-              .IsRequired();
-
-        entity.HasOne(s => s.ResourcesUnit).WithOne(csr => csr.Subject)
-              .HasForeignKey<SubjectResourcesUnit>()
+        entity.HasMany(s => s.Activities).WithOne(a => a.Subject)
               .IsRequired(false);
 
         entity.HasOne(s => s.Exam).WithOne(e => e.Subject)
               .HasForeignKey<Exam>()
               .IsRequired(false);
+        
+        entity.Property(c => c.Mark).IsRequired(false);
     }
 }

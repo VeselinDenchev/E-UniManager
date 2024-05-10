@@ -3,7 +3,7 @@
 namespace EUniManager.Application.Mappers;
 
 [Mapper]
-public partial class SubjectResourcesUnitMapper
+public partial class ActivityMapper
 {
     
 }

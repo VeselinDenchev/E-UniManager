@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using static EUniManager.Persistence.Constants.SqlConstant;
-using static EUniManager.Persistence.Constants.Entities.Assignments.AssignmentSolutionConstant;
+using static EUniManager.Persistence.Constants.Entities.AssignmentSolutionConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 

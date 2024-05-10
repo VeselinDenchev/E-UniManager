@@ -33,8 +33,6 @@ public class Student : BaseEntity<Guid>
     
     public List<Subject> Subjects { get; set; } = null!;
 
-    public CourseSchedule CourseSchedule { get; set; } = null!;
-
     public List<PayedTax> PayedTaxes { get; set; } = null!;
 
     public List<RequestApplication> RequestApplications { get; set; } = null!;

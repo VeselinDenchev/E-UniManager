@@ -24,5 +24,7 @@ public class Teacher : BaseEntity<Guid>
     
     public List<Subject> AssistingSubjects { get; set; } = null!;
 
+    public List<Activity> Activities { get; set; } = null!;
+
     public List<Assignment> Assignments { get; set; } = null!;
 }

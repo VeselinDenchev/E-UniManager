@@ -14,13 +14,11 @@ public class Subject : BaseEntity<Guid>
 
     public List<Teacher> Assistants { get; set; } = null!;
 
-    public SubjectType Type { get; set; }
-
     public Specialty Specialty { get; set; } = null!;
 
-    public List<CourseScheduleUnit> CourseScheduleUnits { get; set; } = null!;
-
-    public SubjectResourcesUnit? ResourcesUnit { get; set; }
+    public List<Activity> Activities { get; set; } = null!;
 
     public Exam Exam { get; set; } = null!;
+    
+    public Mark? Mark { get; set; }
 }

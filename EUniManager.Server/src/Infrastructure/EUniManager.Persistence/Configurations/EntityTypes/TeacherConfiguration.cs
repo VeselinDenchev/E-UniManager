@@ -37,6 +37,9 @@ public sealed class TeacherConfiguration : BaseEntityConfiguration<Teacher, Guid
               .IsRequired(false);
 
         entity.HasMany(t => t.AssistingSubjects).WithMany(s => s.Assistants);
+        
+        entity.HasMany(t => t.Activities).WithOne(s => s.Teacher)
+              .IsRequired(false);
 
         entity.HasMany(t => t.Assignments).WithOne(a => a.Teacher)
               .OnDelete(DeleteBehavior.ClientCascade)

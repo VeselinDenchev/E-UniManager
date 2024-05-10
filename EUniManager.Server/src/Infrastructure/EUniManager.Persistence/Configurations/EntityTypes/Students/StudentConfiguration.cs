@@ -61,6 +61,9 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
         entity.HasMany(s => s.PayedTaxes).WithOne(pt => pt.Student)
               .IsRequired(false);
 
+        entity.HasMany(s => s.RequestApplications).WithOne(ra => ra.Student)
+              .IsRequired(false);
+
         entity.ToTable(BuildCheckConstraints);
     }
 

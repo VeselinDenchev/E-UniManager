@@ -29,11 +29,9 @@ public sealed class CourseScheduleUnitConfiguration : BaseEntityConfiguration<Co
 
         entity.Property(u => u.Place).IsRequired();
 
-        entity.HasOne(u => u.Subject).WithMany(s => s.CourseScheduleUnits);
+        entity.HasOne(u => u.Activity).WithMany(a => a.ScheduleUnits);
 
         entity.Property(u => u.Semester).IsRequired();
-
-        entity.HasMany(u => u.CourseSchedules).WithMany(cs => cs.Units);
 
         entity.ToTable(table =>
         {

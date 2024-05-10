@@ -27,11 +27,9 @@ public class CourseScheduleUnit : BaseEntity<Guid>
 
     public SchedulePlace Place { get; set; }
 
-    public Subject Subject { get; set; } = null!;
+    public Activity Activity { get; set; } = null!;
 
     public byte Semester { get; set; }
 
     public SemesterType SemesterType => Semester % 2 == 0 ? SemesterType.Summer : SemesterType.Winter;
-
-    public List<CourseSchedule> CourseSchedules { get; set; } = null!;
 }

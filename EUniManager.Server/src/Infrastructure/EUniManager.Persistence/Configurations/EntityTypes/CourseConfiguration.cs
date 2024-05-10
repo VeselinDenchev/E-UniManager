@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using static EUniManager.Persistence.Constants.SqlConstant;
-using static EUniManager.Persistence.Constants.Entities.Courses.CourseConstant;
+using static EUniManager.Persistence.Constants.Entities.CourseConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
@@ -22,8 +22,6 @@ public sealed class CourseConfiguration : BaseEntityConfiguration<Course, Guid>
         entity.Property(c => c.LecturesCount).IsRequired();
 
         entity.Property(c => c.ExercisesCount).IsRequired();
-
-        entity.Property(c => c.Mark).IsRequired(false);
 
         entity.Property(c => c.CreditsCount).IsRequired();
 

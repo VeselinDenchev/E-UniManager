@@ -24,7 +24,7 @@ public sealed class ResourceConfiguration : BaseEntityConfiguration<Resource, Gu
 
         entity.HasOne(r => r.File);
 
-        entity.HasOne(r => r.SubjectResourcesUnit).WithMany(csru => csru.Resources)
+        entity.HasOne(r => r.Activity).WithMany(csru => csru.Resources)
               .IsRequired(false);
 
         entity.HasOne(r => r.Assignment).WithOne(a => a.Resource)

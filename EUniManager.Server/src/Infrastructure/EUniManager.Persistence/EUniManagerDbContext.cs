@@ -20,6 +20,8 @@ public class EUniManagerDbContext
     public DbSet<Student> Students { get; set; }
     
     public DbSet<Teacher> Teachers { get; set; }
+
+    public DbSet<Activity> Activities { get; set; }
     
     public DbSet<Diploma> Diplomas { get; set; }
     
@@ -32,8 +34,6 @@ public class EUniManagerDbContext
     public DbSet<CloudinaryFile> CloudinaryFiles { get; set; }
     
     public DbSet<Course> Courses { get; set; }
-    
-    public DbSet<CourseSchedule> CourseSchedules { get; set; }
     
     public DbSet<CourseScheduleUnit> CourseScheduleUnits { get; set; }
     
@@ -52,8 +52,6 @@ public class EUniManagerDbContext
     public DbSet<Specialty> Specialties { get; set; }
     
     public DbSet<Subject> Subjects { get; set; }
-    
-    public DbSet<SubjectResourcesUnit> SubjectResourcesUnits { get; set; }
 
     public override int SaveChanges()
     {

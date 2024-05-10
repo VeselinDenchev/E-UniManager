@@ -3,6 +3,7 @@ using EUniManager.Domain.Entities;
 using EUniManager.Domain.Entities.Students;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EUniManager.Application.Models.DbContexts;
 
@@ -11,6 +12,8 @@ public interface IEUniManagerDbContext
     public DbSet<Student> Students { get; set; }
     
     public DbSet<Teacher> Teachers { get; set; }
+
+    public DbSet<Activity> Activities { get; set; }
     
     public DbSet<Diploma> Diplomas { get; set; }
     
@@ -23,8 +26,6 @@ public interface IEUniManagerDbContext
     public DbSet<CloudinaryFile> CloudinaryFiles { get; set; }
     
     public DbSet<Course> Courses { get; set; }
-    
-    public DbSet<CourseSchedule> CourseSchedules { get; set; }
     
     public DbSet<CourseScheduleUnit> CourseScheduleUnits { get; set; }
     
@@ -44,9 +45,9 @@ public interface IEUniManagerDbContext
     
     public DbSet<Subject> Subjects { get; set; }
     
-    public DbSet<SubjectResourcesUnit> SubjectResourcesUnits { get; set; }
-    
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
+    
+    EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
     
     int SaveChanges();
     
