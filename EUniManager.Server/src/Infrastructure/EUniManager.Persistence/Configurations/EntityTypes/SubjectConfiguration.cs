@@ -14,12 +14,14 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
     {
         base.Configure(entity);
 
-        entity.HasOne(s => s.Course).WithMany(c => c.Subjects);
+        entity.HasOne(s => s.Course).WithMany(c => c.Subjects)
+              .IsRequired(false);
 
         entity.HasMany(sub => sub.Students).WithMany(st => st.Subjects);
         
         entity.HasOne(s => s.Lecturer).WithMany(l => l.LecturingSubjects)
-              .OnDelete(DeleteBehavior.NoAction);
+              .OnDelete(DeleteBehavior.NoAction)
+              .IsRequired();
         
         entity.HasMany(s => s.Assistants).WithMany(a => a.AssistingSubjects);
 
@@ -29,15 +31,21 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
                                     .HasMaxLength(TYPE_MAX_STRING_LENGTH);
 
         entity.HasOne(sub => sub.Specialty).WithMany(sp => sp.Subjects)
-              .OnDelete(DeleteBehavior.NoAction);
+              .OnDelete(DeleteBehavior.NoAction)
+              .IsRequired();
         
-        entity.HasOne(s => s.Course).WithMany(c => c.Subjects);
+        entity.HasOne(s => s.Course).WithMany(c => c.Subjects)
+              .IsRequired();
 
-        entity.HasMany(s => s.CourseScheduleUnits).WithOne(csu => csu.Subject);
+        entity.HasMany(s => s.CourseScheduleUnits).WithOne(csu => csu.Subject)
+              .IsRequired();
 
-        entity.HasMany(s => s.SubjectResources).WithOne(csr => csr.Subject);
+        entity.HasOne(s => s.ResourcesUnit).WithOne(csr => csr.Subject)
+              .HasForeignKey<SubjectResourcesUnit>()
+              .IsRequired(false);
 
         entity.HasOne(s => s.Exam).WithOne(e => e.Subject)
-              .HasForeignKey<Exam>();
+              .HasForeignKey<Exam>()
+              .IsRequired(false);
     }
 }

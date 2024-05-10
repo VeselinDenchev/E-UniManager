@@ -20,7 +20,7 @@ public class Subject : BaseEntity<Guid>
 
     public List<CourseScheduleUnit> CourseScheduleUnits { get; set; } = null!;
 
-    public List<SubjectResourcesUnit> SubjectResources { get; set; } = null!;
+    public SubjectResourcesUnit? ResourcesUnit { get; set; }
 
     public Exam Exam { get; set; } = null!;
 }

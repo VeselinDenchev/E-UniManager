@@ -13,5 +13,5 @@ public class Resource : BaseEntity<Guid>
 
     public SubjectResourcesUnit SubjectResourcesUnit { get; set; } = null!;
 
-    public List<Assignment> Assignments { get; set; } = null!;
+    public Assignment? Assignment { get; set; }
 }

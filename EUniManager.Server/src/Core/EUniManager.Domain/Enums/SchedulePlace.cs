@@ -1,4 +1,6 @@
-﻿namespace EUniManager.Domain.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace EUniManager.Domain.Enums;
 
 public enum SchedulePlace
 {

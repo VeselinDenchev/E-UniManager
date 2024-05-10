@@ -33,11 +33,13 @@ public sealed class TeacherConfiguration : BaseEntityConfiguration<Teacher, Guid
                                         .IsUnicode()
                                         .HasMaxLength(LAST_NAME_MAX_STRING_LENGTH);
 
-        entity.HasMany(t => t.LecturingSubjects).WithOne(s => s.Lecturer);
+        entity.HasMany(t => t.LecturingSubjects).WithOne(s => s.Lecturer)
+              .IsRequired(false);
 
         entity.HasMany(t => t.AssistingSubjects).WithMany(s => s.Assistants);
 
         entity.HasMany(t => t.Assignments).WithOne(a => a.Teacher)
-              .OnDelete(DeleteBehavior.ClientCascade);
+              .OnDelete(DeleteBehavior.ClientCascade)
+              .IsRequired(false);
     }
 }

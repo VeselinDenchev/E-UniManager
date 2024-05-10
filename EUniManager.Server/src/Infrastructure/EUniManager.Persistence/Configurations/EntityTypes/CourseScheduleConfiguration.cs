@@ -13,6 +13,7 @@ public sealed class CourseScheduleConfiguration : BaseEntityConfiguration<Course
 
         entity.HasMany(cs => cs.Units).WithMany(u => u.CourseSchedules);
         
-        entity.HasMany(cs => cs.Students).WithOne(s => s.CourseSchedule);
+        entity.HasMany(cs => cs.Students).WithOne(s => s.CourseSchedule)
+              .IsRequired(false);
     }
 }

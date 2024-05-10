@@ -16,6 +16,10 @@ public class Teacher : BaseEntity<Guid>
     
     public string LastName { get; set; } = null!;
 
+    public string FullName => $"{FirstName} {MiddleName} {LastName}";
+    
+    public string FullNameWithRank => $"{Rank} {FullName}";
+
     public List<Subject> LecturingSubjects { get; set; } = null!;
     
     public List<Subject> AssistingSubjects { get; set; } = null!;

@@ -17,7 +17,8 @@ public sealed class DiplomaConfiguration : BaseEntityConfiguration<Diploma, Guid
         base.Configure(entity);
 
         entity.HasOne(d => d.Student).WithOne(s => s.DiplomaOwned)
-              .HasForeignKey<Student>();
+              .HasForeignKey<Student>()
+              .IsRequired();
         
         entity.Property(d => d.EducationalAndQualificationalDegree).IsRequired()
                                                                    .HasConversion<string>()

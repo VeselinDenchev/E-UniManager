@@ -17,6 +17,7 @@ public sealed class FacultyConfiguration : BaseEntityConfiguration<Faculty, Guid
                                     .IsUnicode()
                                     .HasMaxLength(NAME_MAX_STRING_LENGTH);
 
-        entity.HasMany(f => f.Students).WithOne(s => s.Faculty);
+        entity.HasMany(f => f.Students).WithOne(s => s.Faculty)
+              .IsRequired(false);
     }
 }

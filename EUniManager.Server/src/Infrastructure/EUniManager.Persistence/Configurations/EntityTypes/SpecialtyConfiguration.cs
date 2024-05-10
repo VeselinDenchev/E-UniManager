@@ -14,15 +14,18 @@ public sealed class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, 
     {
         base.Configure(entity);
 
-        entity.HasOne(s => s.Faculty).WithMany(f => f.Specialties);
+        entity.HasOne(s => s.Faculty).WithMany(f => f.Specialties)
+              .IsRequired(false);
 
         entity.Property(s => s.Name).IsRequired()
                                     .IsUnicode()
                                     .HasMaxLength(NAME_MAX_STRING_LENGTH);
 
         entity.HasMany(sp => sp.Students).WithOne(st => st.Specialty)
-              .OnDelete(DeleteBehavior.NoAction);
+              .OnDelete(DeleteBehavior.NoAction)
+              .IsRequired(false);
 
-        entity.HasMany(sp => sp.Subjects).WithOne(sub => sub.Specialty);
+        entity.HasMany(sp => sp.Subjects).WithOne(sub => sub.Specialty)
+              .IsRequired();
     }
 }

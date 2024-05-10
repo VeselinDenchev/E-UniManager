@@ -27,7 +27,8 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
 
         entity.HasOne(s => s.User);
         
-        entity.HasOne(s => s.Faculty).WithMany(f => f.Students);
+        entity.HasOne(s => s.Faculty).WithMany(f => f.Students)
+              .IsRequired();
 
         entity.OwnsOne(s => s.ServiceData, ConfigureServiceData);
 
@@ -46,16 +47,19 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
         entity.HasOne(s => s.DiplomaOwned).WithOne(d => d.Student)
               .HasForeignKey<Diploma>();
 
-        entity.HasOne(st => st.Specialty).WithMany(sp => sp.Students);
+        entity.HasOne(st => st.Specialty).WithMany(sp => sp.Students)
+              .IsRequired();
 
         entity.HasMany(s => s.Assignments).WithMany(a => a.Students);
 
-        entity.HasMany(s => s.AssignmentSolutions).WithOne(s => s.Student);
+        entity.HasMany(s => s.AssignmentSolutions).WithOne(s => s.Student)
+              .IsRequired(false);
 
         entity.HasMany(st => st.Subjects)
               .WithMany(sub => sub.Students);
 
-        entity.HasMany(s => s.PayedTaxes).WithOne(pt => pt.Student);
+        entity.HasMany(s => s.PayedTaxes).WithOne(pt => pt.Student)
+              .IsRequired(false);
 
         entity.ToTable(BuildCheckConstraints);
     }

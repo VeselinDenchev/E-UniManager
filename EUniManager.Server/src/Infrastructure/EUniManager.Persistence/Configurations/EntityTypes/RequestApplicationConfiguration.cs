@@ -20,7 +20,8 @@ public sealed class RequestApplicationConfiguration : BaseEntityConfiguration<Re
               .IsUnique()
               .HasDatabaseName(string.Format(UNIQUE_INDEX_TEMPLATE, nameof(RequestApplication.Number)));
         
-        entity.HasOne(ra => ra.Student).WithMany(s => s.RequestApplications);
+        entity.HasOne(ra => ra.Student).WithMany(s => s.RequestApplications)
+              .IsRequired();
 
         entity.Property(ra => ra.Type).IsRequired()
                                       .HasConversion<string>()

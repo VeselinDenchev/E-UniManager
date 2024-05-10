@@ -17,9 +17,11 @@ public sealed class AssignmentSolutionConfiguration : BaseEntityConfiguration<As
     {
         base.Configure(entity);
 
-        entity.HasOne(asol => asol.Assignment).WithMany(a => a.Solutions);
+        entity.HasOne(asol => asol.Assignment).WithMany(a => a.Solutions)
+              .IsRequired();
 
-        entity.HasOne(asol => asol.Student).WithMany(s => s.AssignmentSolutions);
+        entity.HasOne(asol => asol.Student).WithMany(s => s.AssignmentSolutions)
+              .IsRequired();
 
         entity.HasOne(asol => asol.File);
 

@@ -31,7 +31,8 @@ public sealed class CourseConfiguration : BaseEntityConfiguration<Course, Guid>
                                         .IsUnicode(false)
                                         .HasMaxLength(PROCOTOL_MAX_STRING_LENGTH);
 
-        entity.HasMany(c => c.Subjects).WithOne(s => s.Course);
+        entity.HasMany(c => c.Subjects).WithOne(s => s.Course)
+              .IsRequired(false);
 
         entity.ToTable(BuildCheckConstraints);
     }

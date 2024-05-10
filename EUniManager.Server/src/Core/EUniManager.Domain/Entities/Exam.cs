@@ -7,7 +7,7 @@ public class Exam : BaseEntity<Guid>
 {
     public Subject Subject { get; set; } = null!;
 
-    public ExamType Type { get; set; }
+    public ExamType? Type { get; set; }
 
     public DateOnly Date { get; set; }
 

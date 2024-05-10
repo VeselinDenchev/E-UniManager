@@ -18,21 +18,22 @@ public sealed class ExamConfiguration : BaseEntityConfiguration<Exam, Guid>
         base.Configure(entity);
 
         entity.HasOne(e => e.Subject).WithOne(s => s.Exam)
-            .HasForeignKey<Subject>();
+              .HasForeignKey<Subject>()
+              .IsRequired();
 
         entity.Property(e => e.Type).IsRequired()
-                                  .HasConversion<string>()
-                                  .IsUnicode(false)
-                                  .HasMaxLength(TYPE_MAX_STRING_LENGTH);
+                                    .HasConversion<string>()
+                                    .IsUnicode(false)
+                                    .HasMaxLength(TYPE_MAX_STRING_LENGTH);
 
         entity.Property(e => e.Date).IsRequired();
 
         entity.Property(e => e.Time).IsRequired();
 
         entity.Property(e => e.Place).IsRequired()
-                                   .HasConversion<string>()
-                                   .IsUnicode(false)
-                                   .HasMaxLength(PLACE_MAX_STRING_LENGTH);
+                                     .HasConversion<string>()
+                                     .IsUnicode(false)
+                                     .HasMaxLength(PLACE_MAX_STRING_LENGTH);
 
         entity.Property(e => e.RoomNumber).IsRequired();
 

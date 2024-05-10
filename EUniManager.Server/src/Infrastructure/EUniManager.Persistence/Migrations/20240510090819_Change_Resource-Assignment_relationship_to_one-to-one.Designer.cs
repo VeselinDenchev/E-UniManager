@@ -5,6 +5,7 @@ using EUniManager.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,9 +13,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EUniManager.Persistence.Migrations
 {
     [DbContext(typeof(EUniManagerDbContext))]
-    partial class EUniManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240510090819_Change_Resource-Assignment_relationship_to_one-to-one")]
+    partial class Change_ResourceAssignment_relationship_to_onetoone
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -963,6 +966,7 @@ namespace EUniManager.Persistence.Migrations
             modelBuilder.Entity("EUniManager.Domain.Entities.SubjectResourcesUnit", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -974,7 +978,12 @@ namespace EUniManager.Persistence.Migrations
                     b.Property<byte>("Semester")
                         .HasColumnType("tinyint");
 
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("SubjectResourcesUnits", t =>
                         {
@@ -1293,12 +1302,15 @@ namespace EUniManager.Persistence.Migrations
                 {
                     b.HasOne("EUniManager.Domain.Entities.Resource", "Resource")
                         .WithOne("Assignment")
-                        .HasForeignKey("EUniManager.Domain.Entities.Assignment", "Id");
+                        .HasForeignKey("EUniManager.Domain.Entities.Assignment", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("EUniManager.Domain.Entities.Teacher", "Teacher")
                         .WithMany("Assignments")
                         .HasForeignKey("TeacherId")
-                        .OnDelete(DeleteBehavior.ClientCascade);
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
 
                     b.Navigation("Resource");
 
@@ -1319,7 +1331,9 @@ namespace EUniManager.Persistence.Migrations
 
                     b.HasOne("EUniManager.Domain.Entities.Students.Student", "Student")
                         .WithMany("AssignmentSolutions")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Assignment");
 
@@ -1343,7 +1357,9 @@ namespace EUniManager.Persistence.Migrations
                 {
                     b.HasOne("EUniManager.Domain.Entities.Subject", "Subject")
                         .WithOne("Exam")
-                        .HasForeignKey("EUniManager.Domain.Entities.Exam", "Id");
+                        .HasForeignKey("EUniManager.Domain.Entities.Exam", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Subject");
                 });
@@ -1363,7 +1379,9 @@ namespace EUniManager.Persistence.Migrations
                 {
                     b.HasOne("EUniManager.Domain.Entities.Students.Student", "Student")
                         .WithMany("PayedTaxes")
-                        .HasForeignKey("StudentId");
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Student");
                 });
@@ -1395,7 +1413,9 @@ namespace EUniManager.Persistence.Migrations
 
                     b.HasOne("EUniManager.Domain.Entities.SubjectResourcesUnit", "SubjectResourcesUnit")
                         .WithMany("Resources")
-                        .HasForeignKey("SubjectResourcesUnitId");
+                        .HasForeignKey("SubjectResourcesUnitId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("File");
 
@@ -1406,7 +1426,9 @@ namespace EUniManager.Persistence.Migrations
                 {
                     b.HasOne("EUniManager.Domain.Entities.Faculty", "Faculty")
                         .WithMany("Specialties")
-                        .HasForeignKey("FacultyId");
+                        .HasForeignKey("FacultyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Faculty");
                 });
@@ -1437,7 +1459,9 @@ namespace EUniManager.Persistence.Migrations
                 {
                     b.HasOne("EUniManager.Domain.Entities.CourseSchedule", "CourseSchedule")
                         .WithMany("Students")
-                        .HasForeignKey("CourseScheduleId");
+                        .HasForeignKey("CourseScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("EUniManager.Domain.Entities.Faculty", "Faculty")
                         .WithMany("Students")
@@ -1668,7 +1692,8 @@ namespace EUniManager.Persistence.Migrations
                     b.HasOne("EUniManager.Domain.Entities.Teacher", "Lecturer")
                         .WithMany("LecturingSubjects")
                         .HasForeignKey("LecturerId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
                     b.HasOne("EUniManager.Domain.Entities.Specialty", "Specialty")
                         .WithMany("Subjects")
@@ -1686,8 +1711,8 @@ namespace EUniManager.Persistence.Migrations
             modelBuilder.Entity("EUniManager.Domain.Entities.SubjectResourcesUnit", b =>
                 {
                     b.HasOne("EUniManager.Domain.Entities.Subject", "Subject")
-                        .WithOne("ResourcesUnit")
-                        .HasForeignKey("EUniManager.Domain.Entities.SubjectResourcesUnit", "Id")
+                        .WithMany("SubjectResources")
+                        .HasForeignKey("SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1810,8 +1835,7 @@ namespace EUniManager.Persistence.Migrations
 
             modelBuilder.Entity("EUniManager.Domain.Entities.Resource", b =>
                 {
-                    b.Navigation("Assignment")
-                        .IsRequired();
+                    b.Navigation("Assignment");
                 });
 
             modelBuilder.Entity("EUniManager.Domain.Entities.Specialty", b =>
@@ -1840,7 +1864,7 @@ namespace EUniManager.Persistence.Migrations
                     b.Navigation("Exam")
                         .IsRequired();
 
-                    b.Navigation("ResourcesUnit");
+                    b.Navigation("SubjectResources");
                 });
 
             modelBuilder.Entity("EUniManager.Domain.Entities.SubjectResourcesUnit", b =>

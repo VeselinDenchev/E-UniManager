@@ -16,7 +16,9 @@ public sealed class AssignmentConfiguration : BaseEntityConfiguration<Assignment
     {
         base.Configure(entity);
 
-        entity.HasOne(a => a.Resource).WithMany(r => r.Assignments);
+        entity.HasOne(a => a.Resource).WithOne(r => r.Assignment)
+              .HasForeignKey<Resource>()
+              .IsRequired();
 
         entity.Property(a => a.Title).IsRequired()
                                      .IsUnicode()
@@ -37,10 +39,12 @@ public sealed class AssignmentConfiguration : BaseEntityConfiguration<Assignment
                                            .IsUnicode()
                                            .HasMaxLength(DESCRIPTION_MAX_STRING_LENGTH);
 
-        entity.HasMany(a => a.Solutions).WithOne(s => s.Assignment);
+        entity.HasMany(a => a.Solutions).WithOne(s => s.Assignment)
+              .IsRequired(false);
 
         entity.HasOne(a => a.Teacher).WithMany(t => t.Assignments)
-              .OnDelete(DeleteBehavior.NoAction);
+              .OnDelete(DeleteBehavior.NoAction)
+              .IsRequired(false);
         
         entity.ToTable(BuildCheckConstraints);
     }

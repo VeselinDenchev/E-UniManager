@@ -16,7 +16,8 @@ public sealed class PayedTaxConfiguration : BaseEntityConfiguration<PayedTax, Gu
     {
         base.Configure(entity);
 
-        entity.HasOne(pt => pt.Student).WithMany(s => s.PayedTaxes);
+        entity.HasOne(pt => pt.Student).WithMany(s => s.PayedTaxes)
+              .IsRequired();
         
         entity.Property(pt => pt.TaxNumber).IsRequired();
         entity.HasIndex(pt => pt.TaxNumber)

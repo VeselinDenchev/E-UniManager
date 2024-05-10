@@ -15,7 +15,8 @@ public sealed class SubjectResourcesUnitConfiguration : BaseEntityConfiguration<
     {
         entity.Property(u => u.Semester).IsRequired();
 
-        entity.HasOne(u => u.Subject).WithMany(s => s.SubjectResources);
+        entity.HasOne(u => u.Subject).WithOne(s => s.ResourcesUnit)
+              .IsRequired();
 
         entity.HasMany(u => u.Resources).WithOne(r => r.SubjectResourcesUnit);
         
