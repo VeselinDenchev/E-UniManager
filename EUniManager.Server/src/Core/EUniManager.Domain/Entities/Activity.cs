@@ -11,6 +11,8 @@ public class Activity : BaseEntity<Guid>
 
     public Subject Subject { get; set; } = null!;
 
+    public bool IsStopped { get; set; }
+
     public List<Resource> Resources { get; set; } = null!;
 
     public List<CourseScheduleUnit> ScheduleUnits { get; set; } = null!;
