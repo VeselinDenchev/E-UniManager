@@ -12,6 +12,8 @@ public class AssignmentSolution : BaseEntity<Guid>
     
     public CloudinaryFile? File { get; set; }
 
+    public string? Text { get; set; }
+
     public DateTime? SeenOn { get; set; }
     
     public DateTime? UploadedOn { get; set; }

@@ -25,6 +25,10 @@ public sealed class AssignmentSolutionConfiguration : BaseEntityConfiguration<As
 
         entity.HasOne(asol => asol.File);
 
+        entity.Property(asol => asol.Text).IsRequired(false)
+                                          .IsUnicode()
+                                          .HasMaxLength(TEXT_MAX_STRING_LENGTH);
+        
         entity.Property(asol => asol.SeenOn).IsRequired(false);
         
         entity.Property(asol => asol.UploadedOn).IsRequired(false);
