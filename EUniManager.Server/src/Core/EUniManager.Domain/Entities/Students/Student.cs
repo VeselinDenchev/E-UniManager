@@ -15,6 +15,8 @@ public class Student : BaseEntity<Guid>
 
     public PersonalData PersonalData { get; set; } = null!;
 
+    public string FullName => $"{PersonalData.FirstName} {PersonalData.MiddleName} {PersonalData.LastName}";
+
     public Residence PermanentResidence { get; set; } = null!;
 
     public Residence TemporaryResidence { get; set; } = null!;
