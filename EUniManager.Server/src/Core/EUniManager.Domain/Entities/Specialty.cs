@@ -11,5 +11,11 @@ public class Specialty : BaseEntity<Guid>
 
     public List<Student>? Students { get; set; }
 
+    public byte FirstAcademicYearStart { get; set; }
+
+    public byte CurrentYear { get; set; } // Default value 1
+
+    public int CurrentAcademicYearStart => FirstAcademicYearStart + CurrentYear - 1;
+    
     public List<Subject> Subjects { get; set; } = null!;
 }

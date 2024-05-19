@@ -23,6 +23,10 @@ public class CourseScheduleUnit : BaseEntity<Guid>
 
     public byte? GroupNumber { get; set; }
 
+    public string? Group => GroupType is not null && GroupNumber is not null
+                                ? $"{GroupNumber} {GroupType}"
+                                : null;
+
     public short RoomNumber { get; set; }
 
     public SchedulePlace Place { get; set; }

@@ -22,16 +22,12 @@ public class ActivityConfiguration : BaseEntityConfiguration<Activity, Guid>
         entity.HasOne(a => a.Teacher).WithMany(t => t.Activities)
               .IsRequired();
 
+        entity.HasMany(a => a.Students);
+        
         entity.HasOne(a => a.Subject).WithMany(s => s.Activities)
               .IsRequired();
 
         entity.Property(a => a.IsStopped)
               .IsRequired();
-
-        entity.HasMany(a => a.Resources).WithOne(r => r.Activity)
-              .IsRequired(false);
-        
-        entity.HasMany(a => a.ScheduleUnits).WithOne(r => r.Activity)
-              .IsRequired(false);
     }
 }
