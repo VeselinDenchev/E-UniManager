@@ -4,6 +4,7 @@ using EUniManager.Persistence.Configurations.EntityTypes.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+using static EUniManager.Persistence.Constants.SqlConstant;
 using static EUniManager.Persistence.Constants.Entities.SubjectConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
@@ -44,6 +45,7 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
         entity.Property(c => c.Protocol).IsRequired()
                                         .IsUnicode(false)
                                         .HasMaxLength(PROCOTOL_MAX_STRING_LENGTH);
-
+        entity.HasIndex(sd => sd.Protocol).IsUnique()
+              .HasDatabaseName(string.Format(UNIQUE_INDEX_TEMPLATE, nameof(Subject.Protocol)));
     }
 }

@@ -31,6 +31,11 @@ public sealed class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, 
               .IsUnicode()
               .HasMaxLength(NAME_MAX_STRING_LENGTH);
 
+        string uniqueIndexColumnsJoined = string.Join('_', nameof(Specialty.Name), nameof(Specialty.FirstAcademicYearStart));
+        entity.HasIndex(s => new { s.Name, s.FirstAcademicYearStart })
+              .IsUnique()
+              .HasDatabaseName(string.Format(UNIQUE_INDEX_TEMPLATE, uniqueIndexColumnsJoined));
+
         entity.HasMany(sp => sp.Students).WithOne(st => st.Specialty)
               .OnDelete(DeleteBehavior.NoAction)
               .IsRequired(false);
