@@ -12,7 +12,5 @@ public class Course : BaseEntity<Guid>
 
     public byte CreditsCount { get; set; }
 
-    public string Protocol { get; set; } = null!;
-
     public List<Subject> Subjects { get; set; } = null!;
 }
