@@ -24,11 +24,7 @@ public sealed class CourseConfiguration : BaseEntityConfiguration<Course, Guid>
         entity.Property(c => c.ExercisesCount).IsRequired();
 
         entity.Property(c => c.CreditsCount).IsRequired();
-
-        entity.Property(c => c.Protocol).IsRequired()
-                                        .IsUnicode(false)
-                                        .HasMaxLength(PROCOTOL_MAX_STRING_LENGTH);
-
+        
         entity.HasMany(c => c.Subjects).WithOne(s => s.Course)
               .IsRequired(false);
 

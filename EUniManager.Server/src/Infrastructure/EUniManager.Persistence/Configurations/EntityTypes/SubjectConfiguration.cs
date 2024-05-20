@@ -4,6 +4,8 @@ using EUniManager.Persistence.Configurations.EntityTypes.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+using static EUniManager.Persistence.Constants.Entities.SubjectConstant;
+
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
 public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid>
@@ -38,5 +40,10 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
               .IsRequired(false);
         
         entity.Property(c => c.Mark).IsRequired(false);
+        
+        entity.Property(c => c.Protocol).IsRequired()
+                                        .IsUnicode(false)
+                                        .HasMaxLength(PROCOTOL_MAX_STRING_LENGTH);
+
     }
 }
