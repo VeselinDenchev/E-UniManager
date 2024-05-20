@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using static EUniManager.Persistence.Constants.SqlConstant;
+using static EUniManager.Persistence.Constants.Entities.SemesterConstant;
 using static EUniManager.Persistence.Constants.Entities.SubjectConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
@@ -14,6 +15,8 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
     public override void Configure(EntityTypeBuilder<Subject> entity)
     {
         base.Configure(entity);
+
+        entity.Property(s => s.Semester).IsRequired();
 
         entity.HasOne(s => s.Course).WithMany(c => c.Subjects)
               .IsRequired(false);
@@ -47,5 +50,13 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
                                         .HasMaxLength(PROCOTOL_MAX_STRING_LENGTH);
         entity.HasIndex(sd => sd.Protocol).IsUnique()
               .HasDatabaseName(string.Format(UNIQUE_INDEX_TEMPLATE, nameof(Subject.Protocol)));
+
+        entity.ToTable(table =>
+        {
+              string[] checkConstraintTokens = [nameof(Subject), nameof(Subject.Semester)];
+              string checkConstraintTableColumn = string.Join('_', checkConstraintTokens);
+              table.HasCheckConstraint(string.Format(CHECK_CONSTRAINT_TEMPLATE, checkConstraintTableColumn), 
+                    $"{nameof(Subject.Semester)} BETWEEN {MIN_SEMESTER} AND {MAX_SEMESTER}");
+        });
     }
 }

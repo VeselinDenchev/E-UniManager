@@ -6,6 +6,8 @@ namespace EUniManager.Domain.Entities;
 
 public class Subject : BaseEntity<Guid>
 {
+    public byte Semester { get; set; }
+    
     public Course Course { get; set; } = null!;
 
     public List<Student> Students { get; set; } = null!;
