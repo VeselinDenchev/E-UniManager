@@ -15,13 +15,13 @@ public static class UpdateDatabaseExtensions
         using IServiceScope serviceScope = app.ApplicationServices.CreateScope();
 
         await using var dbContext = serviceScope.ServiceProvider.GetRequiredService<EUniManagerDbContext>();
-
+        
         byte currentRetriesCount = 0;
         while (true)
         {
             try
             {
-                await dbContext.Database.ExecuteSqlRawAsync("SELECT 1");
+                await dbContext.Database.MigrateAsync();
                 
                 break;
             }
@@ -35,8 +35,7 @@ public static class UpdateDatabaseExtensions
                 Console.WriteLine($"Could not connect to SQL Server. Retrying {currentRetriesCount}/{MAX_RETRIES_COUNT}.");
             }
         }
-
-        await dbContext.Database.MigrateAsync();
+        
         await DatabaseSeeder.SeedAsync(serviceScope.ServiceProvider);
     }
 }
