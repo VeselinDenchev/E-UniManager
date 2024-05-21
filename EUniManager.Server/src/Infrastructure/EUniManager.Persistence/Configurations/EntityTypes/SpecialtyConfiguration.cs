@@ -43,6 +43,9 @@ public sealed class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, 
         entity.HasMany(sp => sp.Subjects).WithOne(sub => sub.Specialty)
               .IsRequired();
 
+        entity.Property(s => s.HasGraduated).IsRequired()
+                                            .HasDefaultValue(false);
+
         entity.ToTable(table =>
         {
               string[] checkConstraintTokens = [nameof(Specialty), nameof(Specialty.FirstAcademicYearStart)];

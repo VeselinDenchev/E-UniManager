@@ -18,4 +18,6 @@ public class Specialty : BaseEntity<Guid>
     public int CurrentAcademicYearStart => FirstAcademicYearStart + CurrentYear - 1;
     
     public List<Subject> Subjects { get; set; } = null!;
+
+    public bool HasGraduated { get; set; }
 }
