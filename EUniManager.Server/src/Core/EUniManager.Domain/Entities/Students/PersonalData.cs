@@ -15,15 +15,15 @@ public class PersonalData
 
     public UniqueIdentifier UniqueIdentifier { get; set; } = null!;
 
-    public string? InsuraceNumber { get; set; }
+    public string? InsuranceNumber { get; set; }
 
     public DateOnly BirthDate { get; set; }
 
     public Gender Gender { get; set; }
 
-    public string Citizienship { get; set; } = null!;
+    public string Citizenship { get; set; } = null!;
 
-    public IdCard? IdCard { get; set; } = null!;
+    public IdCard? IdCard { get; set; }
 
     public string Email { get; set; }
 }

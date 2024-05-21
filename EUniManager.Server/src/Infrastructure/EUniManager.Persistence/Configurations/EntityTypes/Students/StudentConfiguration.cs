@@ -120,8 +120,8 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
 
         personalData.OwnsOne(pd => pd.UniqueIdentifier, ConfigureUniqueIdentifier);
 
-        personalData.Property(pd => pd.InsuraceNumber).IsUnicode(false)
-                                                      .HasColumnName(nameof(PersonalData.InsuraceNumber))
+        personalData.Property(pd => pd.InsuranceNumber).IsUnicode(false)
+                                                      .HasColumnName(nameof(PersonalData.InsuranceNumber))
                                                       .HasMaxLength(INSURANCE_NUMBER_MAX_STRING_LENGTH)
                                                       .IsUnicode(false);
 
@@ -134,9 +134,9 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
                                               .HasColumnName(nameof(PersonalData.Gender))
                                               .HasMaxLength(GENDER_MAX_STRING_LENGTH);
 
-        personalData.Property(pd => pd.Citizienship).IsRequired()
+        personalData.Property(pd => pd.Citizenship).IsRequired()
                                                     .IsUnicode()
-                                                    .HasColumnName(nameof(PersonalData.Citizienship))
+                                                    .HasColumnName(nameof(PersonalData.Citizenship))
                                                     .HasMaxLength(CITIZIENSHIP_MAX_STRING_LENGTH)
                                                     .IsUnicode(false);
 
