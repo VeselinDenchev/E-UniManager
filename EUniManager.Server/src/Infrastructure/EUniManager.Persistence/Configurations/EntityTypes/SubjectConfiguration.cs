@@ -50,6 +50,11 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
                                         .HasMaxLength(PROCOTOL_MAX_STRING_LENGTH);
         entity.HasIndex(sd => sd.Protocol).IsUnique()
               .HasDatabaseName(string.Format(UNIQUE_INDEX_TEMPLATE, nameof(Subject.Protocol)));
+        
+        entity.Property(s => s.ControlType).IsRequired()
+                                           .HasConversion<string>()
+                                           .IsUnicode(false)
+                                           .HasMaxLength(CONTROL_TYPE_MAX_STRING_LENGTH);
 
         entity.ToTable(table =>
         {

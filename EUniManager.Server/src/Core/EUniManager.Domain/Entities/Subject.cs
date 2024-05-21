@@ -25,4 +25,6 @@ public class Subject : BaseEntity<Guid>
     public Mark? Mark { get; set; }
     
     public string Protocol { get; set; } = null!;
+
+    public SubjectControlType ControlType { get; set; }
 }
