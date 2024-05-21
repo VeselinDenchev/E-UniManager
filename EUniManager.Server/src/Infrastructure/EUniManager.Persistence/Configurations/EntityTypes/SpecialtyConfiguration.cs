@@ -45,6 +45,11 @@ public sealed class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, 
 
         entity.Property(s => s.HasGraduated).IsRequired()
                                             .HasDefaultValue(false);
+        
+        entity.Property(s => s.EducationType).IsRequired()
+                                             .HasConversion<string>()
+                                             .IsUnicode(false)
+                                             .HasMaxLength(EDUCATION_TYPE_MAX_STRING_LENGTH);
 
         entity.ToTable(table =>
         {
