@@ -1,5 +1,6 @@
 ﻿using EUniManager.Domain.Abstraction.Base;
 using EUniManager.Domain.Entities.Students;
+using EUniManager.Domain.Enums;
 
 namespace EUniManager.Domain.Entities;
 
@@ -20,4 +21,6 @@ public class Specialty : BaseEntity<Guid>
     public List<Subject> Subjects { get; set; } = null!;
 
     public bool HasGraduated { get; set; }
+
+    public SpecialtyEducationType EducationType { get; set; }
 }
