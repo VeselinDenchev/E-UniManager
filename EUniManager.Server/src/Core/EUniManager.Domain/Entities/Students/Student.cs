@@ -38,4 +38,6 @@ public class Student : BaseEntity<Guid>
     public List<PayedTax> PayedTaxes { get; set; } = null!;
 
     public List<RequestApplication> RequestApplications { get; set; } = null!;
+
+    public List<CertifiedSemester> CertifiedSemesters { get; set; } = null!;
 }

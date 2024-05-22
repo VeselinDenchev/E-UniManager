@@ -53,6 +53,8 @@ public class EUniManagerDbContext
     
     public DbSet<Subject> Subjects { get; set; }
 
+    public DbSet<CertifiedSemester> CertifiedSemesters { get; set; }
+
     public override int SaveChanges()
     {
         SetBaseEntityData();

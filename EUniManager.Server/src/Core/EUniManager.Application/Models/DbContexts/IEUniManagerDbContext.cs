@@ -45,6 +45,8 @@ public interface IEUniManagerDbContext
     
     public DbSet<Subject> Subjects { get; set; }
     
+    public DbSet<CertifiedSemester> CertifiedSemesters { get; set; }
+    
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
     
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
