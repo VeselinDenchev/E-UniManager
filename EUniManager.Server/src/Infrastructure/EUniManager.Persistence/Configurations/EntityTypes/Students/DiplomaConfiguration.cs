@@ -20,10 +20,10 @@ public sealed class DiplomaConfiguration : BaseEntityConfiguration<Diploma, Guid
               .HasForeignKey<Student>()
               .IsRequired();
         
-        entity.Property(d => d.EducationalAndQualificationalDegree).IsRequired()
-                                                                   .HasConversion<string>()
-                                                                   .IsUnicode(false)
-                                                                   .HasMaxLength(EDUCATIONAL_AND_QUALIFICATIONAL_DEGREE_MAX_STRING_LENGTH);
+        entity.Property(d => d.EducationalAndQualificationDegree).IsRequired()
+                                                                 .HasConversion<string>()
+                                                                 .IsUnicode(false)
+                                                                 .HasMaxLength(EDUCATIONAL_AND_QUALIFICATION_DEGREE_MAX_STRING_LENGTH);
         
         entity.Property(d => d.Series).IsRequired()
                                       .IsUnicode(false)

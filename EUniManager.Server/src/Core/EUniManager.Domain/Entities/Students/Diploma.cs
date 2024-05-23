@@ -6,9 +6,9 @@ namespace EUniManager.Domain.Entities.Students;
 
 public class Diploma : BaseEntity<Guid>
 {
-    public Student Student { get; set; }
+    public Student Student { get; set; } = null!;
     
-    public EducationalAndQualificationalDegree EducationalAndQualificationalDegree { get; set; }
+    public EducationalAndQualificationalDegree EducationalAndQualificationDegree { get; set; }
 
     public string Series { get; set; } = null!;
 
