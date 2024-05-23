@@ -32,6 +32,8 @@ public class Student : BaseEntity<Guid>
     public List<Assignment> Assignments { get; set; } = null!;
     
     public List<AssignmentSolution> AssignmentSolutions { get; set; } = null!;
+
+    public List<IndividualProtocol> IndividualProtocols { get; set; } = null!;
     
     public List<Subject> Subjects { get; set; } = null!;
 

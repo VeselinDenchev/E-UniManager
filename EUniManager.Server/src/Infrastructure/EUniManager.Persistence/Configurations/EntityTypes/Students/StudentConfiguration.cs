@@ -55,6 +55,9 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
         entity.HasMany(s => s.AssignmentSolutions).WithOne(s => s.Student)
               .IsRequired(false);
 
+        entity.HasMany(s => s.IndividualProtocols).WithOne(ip => ip.Student)
+              .IsRequired(false);
+
         entity.HasMany(st => st.Subjects)
               .WithMany(sub => sub.Students);
 

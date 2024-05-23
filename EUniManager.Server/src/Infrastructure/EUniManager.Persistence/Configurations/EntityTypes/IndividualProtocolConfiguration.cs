@@ -13,6 +13,9 @@ public sealed class IndividualProtocolConfiguration: BaseEntityConfiguration<Ind
     {
         base.Configure(entity);
 
+        entity.HasOne(ip => ip.Student).WithMany(s => s.IndividualProtocols)
+              .IsRequired();
+
         entity.HasOne(ip => ip.Subject);
 
         entity.Property(ip => ip.Status).IsRequired()
