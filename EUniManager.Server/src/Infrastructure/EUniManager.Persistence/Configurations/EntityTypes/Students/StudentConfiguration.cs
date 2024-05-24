@@ -26,9 +26,6 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
         base.Configure(entity);
 
         entity.HasOne(s => s.User);
-        
-        entity.HasOne(s => s.Faculty).WithMany(f => f.Students)
-              .IsRequired();
 
         entity.OwnsOne(s => s.ServiceData, ConfigureServiceData);
 
