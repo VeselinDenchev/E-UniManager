@@ -12,7 +12,7 @@ public class Specialty : BaseEntity<Guid>
 
     public List<Student>? Students { get; set; }
 
-    public byte FirstAcademicYearStart { get; set; }
+    public int FirstAcademicYearStart { get; set; }
 
     public byte CurrentYear { get; set; } // Default value 1
 
