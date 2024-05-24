@@ -5,6 +5,7 @@ using EUniManager.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,9 +13,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EUniManager.Persistence.Migrations
 {
     [DbContext(typeof(EUniManagerDbContext))]
-    partial class EUniManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240524125548_Update_check_constraint_in_Specialty_for_FirstAcademicYear_between_2020_and_2099")]
+    partial class Update_check_constraint_in_Specialty_for_FirstAcademicYear_between_2020_and_2099
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

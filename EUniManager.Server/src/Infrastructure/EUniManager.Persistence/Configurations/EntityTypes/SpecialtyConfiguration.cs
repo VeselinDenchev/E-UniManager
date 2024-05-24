@@ -56,7 +56,8 @@ public sealed class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, 
               string[] checkConstraintTokens = [nameof(Specialty), nameof(Specialty.FirstAcademicYearStart)];
               string checkConstraintTableColumn = string.Join('_', checkConstraintTokens);
               table.HasCheckConstraint(string.Format(CHECK_CONSTRAINT_TEMPLATE, checkConstraintTableColumn), 
-                    $"{nameof(Specialty.FirstAcademicYearStart)} BETWEEN {DateTime.Now.Year} AND {MAX_FIRST_ACADEMIC_YEAR_START}");
+                    $"{nameof(Specialty.FirstAcademicYearStart)} BETWEEN {MIN_FIRST_ACADEMIC_YEAR_START} AND " +
+                    MAX_FIRST_ACADEMIC_YEAR_START);
         });
     }
 }
