@@ -9,8 +9,6 @@ public class Student : BaseEntity<Guid>
 {
     public IdentityUser<Guid> User { get; set; } = null!;
     
-    public Faculty Faculty { get; set; } = null!;
-    
     public ServiceData ServiceData { get; set; } = null!;
 
     public PersonalData PersonalData { get; set; } = null!;
