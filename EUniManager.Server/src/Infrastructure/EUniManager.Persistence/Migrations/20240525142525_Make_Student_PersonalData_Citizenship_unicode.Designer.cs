@@ -5,6 +5,7 @@ using EUniManager.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,9 +13,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EUniManager.Persistence.Migrations
 {
     [DbContext(typeof(EUniManagerDbContext))]
-    partial class EUniManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240525142525_Make_Student_PersonalData_Citizenship_unicode")]
+    partial class Make_Student_PersonalData_Citizenship_unicode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -701,8 +704,6 @@ namespace EUniManager.Persistence.Migrations
                     b.ToTable("Specialties", t =>
                         {
                             t.HasCheckConstraint("CK_Specialty_FirstAcademicYearStart", "FirstAcademicYearStart BETWEEN 2020 AND 2099");
-
-                            t.HasCheckConstraint("CK_Specialty_FirstAcademicYearStart_CurrentYear", "FirstAcademicYearStart + CurrentYear <= YEAR(GETDATE()) + 1");
 
                             t.HasCheckConstraint("CK_Specialty_ModifiedAt", "ModifiedAt >= CreatedAt");
                         });

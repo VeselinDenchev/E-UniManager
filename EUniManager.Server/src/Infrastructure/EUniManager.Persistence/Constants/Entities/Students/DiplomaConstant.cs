@@ -14,7 +14,7 @@ public static class DiplomaConstant
     
     public const byte INSTITUTION_NAME_MAX_STRING_LENGTH = 50;
 
-    public const byte SPECIALTY_MAX_STRING_LENGTH = 20;
+    public const byte SPECIALTY_MAX_STRING_LENGTH = 50;
 
     public const byte PROFESSIONAL_QUALIFICATION_MAX_STRING_LENGTH = 30;
 }

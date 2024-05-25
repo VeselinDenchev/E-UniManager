@@ -5,8 +5,10 @@ using EUniManager.Persistence.Configurations.EntityTypes.Base;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+using static EUniManager.Persistence.Constants.SqlConstant;
 using static EUniManager.Persistence.Constants.Entities.Students.DiplomaConstant;
 using static EUniManager.Persistence.Constants.Entities.Students.CityAreaConstant;
+using static EUniManager.Persistence.Constants.Entities.YearConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes.Students;
 
@@ -15,10 +17,6 @@ public sealed class DiplomaConfiguration : BaseEntityConfiguration<Diploma, Guid
     public override void Configure(EntityTypeBuilder<Diploma> entity)
     {
         base.Configure(entity);
-
-        entity.HasOne(d => d.Student).WithOne(s => s.DiplomaOwned)
-              .HasForeignKey<Student>()
-              .IsRequired();
         
         entity.Property(d => d.EducationalAndQualificationDegree).IsRequired()
                                                                  .HasConversion<string>()
@@ -58,6 +56,14 @@ public sealed class DiplomaConfiguration : BaseEntityConfiguration<Diploma, Guid
         entity.Property(d => d.ProfessionalQualification).IsRequired(false)
                                                          .IsUnicode()
                                                          .HasMaxLength(PROFESSIONAL_QUALIFICATION_MAX_STRING_LENGTH);
+        
+        entity.ToTable(table =>
+        {
+            string[] checkConstraintTokens = [nameof(Diploma), nameof(Diploma.Year)];
+            string checkConstraintTableColumn = string.Join('_', checkConstraintTokens);
+            table.HasCheckConstraint(string.Format(CHECK_CONSTRAINT_TEMPLATE, checkConstraintTableColumn), 
+                $"{nameof(Diploma.Year)} BETWEEN {MIN_YEAR} AND {MAX_YEAR}");
+        });
     }
 
     private void ConfigureCityArea(ComplexPropertyBuilder<CityArea> cityArea)

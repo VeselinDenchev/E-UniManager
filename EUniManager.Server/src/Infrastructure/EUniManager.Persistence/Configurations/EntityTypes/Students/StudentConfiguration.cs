@@ -41,8 +41,7 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
 
         entity.ComplexProperty(s => s.Enrollment, ConfigureEnrollment);
 
-        entity.HasOne(s => s.DiplomaOwned).WithOne(d => d.Student)
-              .HasForeignKey<Diploma>();
+        entity.HasOne(s => s.DiplomaOwned);
 
         entity.HasOne(st => st.Specialty).WithMany(sp => sp.Students)
               .IsRequired();
@@ -138,10 +137,9 @@ public sealed class StudentConfiguration : BaseEntityConfiguration<Student, Guid
                                               .HasMaxLength(GENDER_MAX_STRING_LENGTH);
 
         personalData.Property(pd => pd.Citizenship).IsRequired()
-                                                    .IsUnicode()
-                                                    .HasColumnName(nameof(PersonalData.Citizenship))
-                                                    .HasMaxLength(CITIZIENSHIP_MAX_STRING_LENGTH)
-                                                    .IsUnicode(false);
+                                                   .IsUnicode()
+                                                   .HasColumnName(nameof(PersonalData.Citizenship))
+                                                   .HasMaxLength(CITIZIENSHIP_MAX_STRING_LENGTH);
 
         personalData.HasOne(pd => pd.IdCard);
 

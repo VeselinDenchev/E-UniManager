@@ -5,6 +5,7 @@ using EUniManager.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,9 +13,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EUniManager.Persistence.Migrations
 {
     [DbContext(typeof(EUniManagerDbContext))]
-    partial class EUniManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240525145019_Add_check_constraint_for_Specialty_FirstAcademicYearStart_plus_CurrentYear_less_than_or_equal_to_current_year")]
+    partial class Add_check_constraint_for_Specialty_FirstAcademicYearStart_plus_CurrentYear_less_than_or_equal_to_current_year
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

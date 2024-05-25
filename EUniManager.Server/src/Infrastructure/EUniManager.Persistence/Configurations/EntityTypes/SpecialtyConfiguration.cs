@@ -1,5 +1,4 @@
-﻿using EUniManager.Domain.Abstraction.Base.Interfaces;
-using EUniManager.Domain.Entities;
+﻿using EUniManager.Domain.Entities;
 using EUniManager.Persistence.Configurations.EntityTypes.Base;
 
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using static EUniManager.Persistence.Constants.SqlConstant;
 using static EUniManager.Persistence.Constants.Entities.SpecialtyConstant;
+using static EUniManager.Persistence.Constants.Entities.YearConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
@@ -53,11 +53,16 @@ public sealed class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, 
 
         entity.ToTable(table =>
         {
-              string[] checkConstraintTokens = [nameof(Specialty), nameof(Specialty.FirstAcademicYearStart)];
+              List<string> checkConstraintTokens = [nameof(Specialty), nameof(Specialty.FirstAcademicYearStart)];
               string checkConstraintTableColumn = string.Join('_', checkConstraintTokens);
               table.HasCheckConstraint(string.Format(CHECK_CONSTRAINT_TEMPLATE, checkConstraintTableColumn), 
-                    $"{nameof(Specialty.FirstAcademicYearStart)} BETWEEN {MIN_FIRST_ACADEMIC_YEAR_START} AND " +
-                    MAX_FIRST_ACADEMIC_YEAR_START);
+                    $"{nameof(Specialty.FirstAcademicYearStart)} BETWEEN {MIN_YEAR} AND {MAX_YEAR}");
+              
+              checkConstraintTokens.Add(nameof(Specialty.CurrentYear));
+              checkConstraintTableColumn = string.Join('_', checkConstraintTokens);
+              table.HasCheckConstraint(string.Format(CHECK_CONSTRAINT_TEMPLATE, checkConstraintTableColumn), 
+                    $"{nameof(Specialty.FirstAcademicYearStart)} + {nameof(Specialty.CurrentYear)} <= " +
+                    $"{string.Format(YEAR_FUNCTION_TEMPLATE, GET_DATE_FUNCTION)} + 1");
         });
     }
 }

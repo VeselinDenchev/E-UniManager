@@ -4,6 +4,8 @@ public static class SqlConstant
 {
     public const string GET_DATE_FUNCTION = "GETDATE()";
     
+    public const string YEAR_FUNCTION_TEMPLATE = "YEAR({0})";
+    
     public const string CHECK_CONSTRAINT_TEMPLATE = "CK_{0}";
     
     public const string UNIQUE_INDEX_TEMPLATE = "IX_{0}";

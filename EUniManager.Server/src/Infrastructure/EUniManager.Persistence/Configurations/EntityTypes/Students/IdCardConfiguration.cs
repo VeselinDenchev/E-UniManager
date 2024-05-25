@@ -11,8 +11,6 @@ public sealed class IdCardConfiguration : BaseEntityConfiguration<IdCard, Guid>
     {
         base.Configure(entity);
 
-        entity.HasOne(ic => ic.Student);
-
         entity.Property(ic => ic.IdNumber).IsRequired()
                                           .IsUnicode(false);
 

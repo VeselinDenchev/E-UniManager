@@ -5,6 +5,7 @@ using EUniManager.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -12,9 +13,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EUniManager.Persistence.Migrations
 {
     [DbContext(typeof(EUniManagerDbContext))]
-    partial class EUniManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240524153612_Remove_circular_dependencies_from_Student_IdCard_and_Student_Diploma")]
+    partial class Remove_circular_dependencies_from_Student_IdCard_and_Student_Diploma
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -702,8 +705,6 @@ namespace EUniManager.Persistence.Migrations
                         {
                             t.HasCheckConstraint("CK_Specialty_FirstAcademicYearStart", "FirstAcademicYearStart BETWEEN 2020 AND 2099");
 
-                            t.HasCheckConstraint("CK_Specialty_FirstAcademicYearStart_CurrentYear", "FirstAcademicYearStart + CurrentYear <= YEAR(GETDATE()) + 1");
-
                             t.HasCheckConstraint("CK_Specialty_ModifiedAt", "ModifiedAt >= CreatedAt");
                         });
                 });
@@ -767,9 +768,9 @@ namespace EUniManager.Persistence.Migrations
 
                     b.Property<string>("Specialty")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(20)
                         .IsUnicode(true)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<short>("Year")
                         .HasColumnType("smallint");
@@ -796,8 +797,6 @@ namespace EUniManager.Persistence.Migrations
                     b.ToTable("Diplomas", t =>
                         {
                             t.HasCheckConstraint("CK_Diploma_ModifiedAt", "ModifiedAt >= CreatedAt");
-
-                            t.HasCheckConstraint("CK_Diploma_Year", "Year BETWEEN 2020 AND 2099");
                         });
                 });
 
@@ -1516,8 +1515,8 @@ namespace EUniManager.Persistence.Migrations
                             b1.Property<string>("Citizenship")
                                 .IsRequired()
                                 .HasMaxLength(20)
-                                .IsUnicode(true)
-                                .HasColumnType("nvarchar(20)")
+                                .IsUnicode(false)
+                                .HasColumnType("varchar(20)")
                                 .HasColumnName("Citizenship");
 
                             b1.Property<string>("Email")
