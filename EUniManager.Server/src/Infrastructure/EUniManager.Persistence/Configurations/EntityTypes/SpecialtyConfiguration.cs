@@ -28,8 +28,8 @@ public sealed class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, 
         entity.Property(s => s.CurrentYear).IsRequired().HasDefaultValue(CURRENT_YEAR_DEFAULT_VALUE);
         
         entity.Property(s => s.Name).IsRequired()
-              .IsUnicode()
-              .HasMaxLength(NAME_MAX_STRING_LENGTH);
+                                    .IsUnicode()
+                                    .HasMaxLength(NAME_MAX_STRING_LENGTH);
 
         string uniqueIndexColumnsJoined = string.Join('_', nameof(Specialty.Name), nameof(Specialty.FirstAcademicYearStart));
         entity.HasIndex(s => new { s.Name, s.FirstAcademicYearStart })

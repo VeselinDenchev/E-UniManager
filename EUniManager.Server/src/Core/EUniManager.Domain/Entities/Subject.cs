@@ -21,8 +21,8 @@ public class Subject : BaseEntity<Guid>
     public List<Activity> Activities { get; set; } = null!;
 
     public Exam? Exam { get; set; }
-    
-    public Mark? Mark { get; set; }
+
+    public List<SubjectMark> Marks { get; set; } = null!;
     
     public string Protocol { get; set; } = null!;
 

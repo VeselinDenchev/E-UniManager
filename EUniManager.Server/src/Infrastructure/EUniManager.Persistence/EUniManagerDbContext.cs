@@ -52,6 +52,8 @@ public class EUniManagerDbContext
     public DbSet<Specialty> Specialties { get; set; }
     
     public DbSet<Subject> Subjects { get; set; }
+    
+    public DbSet<SubjectMark> SubjectMarks { get; set; }
 
     public DbSet<CertifiedSemester> CertifiedSemesters { get; set; }
 

@@ -43,7 +43,8 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
               .HasForeignKey<Exam>()
               .IsRequired(false);
         
-        entity.Property(c => c.Mark).IsRequired(false);
+        entity.HasMany(s => s.Marks).WithOne(m => m.Subject)
+              .IsRequired();
         
         entity.Property(c => c.Protocol).IsRequired()
                                         .IsUnicode(false)

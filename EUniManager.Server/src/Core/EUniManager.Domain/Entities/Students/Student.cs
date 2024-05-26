@@ -9,19 +9,19 @@ public class Student : BaseEntity<Guid>
 {
     public IdentityUser<Guid> User { get; set; } = null!;
     
-    public ServiceData ServiceData { get; set; } = null!;
+    public ServiceData ServiceData { get; set; } = new();
 
-    public PersonalData PersonalData { get; set; } = null!;
+    public PersonalData PersonalData { get; set; } = new();
 
     public string FullName => $"{PersonalData.FirstName} {PersonalData.MiddleName} {PersonalData.LastName}";
 
-    public Residence PermanentResidence { get; set; } = null!;
+    public Residence PermanentResidence { get; set; } = new();
 
-    public Residence TemporaryResidence { get; set; } = null!;
+    public Residence TemporaryResidence { get; set; } = new();
 
     public string UsualResidenceCountry { get; set; } = null!;
 
-    public Enrollment Enrollment { get; set; } = null!;
+    public Enrollment Enrollment { get; set; } = new();
 
     public Diploma DiplomaOwned { get; set; } = null!;
 
@@ -34,6 +34,8 @@ public class Student : BaseEntity<Guid>
     public List<IndividualProtocol> IndividualProtocols { get; set; } = null!;
     
     public List<Subject> Subjects { get; set; } = null!;
+
+    public List<SubjectMark> SubjectMarks { get; set; } = null!;
 
     public List<PayedTax> PayedTaxes { get; set; } = null!;
 
