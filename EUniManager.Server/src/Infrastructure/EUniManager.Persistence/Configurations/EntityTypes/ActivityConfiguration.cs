@@ -22,7 +22,7 @@ public class ActivityConfiguration : BaseEntityConfiguration<Activity, Guid>
         entity.HasOne(a => a.Teacher).WithMany(t => t.Activities)
               .IsRequired();
 
-        entity.HasMany(a => a.Students);
+        entity.HasMany(a => a.Students).WithMany(s => s.Activities);
         
         entity.HasOne(a => a.Subject).WithMany(s => s.Activities)
               .IsRequired();
