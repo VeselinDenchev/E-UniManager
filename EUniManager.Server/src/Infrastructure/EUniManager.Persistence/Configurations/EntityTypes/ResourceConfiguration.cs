@@ -21,6 +21,10 @@ public sealed class ResourceConfiguration : BaseEntityConfiguration<Resource, Gu
                                     .HasConversion<string>()
                                     .IsUnicode(false)
                                     .HasMaxLength(TYPE_MAX_STRING_LENGTH);
+        
+        entity.Property(r => r.Info).IsRequired(false)
+                                    .IsUnicode()
+                                    .HasMaxLength(INFO_MAX_STRING_LENGTH);
 
         entity.HasOne(r => r.File);
 
