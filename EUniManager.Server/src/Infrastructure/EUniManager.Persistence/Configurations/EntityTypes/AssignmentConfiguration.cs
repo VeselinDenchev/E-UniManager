@@ -17,7 +17,7 @@ public sealed class AssignmentConfiguration : BaseEntityConfiguration<Assignment
         base.Configure(entity);
 
         entity.HasOne(a => a.Resource).WithOne(r => r.Assignment)
-              .HasForeignKey<Resource>()
+              .HasForeignKey<Assignment>(a => a.ResourceId)
               .IsRequired();
 
         entity.Property(a => a.Title).IsRequired()

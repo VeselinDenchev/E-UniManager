@@ -8,6 +8,8 @@ public class Assignment : BaseEntity<Guid>
 {
     public Resource Resource { get; set; } = null!;
 
+    public Guid ResourceId { get; set; }
+
     public string Title { get; set; } = null!;
 
     public DateTime StartDate { get; set; }

@@ -31,7 +31,7 @@ public sealed class ResourceConfiguration : BaseEntityConfiguration<Resource, Gu
         entity.HasOne(r => r.Activity);
 
         entity.HasOne(r => r.Assignment).WithOne(a => a.Resource)
-              .HasForeignKey<Assignment>()
+              .HasForeignKey<Assignment>(a => a.ResourceId)
               .IsRequired(false);
     }
 }
