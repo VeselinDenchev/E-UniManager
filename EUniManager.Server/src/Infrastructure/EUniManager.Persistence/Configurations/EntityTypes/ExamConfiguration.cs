@@ -17,9 +17,8 @@ public sealed class ExamConfiguration : BaseEntityConfiguration<Exam, Guid>
     {
         base.Configure(entity);
 
-        entity.HasOne(e => e.Subject).WithOne(s => s.Exam)
-              .HasForeignKey<Subject>()
-              .IsRequired();
+        entity.HasOne(e => e.Subject).WithMany(s => s.Exams)
+              .IsRequired(false);
 
         entity.Property(e => e.Type).IsRequired()
                                     .HasConversion<string>()

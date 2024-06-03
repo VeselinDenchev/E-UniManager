@@ -39,9 +39,8 @@ public sealed class SubjectConfiguration : BaseEntityConfiguration<Subject, Guid
         entity.HasMany(s => s.Activities).WithOne(a => a.Subject)
               .IsRequired(false);
 
-        entity.HasOne(s => s.Exam).WithOne(e => e.Subject)
-              .HasForeignKey<Exam>()
-              .IsRequired(false);
+        entity.HasMany(s => s.Exams).WithOne(e => e.Subject)
+              .IsRequired();
         
         entity.HasMany(s => s.Marks).WithOne(m => m.Subject)
               .IsRequired();
