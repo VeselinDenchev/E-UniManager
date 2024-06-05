@@ -29,9 +29,10 @@ public static class UpdateDatabaseExtensions
             {
                 throw;
             }
-            catch (SqlException)
+            catch (SqlException se)
             {
                 await Task.Delay(10_000);
+                Console.WriteLine(se.Message);
                 Console.WriteLine($"Could not connect to SQL Server. Retrying {currentRetriesCount}/{MAX_RETRIES_COUNT}.");
             }
         }

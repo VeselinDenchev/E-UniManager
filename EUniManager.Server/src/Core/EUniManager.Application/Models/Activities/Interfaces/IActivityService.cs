@@ -4,4 +4,7 @@ using EUniManager.Domain.Entities;
 
 namespace EUniManager.Application.Models.Activities.Interfaces;
 
-public interface IActivityService : IBaseService<Activity, Guid, ActivityDto, ActivityDetailsDto>;
+public interface IActivityService : IBaseService<Activity, Guid, ActivityDto, ActivityDetailsDto>
+{
+    Task ToggleActivity(Guid id, CancellationToken cancellationToken);
+}

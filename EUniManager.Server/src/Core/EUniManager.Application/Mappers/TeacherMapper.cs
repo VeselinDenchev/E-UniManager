@@ -1,5 +1,4 @@
-﻿using System.Collections;
-
+﻿using EUniManager.Application.Models.Subjects.Dtos;
 using EUniManager.Application.Models.Teachers.Dtos;
 using EUniManager.Domain.Entities;
 
@@ -10,6 +9,14 @@ namespace EUniManager.Application.Mappers;
 [Mapper]
 public partial class TeacherMapper
 {
+    public partial List<TeacherDto> Map(List<Teacher> entities);
+    
+    [MapProperty(nameof(@Teacher.LecturingSubjects), nameof(TeacherDetailsDto.LecturingSubjects), 
+                 Use = nameof(MapSubjectsToCurrentYearSubjectDtos))]
+    [MapProperty(nameof(@Teacher.AssistingSubjects), nameof(TeacherDetailsDto.AssistingSubjects), 
+                 Use = nameof(MapSubjectsToCurrentYearSubjectDtos))]
+    public partial TeacherDetailsDto Map(Teacher entity);
+    
     [MapperIgnoreTarget(nameof(Teacher.Id))]
     [MapperIgnoreTarget(nameof(Teacher.CreatedAt))]
     [MapperIgnoreTarget(nameof(Teacher.ModifiedAt))]
@@ -27,11 +34,15 @@ public partial class TeacherMapper
     [MapperIgnoreTarget(nameof(Teacher.AssistingSubjects))]
     [MapperIgnoreTarget(nameof(Teacher.Assignments))]
     public partial Teacher Map(UpdateTeacherDto dto);
-    
-    public partial List<TeacherDto> Map(List<Teacher> entities);
-    
-    [MapperIgnoreTarget(nameof(TeacherDetailsDto.LecturingSubjects))]
-    [MapperIgnoreTarget(nameof(TeacherDetailsDto.AssistingSubjects))]
-    [MapperIgnoreTarget(nameof(TeacherDetailsDto.Assignments))]
-    public partial TeacherDetailsDto Map(Teacher entity);
+
+    private List<CurrentYearSubjectDto> MapSubjectsToCurrentYearSubjectDtos(List<Subject> subjects)
+    {
+        return subjects.Select(s => new CurrentYearSubjectDto
+        {
+            Id = s.Id,
+            SpecialtyName = s.Specialty.Name,
+            SubjectCourseName = s.Course.Name,
+            Semester = s.Semester
+        }).ToList();
+    }
 }

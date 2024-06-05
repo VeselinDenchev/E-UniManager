@@ -4,4 +4,10 @@ using EUniManager.Domain.Entities;
 
 namespace EUniManager.Application.Models.Assignments.Interfaces;
 
-public interface IAssignmentService : IBaseService<Assignment, Guid, AssignmentDto, AssignmentDetailsDto>;
+public interface IAssignmentService : IBaseService<Assignment, Guid, IEntityDto, AssignmentDetailsDto>
+{
+    Task<List<AssignmentDto>> GetStudentAssignmentsAsync(CancellationToken cancellationToken);
+    Task<List<AssignmentDto>> GetTeacherAssignmentsAsync(CancellationToken cancellationToken);
+
+    Task DeleteByAssignmentAsync(Assignment assignment);
+}

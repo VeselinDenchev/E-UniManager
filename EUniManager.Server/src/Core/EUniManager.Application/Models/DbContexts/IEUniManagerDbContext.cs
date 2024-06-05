@@ -49,11 +49,14 @@ public interface IEUniManagerDbContext
     
     public DbSet<CertifiedSemester> CertifiedSemesters { get; set; }
     
+    public ChangeTracker ChangeTracker { get; }
+    
     DbSet<TEntity> Set<TEntity>() where TEntity : class;
     
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
     
-    public ChangeTracker ChangeTracker { get; }
+    public EntityEntry Attach (object entity);
+    
     
     int SaveChanges();
     

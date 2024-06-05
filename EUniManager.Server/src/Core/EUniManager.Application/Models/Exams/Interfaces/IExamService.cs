@@ -4,4 +4,7 @@ using EUniManager.Domain.Entities;
 
 namespace EUniManager.Application.Models.Exams.Interfaces;
 
-public interface IExamService : IBaseService<Exam, Guid, ExamDto, ExamDetailsDto>;
+public interface IExamService : IBaseService<Exam, Guid, ExamDto, ExamDetailsDto>
+{
+    Task<List<StudentExamDto>> GetAllForStudentBySemesterAsync(byte currentYear, CancellationToken cancellationToken);
+}

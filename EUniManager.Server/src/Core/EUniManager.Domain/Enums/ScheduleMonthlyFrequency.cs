@@ -2,7 +2,7 @@
 
 public enum ScheduleMonthlyFrequency
 {
-    EveryWeek = 0,
+    Weekly = 0,
     OddWeeks = 1,
     EvenWeeks = 2
 }

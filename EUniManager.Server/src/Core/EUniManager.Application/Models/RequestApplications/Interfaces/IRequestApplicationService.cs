@@ -4,5 +4,8 @@ using EUniManager.Domain.Entities;
 
 namespace EUniManager.Application.Models.RequestApplications.Interfaces;
 
-public interface IRequestApplicationService 
-    : IBaseService<RequestApplication, Guid, RequestApplicationDto, RequestApplicationDetailsDto>;
+public interface IRequestApplicationService
+    : IBaseService<RequestApplication, Guid, RequestApplicationDto, IDetailsDto>
+{
+    Task<List<RequestApplicationDto>> GetAllForStudentAsync(CancellationToken cancellationToken);
+}

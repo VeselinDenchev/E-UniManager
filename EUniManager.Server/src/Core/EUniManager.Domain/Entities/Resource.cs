@@ -9,6 +9,8 @@ public class Resource : BaseEntity<Guid>
 
     public ResourceType Type { get; set; }
 
+    public string? Info { get; set; }
+
     public CloudinaryFile? File { get; set; }
 
     public Activity Activity { get; set; } = null!;

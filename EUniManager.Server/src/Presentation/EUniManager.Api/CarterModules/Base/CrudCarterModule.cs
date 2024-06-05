@@ -6,6 +6,8 @@ using EUniManager.Domain.Abstraction.Base;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
+using static EUniManager.Api.Constants.PoliciesConstant;
+
 namespace EUniManager.Api.CarterModules.Base;
 
 public abstract class CrudCarterModule<TService, TEntity, TEntityDto, TEntityDetailsDto, TCreateDto, TUpdateDto> 
@@ -17,35 +19,31 @@ public abstract class CrudCarterModule<TService, TEntity, TEntityDto, TEntityDet
     where TCreateDto : class, ICreateDto
     where TUpdateDto : class, IUpdateDto
 {
-    public CrudCarterModule(string basePath) : base(basePath)
+    protected const string ID_ROUTE = "/{id}";
+    
+    protected CrudCarterModule(string basePath) : base(basePath)
     {
+        RequireAuthorization();
         WithTags(typeof(TEntity).Name);
     }
-    
-    protected const string BASE_PATH_TEMPLATE = "/{0}";
-    protected const string GET_ALL_ROUTE = "/all";
-    protected const string GET_BY_ID_ROUTE = "/{id}";
-    protected const string CREATE_ROUTE = "/create";
-    protected const string UPDATE_ROUTE = "/update/{id}";
-    protected const string DELETE_ROUTE = "/delete/{id}";
 
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet(GET_ALL_ROUTE, GetAll);
-        app.MapGet(GET_BY_ID_ROUTE, GetById);
-        app.MapPost(CREATE_ROUTE, Create);
-        app.MapPut(UPDATE_ROUTE, Update);
-        app.MapDelete(DELETE_ROUTE, Delete);
+        app.MapGet(string.Empty, GetAll).RequireAuthorization(ADMIN_POLICY_NAME);
+        app.MapGet(ID_ROUTE, GetById).RequireAuthorization(ADMIN_POLICY_NAME);
+        app.MapPost(string.Empty, Create).RequireAuthorization(ADMIN_POLICY_NAME);
+        app.MapPut(ID_ROUTE, Update).RequireAuthorization(ADMIN_POLICY_NAME);
+        app.MapDelete(ID_ROUTE, Delete).RequireAuthorization(ADMIN_POLICY_NAME);
     }
     
-    protected virtual async Task<IResult> GetAll(TService service, CancellationToken cancellationToken)
+    protected async Task<Ok<List<TEntityDto>>> GetAll(TService service, CancellationToken cancellationToken)
     {
         List<TEntityDto> dtos = await service.GetAllAsync(cancellationToken);
-
+        
         return TypedResults.Ok(dtos);
     }
         
-    protected virtual async Task<Results<Ok<TEntityDetailsDto>, NotFound<TEntityDetailsDto>>> GetById
+    protected async Task<Results<Ok<TEntityDetailsDto>, NotFound>> GetById
     (
         Guid id, 
         TService service, 
@@ -57,7 +55,7 @@ public abstract class CrudCarterModule<TService, TEntity, TEntityDto, TEntityDet
         return TypedResults.Ok(dto);
     }
     
-    protected virtual async Task<Results<Ok, BadRequest, UnprocessableEntity>> Create
+    protected async Task<Results<Created, BadRequest, UnprocessableEntity>> Create
     (
         TCreateDto createDto,
         TService service,
@@ -66,10 +64,10 @@ public abstract class CrudCarterModule<TService, TEntity, TEntityDto, TEntityDet
     {
         await service.CreateAsync(createDto, cancellationToken);
 
-        return TypedResults.Ok();
+        return TypedResults.Created();
     }
     
-    protected virtual async Task<Results<Ok, BadRequest, NotFound, UnprocessableEntity>> Update
+    protected async Task<Results<NoContent, BadRequest, NotFound, UnprocessableEntity>> Update
     (
         TService service,
         [FromRoute] Guid id,
@@ -79,10 +77,10 @@ public abstract class CrudCarterModule<TService, TEntity, TEntityDto, TEntityDet
     {
         await service.UpdateAsync(id, dto, cancellationToken);
 
-        return TypedResults.Ok();
+        return TypedResults.NoContent();
     }
     
-    protected virtual async Task<Results<Ok, BadRequest, NotFound>> Delete
+    protected async Task<Results<NoContent, BadRequest, NotFound>> Delete
     (
         TService service,
         [FromRoute] Guid id,
@@ -91,6 +89,6 @@ public abstract class CrudCarterModule<TService, TEntity, TEntityDto, TEntityDet
     {
         await service.DeleteAsync(id, cancellationToken);
 
-        return TypedResults.Ok();
+        return TypedResults.NoContent();
     }
 }

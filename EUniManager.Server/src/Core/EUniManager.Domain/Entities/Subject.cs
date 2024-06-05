@@ -20,7 +20,7 @@ public class Subject : BaseEntity<Guid>
 
     public List<Activity> Activities { get; set; } = null!;
 
-    public Exam? Exam { get; set; }
+    public List<Exam> Exams { get; set; } = null!;
 
     public List<SubjectMark> Marks { get; set; } = null!;
     

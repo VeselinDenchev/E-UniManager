@@ -4,6 +4,8 @@ namespace EUniManager.Application.Models.Assignments.Dtos;
 
 public record CreateAssignmentDto : ICreateDto
 {
+    public Guid ResourceId { get; set; }
+    
     public string Title { get; set; } = null!;
 
     public string Type { get; set; } = null!;

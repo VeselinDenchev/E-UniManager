@@ -4,4 +4,7 @@ using EUniManager.Domain.Entities;
 
 namespace EUniManager.Application.Models.PayedTaxes.Interfaces;
 
-public interface IPayedTaxService : IBaseService<PayedTax, Guid, PayedTaxDto, PayedTaxDetailsDto>;
+public interface IPayedTaxService : IBaseService<PayedTax, Guid, PayedTaxDto, PayedTaxDetailsDto>
+{
+    Task<List<PayedTaxDto>> GetAllForStudentAsync(CancellationToken cancellationToken);
+}

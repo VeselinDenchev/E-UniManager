@@ -4,4 +4,7 @@ using EUniManager.Domain.Entities;
 
 namespace EUniManager.Application.Models.Resources.Interfaces;
 
-public interface IResourceService : IBaseService<Resource, Guid, ResourceDto, ResourceDetailsDto>;
+public interface IResourceService : IBaseService<Resource, Guid, ResourceDto, ResourceDetailsDto>
+{
+    Task<List<ResourceDto>> GetByActivityIdAsync(Guid activityId, CancellationToken cancellationToken);
+}

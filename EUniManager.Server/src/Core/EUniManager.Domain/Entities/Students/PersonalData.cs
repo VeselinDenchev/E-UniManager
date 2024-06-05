@@ -5,7 +5,7 @@ namespace EUniManager.Domain.Entities.Students;
 
 public class PersonalData
 {
-    public CityArea CityArea { get; set; }
+    public CityArea CityArea { get; set; } = null!;
     
     public string FirstName { get; set; } = null!;
     
@@ -25,5 +25,5 @@ public class PersonalData
 
     public IdCard? IdCard { get; set; }
 
-    public string Email { get; set; }
+    public string Email { get; set; } = null!;
 }

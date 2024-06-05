@@ -8,6 +8,8 @@ public interface IBaseService<TEntity, in TId, TEntityDto, TDetailsDto>
     where TEntityDto: class, IEntityDto
     where TDetailsDto: class, IDetailsDto
 {
+     Task<bool> ExistsAsync(TId id, CancellationToken cancellationToken);
+    
      Task<List<TEntityDto>> GetAllAsync(CancellationToken cancellationToken);
 
      ValueTask<TDetailsDto> GetByIdAsync(TId id, CancellationToken cancellationToken);

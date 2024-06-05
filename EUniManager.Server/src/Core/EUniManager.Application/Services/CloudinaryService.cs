@@ -40,7 +40,6 @@ public sealed class CloudinaryService : ICloudinaryService
     private readonly IEUniManagerDbContext _dbContext;
     private readonly DbSet<CloudinaryFile> _dbSet;
     private readonly CloudinaryFileMapper _mapper = new();
-    private readonly Account _cloudinaryAccount;
     private readonly Cloudinary _cloudinary;
     
     public CloudinaryService(IEUniManagerDbContext dbContext)
@@ -66,13 +65,12 @@ public sealed class CloudinaryService : ICloudinaryService
         string cloudinaryApiSecret = Environment.GetEnvironmentVariable(CLOUDINARY_API_SECRET_ENV_VARIABLE_NAME) ?? 
                                      throw new ArgumentNullException(canNotLoadEnvVariableMessage);
 
-        _cloudinaryAccount = new Account(cloudinaryCloudName, cloudinaryApiKey, cloudinaryApiSecret);
-        _cloudinary = new Cloudinary(_cloudinaryAccount);
+        Account cloudinaryAccount = new(cloudinaryCloudName, cloudinaryApiKey, cloudinaryApiSecret);
+        _cloudinary = new Cloudinary(cloudinaryAccount);
         _cloudinary.Api.Secure = true;
     }
-    
 
-    public async Task<string> UploadAsync(byte[] fileBytes, string mimeType, CancellationToken cancellationToken)
+    public async Task<CloudinaryFile> UploadAsync(byte[] fileBytes, string mimeType, CancellationToken cancellationToken)
     {
         string fileExtension = MimeTypeMap.GetExtensionWithoutDot(mimeType);
         string publicId = Guid.NewGuid().ToString();
@@ -94,34 +92,33 @@ public sealed class CloudinaryService : ICloudinaryService
         try
         {
             await _dbSet.AddAsync(cloudinaryFile, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
         }
         catch (Exception)
         {
-            await DeleteAsync(publicId);
+            await DeleteByIdAsync(publicId);
             
             throw;
         }
 
-        return publicId;
+        return cloudinaryFile;
     }
 
-    public async Task UpdateAsync(string publicId, 
-                                  byte[] newFileBytes,
-                                  string newMimeType,
-                                  CancellationToken cancellationToken)
+    public async Task<CloudinaryFile> UpdateAsync(string id, 
+                                                  byte[] fileBytes,
+                                                  string mimeType,
+                                                  CancellationToken cancellationToken)
     {
-        await ValidateFileExistenceInDatabaseAndCloudinaryAsync(publicId, cancellationToken);
+        await SetFileExtensionAndCheckExistenceInDatabaseAndCloudinaryAsync(id, cancellationToken);
         
-        string fileExtension = MimeTypeMap.GetExtensionWithoutDot(newMimeType);
-        string fileName = $"{publicId}.{fileExtension}";
+        string fileExtension = MimeTypeMap.GetExtensionWithoutDot(mimeType);
+        string fileName = $"{id}.{fileExtension}";
 
-        bool willBeUploadedLikeImage = newMimeType.Contains("image") || fileExtension == "pdf";
+        bool willBeUploadedLikeImage = mimeType.Contains("image") || fileExtension == "pdf";
         RawUploadParams uploadParams = willBeUploadedLikeImage ? new ImageUploadParams() : new RawUploadParams();
         
-        await using MemoryStream stream = new(newFileBytes);
+        await using MemoryStream stream = new(fileBytes);
         
-        SetBaseUploadParams(uploadParams, fileName, stream, publicId);
+        SetBaseUploadParams(uploadParams, fileName, stream, id);
         uploadParams.Overwrite = true;
         uploadParams.Invalidate = true;
             
@@ -129,31 +126,38 @@ public sealed class CloudinaryService : ICloudinaryService
         ValidateUploadResult(uploadResult);
 
         CloudinaryFile cloudinaryFile = _mapper.Map(uploadResult!);
+        cloudinaryFile.Id = id;
         cloudinaryFile.Extension = fileExtension;
+        
+        _dbSet.Attach(cloudinaryFile);
+        _dbContext.Entry(cloudinaryFile).State = EntityState.Modified;
 
         try
         {
             _dbSet.Update(cloudinaryFile);
-            await _dbContext.SaveChangesAsync(cancellationToken);
         }
         catch (Exception)
         {
-            await DeleteAsync(publicId);
+            await DeleteByIdAsync(id);
             
             throw;
         }
+
+        return cloudinaryFile;
     }
 
-    public async Task<(byte[] fileBytes, string mimeType)> DownloadAsync(string publicId, 
+    public async Task<(byte[] fileBytes, string mimeType)> DownloadAsync(string id, 
                                                                          CancellationToken cancellationToken)
     {
-        string? fileExtension = await GetFileExtensionAsync(publicId, cancellationToken);
+        // Check if file can be downloaded by user (is Admin, Teacher that created the assignment or the Student linked to file)
+        
+        string? fileExtension = await GetFileExtensionAsync(id, cancellationToken);
         if (string.IsNullOrWhiteSpace(fileExtension))
         {
             throw new ArgumentException("File is not found or has missing extension!");
         }
         
-        GetResourceResult? result = await GetResourceResultAsync(publicId, fileExtension);
+        GetResourceResult? result = await GetResourceResultAsync(id, fileExtension);
         bool existsInCloudinary = result is not null;
         if (!existsInCloudinary) throw new FileNotFoundException("File is not found!");
 
@@ -170,6 +174,36 @@ public sealed class CloudinaryService : ICloudinaryService
 
         return (fileBytes, mimeType);
     }
+    
+    public async Task DeleteByIdAsync(string id)
+    {
+        await SetFileExtensionAndCheckExistenceInDatabaseAndCloudinaryAsync(id);
+        await DeleteFromCloudinaryAndDatabaseByIdAsync(id);
+    }
+
+    // If we have the file extension we assume the file exists in the database
+    public async Task DeleteByIdAndExtensionAsync(string id, string fileExtension)
+    {
+        await CheckExistenceInCloudinaryAsync(id, fileExtension);
+        await DeleteFromCloudinaryAndDatabaseByIdAsync(id);
+    }
+
+    private async Task DeleteFromCloudinaryAndDatabaseByIdAsync(string id)
+    {
+        DeletionParams deletionParams = new(id);
+        DeletionResult deletionResult = await _cloudinary.DestroyAsync(deletionParams);
+
+        if (deletionResult.Result != "ok")
+        {
+            // Change to log after implementing logger
+            Console.WriteLine($"Unable to delete file with id {id}!");
+        }
+        
+        // We have checked previously so it can be null
+        CloudinaryFile deletedFile = (await _dbSet.FindAsync(id))!;
+        
+        _dbSet.Remove(deletedFile);
+    }
 
     private async Task<byte[]> GetFileBytesFromCloudinaryAsync(string url)
     {
@@ -182,38 +216,25 @@ public sealed class CloudinaryService : ICloudinaryService
         
         return memoryStream.ToArray();
     }
-
-    private async Task DeleteAsync(string publicId)
-    {
-        await ValidateFileExistenceInDatabaseAndCloudinaryAsync(publicId);
-        
-        DeletionParams deletionParams = new(publicId);
-        DeletionResult deletionResult = await _cloudinary.DestroyAsync(deletionParams);
-        
-        if (deletionResult.Result != "ok") throw new Exception("Unable to delete file!");
-        
-        CloudinaryFile? deletedFile = await _dbSet.FindAsync(publicId);
-        ArgumentNullException.ThrowIfNull(deletedFile);
-        
-        _dbSet.Remove(deletedFile);
-        // If image was deleted from Cloudinary it should be deleted from the database also no matter if request
-        // was cancelled or not
-        _dbContext.SaveChangesAsync();
-    }
     
-    private async Task ValidateFileExistenceInDatabaseAndCloudinaryAsync
+    private async Task SetFileExtensionAndCheckExistenceInDatabaseAndCloudinaryAsync
     (
-        string publicId, 
+        string id, 
         CancellationToken cancellationToken = default
     )
     {
-        string? fileExtension = await GetFileExtensionAsync(publicId, cancellationToken);
+        string? fileExtension = await GetFileExtensionAsync(id, cancellationToken);
         if (string.IsNullOrWhiteSpace(fileExtension))
         {
             throw new ArgumentException("File is not found or has missing extension!");
         }
-        
-        GetResourceResult? result = await GetResourceResultAsync(publicId, fileExtension);
+
+        await CheckExistenceInCloudinaryAsync(id, fileExtension);
+    }
+    
+    private async Task CheckExistenceInCloudinaryAsync(string id, string fileExtension)
+    {
+        GetResourceResult? result = await GetResourceResultAsync(id, fileExtension);
         bool existsInCloudinary = result is not null;
         if (!existsInCloudinary) throw new FileNotFoundException("File is not found!");
     }

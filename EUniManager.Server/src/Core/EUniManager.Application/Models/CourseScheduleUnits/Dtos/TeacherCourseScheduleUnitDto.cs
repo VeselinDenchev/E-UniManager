@@ -1,0 +1,32 @@
+﻿namespace EUniManager.Application.Models.CourseScheduleUnits.Dtos;
+
+public sealed record TeacherCourseScheduleUnitDto
+{
+    public required  Guid Id { get; set; }
+    
+    public required string Day { get; set; } = null!;
+    
+    public required string Timespan { get; set; } = null!;
+
+    public required string Week { get; set; } = null!;
+
+    public required string? SchedulePlace { get; set; }
+    
+    public required short RoomNumber { get; set; }
+
+    public required int SpecialtyCurrentYear { get; set; }
+
+    public required byte? GroupNumber { get; set; } = null!;
+    
+    public required string GroupType { get; set; } = null!;
+    
+    public required string ActivitySubjectCourseName { get; set; } = null!;
+    
+    public required string ActivityType { get; set; } = null!;
+
+    public required string SpecialtyEducationType { get; set; } = null!;
+
+    public required string SemesterType { get; set; } = null!;
+
+    public required string ActivitySubjectControlType { get; set; } = null!;
+}
