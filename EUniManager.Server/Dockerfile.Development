@@ -9,7 +9,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy the certificate into the Docker image
-COPY ["src/Presentation/EUniManager.Api/aspnetapp.pfx", "/https/"]
+COPY ["src/Presentation/EUniManager.Api/https/aspnetapp.pfx", "/https/"]
 
 ENV ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
 ENV ASPNETCORE_Kestrel__Certificates__Default__Password="123456"
