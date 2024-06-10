@@ -19,6 +19,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(ConfigureSwaggerGen);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(CORS_POLICY_NAME, corsPolicyBuilder =>
+    {
+        corsPolicyBuilder.WithOrigins($"{builder.Configuration["CLIENT_BASE_URL"]}")
+                         .AllowAnyHeader()
+                         .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy(ADMIN_POLICY_NAME, policy => policy.RequireRole(nameof(UserRole.Admin)));
@@ -63,6 +73,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(CORS_POLICY_NAME);
 
 await app.UpdateDatabaseAsync();
 
