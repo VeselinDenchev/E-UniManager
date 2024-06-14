@@ -24,7 +24,7 @@ public class StudentModule()
             IUpdateDto>
       (string.Format(BASE_ROUTE_TEMPLATE, nameof(IEUniManagerDbContext.Students).ToLowerInvariant()))
 {
-    private const string GET_STUDENT_HEADER_DATA_ROUTE = "/{id}/header";
+    private const string GET_STUDENT_HEADER_DATA_ROUTE = "/header";
     private const string CERTIFY_SEMESTER_ROUTE = "/{id}/certify/semesters/{semester}";
     private const string UPDATE_SPECICALTY_ROUTE = "/{studentId}/specialties/{specialtyId}";
     private const string UPDATE_STATUS_ROUTE = "/{id}/status/{status}";
@@ -50,11 +50,10 @@ public class StudentModule()
     private async Task<Results<Ok<StudentHeaderDto>, BadRequest, NotFound>> GetStudentHeaderData
     (
         IStudentService studentService,
-        [FromRoute] Guid id,
         CancellationToken cancellationToken
     )
     {
-        StudentHeaderDto headerData = await studentService.GetHeaderDataAsync(id, cancellationToken);
+        StudentHeaderDto headerData = await studentService.GetHeaderDataAsync(cancellationToken);
 
         return TypedResults.Ok(headerData);
     }

@@ -121,14 +121,14 @@ public sealed class StudentService
         throw new NotImplementedException();
     }
 
-    public async Task<StudentHeaderDto> GetHeaderDataAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<StudentHeaderDto> GetHeaderDataAsync(CancellationToken cancellationToken)
     {
         Guid studentId = await GetStudentIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
         
         Student student = await _dbSet.AsNoTracking()
-                                         .Include(s => s.Specialty)
-                                         .Include(s => s.CertifiedSemesters)
-                                         .FirstOrDefaultAsync(s => s.Id == studentId, cancellationToken) ??
+                                      .Include(s => s.Specialty)
+                                      .Include(s => s.CertifiedSemesters)
+                                      .FirstOrDefaultAsync(s => s.Id == studentId, cancellationToken) ??
                           throw new ArgumentException($"Such {nameof(Student).ToLowerInvariant()} doesn't exist!");
         
         StudentHeaderDto studentHeaderDto = _studentMapper.MapStudentToStudentHeaderDto(student);
