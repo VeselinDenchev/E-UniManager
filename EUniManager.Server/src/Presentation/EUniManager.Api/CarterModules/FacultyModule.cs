@@ -1,4 +1,5 @@
 ﻿using EUniManager.Api.CarterModules.Base;
+using EUniManager.Application.Models.DbContexts;
 using EUniManager.Application.Models.Faculties.Dtos;
 using EUniManager.Application.Models.Faculties.Interfaces;
 using EUniManager.Domain.Entities;
@@ -18,7 +19,7 @@ public sealed class FacultyModule
             ManageFacultyDto>
 {
     public FacultyModule()
-        : base(string.Format(BASE_ROUTE_TEMPLATE, nameof(Faculty).ToLowerInvariant()))
+        : base(string.Format(BASE_ROUTE_TEMPLATE, nameof(IEUniManagerDbContext.Faculties).ToLowerInvariant()))
     {
         RequireAuthorization(ADMIN_POLICY_NAME);
     }
