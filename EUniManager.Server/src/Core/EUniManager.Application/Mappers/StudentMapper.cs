@@ -50,6 +50,7 @@ public partial class StudentMapper
     [MapProperty(nameof(@Student.ServiceData.PlanNumber), nameof(StudentHeaderDto.PlanNumber))]
     [MapProperty(nameof(@Student.ServiceData.FacultyNumber), nameof(StudentHeaderDto.FacultyNumber))]
     [MapProperty(nameof(@Student.ServiceData.GroupNumber), nameof(StudentHeaderDto.GroupNumber))]
+    [MapProperty(nameof(@Student.ServiceData.Status), nameof(StudentHeaderDto.Status))]
     [MapProperty(nameof(@Student.Specialty.Name), nameof(StudentHeaderDto.SpecialtyName))]
     [MapProperty(nameof(@Student.Specialty.EducationType), nameof(StudentHeaderDto.SpecialtyEducationType))]
     [MapProperty(nameof(Student.CertifiedSemesters), 

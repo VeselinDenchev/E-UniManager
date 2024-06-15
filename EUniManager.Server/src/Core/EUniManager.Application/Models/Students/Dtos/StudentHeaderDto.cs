@@ -12,6 +12,8 @@ public sealed record StudentHeaderDto
 
     public byte GroupNumber { get; set; }
 
+    public string Status { get; set; } = null!;
+
     public string SpecialtyName { get; set; } = null!;
 
     public string SpecialtyEducationType { get; set; } = null!;
