@@ -120,7 +120,14 @@ public sealed class StudentService
     {
         throw new NotImplementedException();
     }
+        
+    public async ValueTask<StudentDetailsDto> GetDetailsAsync(CancellationToken cancellationToken)
+    {
+        Guid studentId = await GetStudentIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
 
+        return await GetByIdAsync(studentId, cancellationToken);
+    }
+    
     public async Task<StudentHeaderDto> GetHeaderDataAsync(CancellationToken cancellationToken)
     {
         Guid studentId = await GetStudentIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);

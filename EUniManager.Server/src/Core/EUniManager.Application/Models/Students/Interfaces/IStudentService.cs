@@ -7,6 +7,8 @@ namespace EUniManager.Application.Models.Students.Interfaces;
 
 public interface IStudentService : IBaseService<Student, Guid, StudentDto, StudentDetailsDto>
 {
+    ValueTask<StudentDetailsDto> GetDetailsAsync(CancellationToken cancellationToken);
+    
     Task<StudentHeaderDto> GetHeaderDataAsync(CancellationToken cancellationToken);
 
     Task CertifySemesterAsync(Guid id, byte semester, CancellationToken cancellationToken);

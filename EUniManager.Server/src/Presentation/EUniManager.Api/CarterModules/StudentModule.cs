@@ -24,6 +24,7 @@ public class StudentModule()
             IUpdateDto>
       (string.Format(BASE_ROUTE_TEMPLATE, nameof(IEUniManagerDbContext.Students).ToLowerInvariant()))
 {
+    private const string GET_STUDENT_DETAILS_ROUTE = "/details";
     private const string GET_STUDENT_HEADER_DATA_ROUTE = "/header";
     private const string CERTIFY_SEMESTER_ROUTE = "/{id}/certify/semesters/{semester}";
     private const string UPDATE_SPECICALTY_ROUTE = "/{studentId}/specialties/{specialtyId}";
@@ -35,8 +36,9 @@ public class StudentModule()
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapGet(string.Empty, GetAll).RequireAuthorization(ADMIN_POLICY_NAME);
-        app.MapGet(GET_STUDENT_HEADER_DATA_ROUTE, GetStudentHeaderData).RequireAuthorization(STUDENT_POLICY_NAME);
         app.MapGet(ID_ROUTE, GetById).RequireAuthorization(ADMIN_POLICY_NAME);
+        app.MapGet(GET_STUDENT_DETAILS_ROUTE, GetDetails).RequireAuthorization(STUDENT_POLICY_NAME);
+        app.MapGet(GET_STUDENT_HEADER_DATA_ROUTE, GetHeaderData).RequireAuthorization(STUDENT_POLICY_NAME);
         app.MapPost(string.Empty, Create).RequireAuthorization(ADMIN_POLICY_NAME);
         app.MapPost(CERTIFY_SEMESTER_ROUTE, CertifySemester).RequireAuthorization(ADMIN_POLICY_NAME);
         app.MapPatch(UPDATE_SPECICALTY_ROUTE, UpdateSpecialty).RequireAuthorization(ADMIN_POLICY_NAME);
@@ -47,7 +49,18 @@ public class StudentModule()
         app.MapPatch(UPDATE_EMAIL_ROUTE, UpdateEmail).RequireAuthorization(ADMIN_POLICY_NAME);
     }
 
-    private async Task<Results<Ok<StudentHeaderDto>, BadRequest, NotFound>> GetStudentHeaderData
+    private async Task<Results<Ok<StudentDetailsDto>, BadRequest, NotFound>> GetDetails
+    (
+        IStudentService studentService,
+        CancellationToken cancellationToken
+    )
+    {
+        StudentDetailsDto student = await studentService.GetDetailsAsync(cancellationToken);
+
+        return TypedResults.Ok(student);
+    }
+    
+    private async Task<Results<Ok<StudentHeaderDto>, BadRequest, NotFound>> GetHeaderData
     (
         IStudentService studentService,
         CancellationToken cancellationToken
