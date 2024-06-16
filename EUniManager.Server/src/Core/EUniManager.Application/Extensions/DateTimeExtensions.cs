@@ -5,5 +5,5 @@ namespace EUniManager.Application.Extensions;
 public static class DateTimeExtensions
 {
     public static string ToBulgarianDateTimeFormatString(this DateTime dateTime)
-        => dateTime.ToString("dd.M.yyyy г. HH:mm:ss", CultureInfo.GetCultureInfo("bg-BG"));
+        => dateTime.ToString("dd.M.yyyy г. HH:mm:ss ч.", CultureInfo.GetCultureInfo("bg-BG"));
 }
