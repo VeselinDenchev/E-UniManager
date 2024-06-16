@@ -30,12 +30,24 @@ public partial class SubjectMapper
                  nameof(SubjectDetailsDto.AssistantFullNamesWithRank),
                  Use = nameof(MapAssistantsToAssistantFullNamesWithRank))]
     public partial SubjectDetailsDto Map(Subject entity);
-    
-    [MapProperty(nameof(@Subject.Course.Name), nameof(StudentSubjectInfoDto.CourseName))]
-    [MapProperty(nameof(Subject.Marks), nameof(StudentSubjectInfoDto.MarkWithWords), Use = nameof(MapMarkToMarkWithWords))]
-    [MapProperty(nameof(Subject.Marks), nameof(StudentSubjectInfoDto.MarkNumeric), Use = nameof(MapMarkToMarkNumeric))]
-    [MapProperty(nameof(@Subject.Lecturer.FullNameWithRank), nameof(StudentSubjectInfoDto.LecturerFullNameWithRank))]
-    public partial List<StudentSubjectInfoDto> MapSubjectsToStudentSubjectResultDtos(List<Subject> entities);
+
+    [UserMapping]
+    public List<StudentSubjectInfoDto> MapSubjectsToStudentSubjectResultDtos(List<Subject> entities)
+    {
+        return entities.Select(s => new StudentSubjectInfoDto
+        {
+            Id = s.Id,
+            Semester = s.Semester,
+            CourseName = s.Course.Name,
+            LecturesCount = s.Course.LecturesCount,
+            ExercisesCount = s.Course.ExercisesCount,
+            MarkWithWords = MapMarkToMarkWithWords(s.Marks),
+            MarkNumeric = MapMarkToMarkNumeric(s.Marks),
+            CreditsCount = s.Course.CreditsCount,
+            LecturerFullNameWithRank = s.Lecturer.FullNameWithRank,
+            Protocol = s.Protocol
+        }).ToList();
+    }
 
     [MapperIgnoreTarget(nameof(Subject.Id))]
     [MapperIgnoreTarget(nameof(Subject.CreatedAt))]

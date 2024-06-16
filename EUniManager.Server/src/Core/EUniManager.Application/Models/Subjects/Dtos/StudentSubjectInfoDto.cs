@@ -2,21 +2,23 @@
 
 public sealed record StudentSubjectInfoDto
 {
-    public byte Semester { get; set; }
-
-    public string CourseName { get; set; } = null!;
+    public required Guid Id { get; set; }
     
-    public byte LecturesCount { get; set; }
+    public required byte Semester { get; set; }
+
+    public required string CourseName { get; set; } = null!;
     
-    public byte ExercisesCount { get; set; }
-
-    public string MarkWithWords { get; set; } = null!;
+    public required byte LecturesCount { get; set; }
     
-    public byte? MarkNumeric { get; set; }
+    public required byte ExercisesCount { get; set; }
 
-    public byte CreditsCount { get; set; }
+    public required string MarkWithWords { get; set; } = null!;
+    
+    public required byte? MarkNumeric { get; set; }
 
-    public string LecturerFullNameWithRank { get; set; } = null!;
+    public required byte CreditsCount { get; set; }
 
-    public string Protocol { get; set; } = null!;
+    public required string LecturerFullNameWithRank { get; set; } = null!;
+
+    public required string Protocol { get; set; } = null!;
 }
