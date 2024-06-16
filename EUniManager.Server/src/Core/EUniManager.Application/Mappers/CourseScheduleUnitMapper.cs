@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 
+using EUniManager.Application.Extensions;
 using EUniManager.Application.Models.CourseScheduleUnits.Dtos;
 using EUniManager.Domain.Entities;
 using EUniManager.Domain.Enums;
@@ -19,7 +20,7 @@ public partial class CourseScheduleUnitMapper
             Id = csu.Id,
             Day = csu.DayOfWeek.HasValue 
                         ? GetDayOfWeekString(csu.DayOfWeek.Value)
-                        : csu.ExactDate?.ToString("dd.MM.yyyy г.", CultureInfo.GetCultureInfo("bg-BG")) ?? 
+                        : csu.ExactDate?.ToBulgarianDateFormatString() ?? 
                           throw new ArgumentException("Day is missing!"),
             Timespan = $"{csu.StartTime} - {csu.EndTime}",
             Week = GetMonthlyFrequencyString(csu.MonthlyFrequency),
@@ -41,7 +42,7 @@ public partial class CourseScheduleUnitMapper
                 Id = csu.Id,
                 Day = (csu.DayOfWeek.HasValue 
                             ? GetDayOfWeekString(csu.DayOfWeek.Value)
-                            : csu.ExactDate?.ToString("dd.MM.yyyy г.", CultureInfo.GetCultureInfo("bg-BG")) ?? 
+                            : csu.ExactDate?.ToBulgarianDateFormatString() ?? 
                       throw new ArgumentException("Day is missing!"))!,
                 Timespan = $"{csu.StartTime} - {csu.EndTime}",
                 Week = GetMonthlyFrequencyString(csu.MonthlyFrequency),

@@ -16,7 +16,7 @@ public record PersonalDataDto
 
     public string? InsuranceNumber { get; set; }
 
-    public DateOnly BirthDate { get; set; }
+    public string? BirthDate { get; set; }
 
     public string Gender { get; set; } = null!;
 

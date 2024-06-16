@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-
+﻿using EUniManager.Application.Extensions;
 using EUniManager.Application.Models.Students.Dtos;
 using EUniManager.Domain.Entities;
 using EUniManager.Domain.Entities.Students;
@@ -27,16 +26,96 @@ public partial class StudentMapper
             EnrolledInSemester = s.ServiceData.EnrolledInSemester
         }).ToList();
     }
-    
-    [MapProperty(nameof(@Student.ServiceData.Pin), nameof(@StudentDetailsDto.ServiceData.Pin))]
-    [MapProperty(nameof(@Student.ServiceData.Status),
-                 nameof(@StudentDetailsDto.ServiceData.StudentStatus),
-                 Use = nameof(GetSpecialtyEducationTypeString))]
-    [MapProperty(nameof(@Student.ServiceData.PlanNumber), nameof(@StudentDetailsDto.ServiceData.PlanNumber))]
-    [MapProperty(nameof(@Student.ServiceData.FacultyNumber), nameof(@StudentDetailsDto.ServiceData.FacultyNumber))]
-    [MapProperty(nameof(@Student.ServiceData.GroupNumber), nameof(@StudentDetailsDto.ServiceData.GroupNumber))]
-    [MapProperty(nameof(@Student.ServiceData.EnrolledInSemester), nameof(@StudentDetailsDto.ServiceData.EnrolledInSemester))]
-    public partial StudentDetailsDto MapStudentToStudentDetailsDto(Student entity);
+
+    [UserMapping]
+    public StudentDetailsDto MapStudentToStudentDetailsDto(Student entity)
+    {
+        return new StudentDetailsDto
+        {
+            ServiceData = new()
+            {
+                Pin = entity.ServiceData.Pin,
+                StudentStatus = GetStudentStatusString(entity.ServiceData.Status),
+                PlanNumber = entity.ServiceData.PlanNumber,
+                FacultyNumber = entity.ServiceData.FacultyNumber,
+                GroupNumber = entity.ServiceData.GroupNumber,
+                EnrolledInSemester = entity.ServiceData.EnrolledInSemester
+            },
+            PersonalData = new()
+            {
+                CityArea = new()
+                {
+                    City = entity.PersonalData.CityArea.City,
+                    Area = entity.PersonalData.CityArea.Area
+                },
+                FirstName = entity.PersonalData.FirstName,
+                MiddleName = entity.PersonalData.MiddleName,
+                LastName = entity.PersonalData.LastName,
+                UniqueIdentifier = new()
+                {
+                    Identifier = entity.PersonalData.UniqueIdentifier.Identifier,
+                    UniqueIdentifierType = 
+                        GetPersonalUniqueIdentifierTypeString(entity.PersonalData.UniqueIdentifier.UniqueIdentifierType)
+                },
+                InsuranceNumber = entity.PersonalData.InsuranceNumber,
+                BirthDate = entity.PersonalData.BirthDate.ToBulgarianDateFormatString(),
+                Gender = GetGenderString(entity.PersonalData.Gender),
+                Citizenship = entity.PersonalData.Citizenship,
+                IdCard = new()
+                {
+                    IdNumber = entity.PersonalData.IdCard?.IdNumber ?? string.Empty,
+                    DateIssued = entity.PersonalData.IdCard?.DateIssued.ToBulgarianDateFormatString() ?? string.Empty
+                },
+                Email = entity.PersonalData.Email,
+            },
+            PermanentResidence = new()
+            {
+                CityArea = new()
+                {
+                    City = entity.PermanentResidence.CityArea.City,
+                    Area = entity.PermanentResidence.CityArea.Area
+                },
+                Street = entity.PermanentResidence.Street,
+                PhoneNumber = entity.PermanentResidence.PhoneNumber
+            },
+            TemporaryResidence = new()
+            {
+                CityArea = new()
+                {
+                    City = entity.TemporaryResidence.CityArea.City,
+                    Area = entity.TemporaryResidence.CityArea.Area
+                },
+                Street = entity.TemporaryResidence.Street,
+                PhoneNumber = entity.TemporaryResidence.PhoneNumber
+            },
+            UsualResidenceCountry = entity.UsualResidenceCountry,
+            Enrollment = new()
+            {
+                Date = entity.Enrollment.Date.ToBulgarianDateFormatString(),
+                Reason = entity.Enrollment.Reason,
+                Mark = entity.Enrollment.Mark
+            },
+            DiplomaOwned = new()
+            {
+                EducationalAndQualificationDegree = 
+                    GetEducationalAndQualificationalDegreeString(entity.DiplomaOwned.EducationalAndQualificationDegree),
+                Series = entity.DiplomaOwned.Series,
+                Number = entity.DiplomaOwned.Number,
+                RegistrationNumber = entity.DiplomaOwned.RegistrationNumber,
+                Date = entity.DiplomaOwned.Date.ToBulgarianDateFormatString(),
+                Year = entity.DiplomaOwned.Year,
+                IssuedByInstitutionType = GetInstitutionIssuerTypeString(entity.DiplomaOwned.IssuedByInstitutionType),
+                InstitutionName = entity.DiplomaOwned.InstitutionName,
+                CityArea = new()
+                {
+                    City = entity.DiplomaOwned.CityArea.City,
+                    Area = entity.DiplomaOwned.CityArea.Area
+                },
+                Specialty = entity.DiplomaOwned.Specialty,
+                ProfessionalQualification = entity.DiplomaOwned.ProfessionalQualification,
+            }
+        };
+    }
     
     [MapProperty(nameof(@CreateStudentDto.ServiceData.Pin), nameof(@Student.ServiceData.Pin))]
     [MapProperty(nameof(@CreateStudentDto.ServiceData.StudentStatus), nameof(@Student.ServiceData.Status))]
@@ -66,6 +145,47 @@ public partial class StudentMapper
             StudentStatus.Interrupted => "Прекъснал",
             StudentStatus.Graduated => "Завършил",
             _ => throw new ArgumentException("Unknown student status!")
+        };
+    }
+    
+    private string GetPersonalUniqueIdentifierTypeString(PersonalUniqueIdentifierType identifierType)
+    {
+        return identifierType switch
+        {
+            PersonalUniqueIdentifierType.Egn => "ЕГН",
+            PersonalUniqueIdentifierType.Ssn => "SSN",
+            _ => throw new ArgumentException("Unknown unique identifier type!")
+        };
+    }
+
+    private string GetGenderString(Gender gender)
+    {
+        return gender switch
+        {
+            Gender.Male => "мъжки",
+            Gender.Female => "женски",
+            _ => throw new ArgumentException("Invalid gender!")
+        };
+    }
+    
+    private string GetEducationalAndQualificationalDegreeString(EducationalAndQualificationalDegree degree)
+    {
+        return degree switch
+        {
+            EducationalAndQualificationalDegree.HighSchool => "Средно образование",
+            EducationalAndQualificationalDegree.Bachelor => "Бакалавър",
+            EducationalAndQualificationalDegree.Master => "Магистър",
+            _ => throw new ArgumentException("Invalid degree!")
+        };
+    }
+    
+    private string GetInstitutionIssuerTypeString(InstitutionIssuerType issuer)
+    {
+        return issuer switch
+        {
+            InstitutionIssuerType.HighSchool => "Гимназия",
+            InstitutionIssuerType.University => "Университет",
+            _ => throw new ArgumentException("Invalid institution issuer type!")
         };
     }
 

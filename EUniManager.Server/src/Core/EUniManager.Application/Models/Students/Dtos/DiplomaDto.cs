@@ -10,7 +10,7 @@ public sealed record DiplomaDto
 
     public string RegistrationNumber { get; set; } = null!;
 
-    public DateOnly Date { get; set; }
+    public string Date { get; set; } = null!;
 
     public short Year { get; set; }
 

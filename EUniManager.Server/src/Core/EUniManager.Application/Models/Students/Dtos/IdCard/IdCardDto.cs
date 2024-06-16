@@ -3,6 +3,6 @@
 public sealed record IdCardDto
 {
     public string IdNumber { get; set; } = null!;
-    
-    public DateOnly DateIssued { get; set; }
+
+    public string DateIssued { get; set; } = null!;
 }

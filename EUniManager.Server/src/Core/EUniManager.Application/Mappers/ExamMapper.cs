@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-
+﻿using EUniManager.Application.Extensions;
 using EUniManager.Application.Models.Exams.Dtos;
 using EUniManager.Domain.Entities;
 using EUniManager.Domain.Enums;
@@ -20,7 +19,7 @@ public partial class ExamMapper
             SubjectCourseName = e.Subject.Course.Name,
             SpecialtyName = e.Subject.Specialty.Name,
             ExamType = GetExamTypeString(e.Type),
-            Date = e.Date.ToString("dd.MM.yyyy г.", CultureInfo.GetCultureInfo("bg-BG")),
+            Date = e.Date.ToBulgarianDateFormatString(),
             Time = e.Time.ToShortTimeString(),
             SchedulePlace = GetSchedulePlaceString(e.Place),
             RoomNumber = e.RoomNumber,
@@ -59,7 +58,7 @@ public partial class ExamMapper
             Id = e.Id,
             SubjectCourseName = e.Subject.Course.Name,
             ExamType = GetExamTypeString(e.Type),
-            Date = e.Date.ToString("dd.MM.yyyy г.", CultureInfo.GetCultureInfo("bg-BG")),
+            Date = e.Date.ToBulgarianDateFormatString(),
             Time = e.Time.ToShortTimeString(),
             SchedulePlace = GetSchedulePlaceString(e.Place),
             RoomNumber = e.RoomNumber,

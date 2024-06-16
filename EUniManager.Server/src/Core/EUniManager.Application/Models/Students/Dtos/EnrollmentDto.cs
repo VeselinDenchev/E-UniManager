@@ -2,7 +2,7 @@
 
 public sealed record EnrollmentDto
 {
-    public DateOnly Date { get; set; }
+    public string Date { get; set; } = null!;
 
     public string Reason { get; set; } = null!;
 

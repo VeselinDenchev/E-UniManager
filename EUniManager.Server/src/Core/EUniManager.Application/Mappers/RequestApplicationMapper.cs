@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-
+﻿using EUniManager.Application.Extensions;
 using EUniManager.Application.Models.RequestApplications.Dtos;
 using EUniManager.Domain.Entities;
 using EUniManager.Domain.Enums;
@@ -18,10 +17,8 @@ public partial class RequestApplicationMapper
             Number = ra.Number,
             StudentPin = ra.Student.ServiceData.Pin,
             RequestApplicationType = GetRequestApplicationTypeString(ra.Type),
-            RegistryDate = ra.RegistryDate.ToString("dd.M.yyyy г. HH:mm:ss", CultureInfo.GetCultureInfo("bg-BG")),
-            ResolutionDate = ra.ResolutionDate.HasValue 
-                                 ? ra.ResolutionDate.Value.ToString("dd.M.yyyy г. HH:mm:ss", CultureInfo.GetCultureInfo("bg-BG"))
-                                 : null,
+            RegistryDate = ra.RegistryDate.ToBulgarianDateTimeFormatString(),
+            ResolutionDate = ra.ResolutionDate?.ToBulgarianDateTimeFormatString(),
             FileId = ra.File.Id
         }).ToList();
     }
