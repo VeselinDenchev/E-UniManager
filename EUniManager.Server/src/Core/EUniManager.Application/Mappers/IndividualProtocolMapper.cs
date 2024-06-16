@@ -1,4 +1,5 @@
-﻿using EUniManager.Application.Models.IndividualProtocols.Dtos;
+﻿using EUniManager.Application.Extensions;
+using EUniManager.Application.Models.IndividualProtocols.Dtos;
 using EUniManager.Domain.Entities;
 using EUniManager.Domain.Enums;
 
@@ -17,7 +18,7 @@ public partial class IndividualProtocolMapper
             Id = ip.Id,
             SubjectCourseName = ip.Subject.Course.Name,
             Status = GetIndividualProtocolStatusString(ip.Status),
-            CreatedAt = ip.CreatedAt
+            CreatedAt = ip.CreatedAt.ToBulgarianDateTimeFormatString()
         }).ToList();
     }
     

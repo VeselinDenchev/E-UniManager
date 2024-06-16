@@ -10,5 +10,5 @@ public sealed record IndividualProtocolDto : IEntityDto
 
     public required string Status { get; set; } = null!;
 
-    public required DateTime CreatedAt { get; set; }
+    public required string CreatedAt { get; set; }
 }
