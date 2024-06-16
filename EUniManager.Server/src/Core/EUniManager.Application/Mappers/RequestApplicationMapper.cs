@@ -14,6 +14,7 @@ public partial class RequestApplicationMapper
     {
         return entities.Select(ra => new RequestApplicationDto
         {
+            Id = ra.Id,
             Number = ra.Number,
             StudentPin = ra.Student.ServiceData.Pin,
             RequestApplicationType = GetRequestApplicationTypeString(ra.Type),

@@ -4,6 +4,8 @@ namespace EUniManager.Application.Models.RequestApplications.Dtos;
 
 public sealed record RequestApplicationDto : IEntityDto
 {
+    public Guid Id { get; set; }
+    
     public required int Number { get; set; }
     
     public required long StudentPin { get; set; }
