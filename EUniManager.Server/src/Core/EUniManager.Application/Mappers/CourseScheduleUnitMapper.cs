@@ -65,7 +65,7 @@ public partial class CourseScheduleUnitMapper
         return new CourseScheduleUnitDetailsDto
         {
             DayOfWeek = GetDayOfWeekString(courseScheduleUnit.DayOfWeek),
-            ExactDate = courseScheduleUnit.ExactDate?.ToString("dd.MM.yyyy г.", CultureInfo.GetCultureInfo("bg-BG")),
+            ExactDate = courseScheduleUnit.ExactDate?.ToBulgarianDateFormatString(),
             StartTime = courseScheduleUnit.StartTime.ToShortTimeString(),
             EndTime = courseScheduleUnit.EndTime.ToShortTimeString(),
             ScheduleMonthlyFrequency = GetMonthlyFrequencyString(courseScheduleUnit.MonthlyFrequency),

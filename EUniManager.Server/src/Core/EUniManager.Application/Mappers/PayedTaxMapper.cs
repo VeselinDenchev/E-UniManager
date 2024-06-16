@@ -1,11 +1,14 @@
 ﻿using System.Globalization;
 
+using EUniManager.Application.Extensions;
 using EUniManager.Application.Models.PayedTaxes.Dtos;
 using EUniManager.Domain.Entities;
 using EUniManager.Domain.Entities.Students;
 using EUniManager.Domain.Enums;
 
 using Riok.Mapperly.Abstractions;
+
+using static EUniManager.Application.Extensions.DateExtensions;
 
 namespace EUniManager.Application.Mappers;
 
@@ -20,7 +23,7 @@ public partial class PayedTaxMapper
             FacultyNumber = pt.Student.ServiceData.FacultyNumber,
             TaxNumber = pt.TaxNumber,
             DocumentNumber = pt.DocumentNumber,
-            DocumentDate = pt.DocumentDate.ToString("dd.MM.yyyy г.", CultureInfo.GetCultureInfo("bg-BG")),
+            DocumentDate = pt.DocumentDate.ToBulgarianDateFormatString(),
             Semester = pt.Semester,
             PlanNumber = pt.PlanNumber,
             Amount = pt.Amount,
@@ -32,7 +35,8 @@ public partial class PayedTaxMapper
     [MapProperty(nameof(@PayedTax.Student.PersonalData.FirstName), nameof(PayedTaxDetailsDto.FirstName))]
     [MapProperty(nameof(@PayedTax.Student.PersonalData.MiddleName), nameof(PayedTaxDetailsDto.MiddleName))]
     [MapProperty(nameof(@PayedTax.Student.PersonalData.LastName), nameof(PayedTaxDetailsDto.LastName))]
-    [MapProperty(nameof(PayedTax.DocumentDate), nameof(PayedTaxDetailsDto.DocumentDate), StringFormat = "dd.MM.yyyy г.")]
+    [MapProperty(nameof(PayedTax.DocumentDate), nameof(PayedTaxDetailsDto.DocumentDate), 
+                 StringFormat = BULGARIAN_DATE_FORMAT)]
     public partial PayedTaxDetailsDto Map(PayedTax entity);
     
     [MapperIgnoreTarget(nameof(PayedTax.Id))]
@@ -45,10 +49,6 @@ public partial class PayedTaxMapper
     [MapperIgnoreTarget(nameof(PayedTax.CreatedAt))]
     [MapperIgnoreTarget(nameof(PayedTax.ModifiedAt))]
     public partial PayedTax Map(UpdatePayedTaxDto dto);
-
-    private int GetStudentFacultyNumber(Student student) => student.ServiceData.FacultyNumber;
-
-    private string GetDateString(DateOnly date) => date.ToString("dd.MM.yyyy г.");
     
     private string GetCurrencyString(Currency currency)
     {

@@ -5,6 +5,8 @@ public static class RoutesConstant
     public const string BASE_ROUTE_TEMPLATE = "/{0}";
 
     public const string ASSIGNMENT_SOLUTIONS_ROUTE = "assignment-solutions";
+    
+    public const string CERTIFIED_SEMESTERS_ROUTE = "certified-semesters";
 
     public const string COURSE_SCHEDULE_UNITS_ROUTE = "course-schedule-units";
     
