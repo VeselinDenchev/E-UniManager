@@ -13,7 +13,7 @@ using static EUniManager.Api.Constants.RoutesConstant;
 
 namespace EUniManager.Api.CarterModules;
 
-public sealed class ActivityModule
+public sealed class ActivityModule()
     : CrudCarterModule<
             IActivityService,
             Activity,
@@ -21,22 +21,28 @@ public sealed class ActivityModule
             ActivityDetailsDto,
             CreateActivityDto,
             IUpdateDto>
-
+      (string.Format(BASE_ROUTE_TEMPLATE, nameof(IEUniManagerDbContext.Activities).ToLowerInvariant()))
 {
-    public ActivityModule()
-        : base(string.Format(BASE_ROUTE_TEMPLATE, nameof(IEUniManagerDbContext.Activities).ToLowerInvariant()))
-    {
-        RequireAuthorization(ADMIN_POLICY_NAME);
-    }
-    
+    private const string GET_ALL_FOR_STUDENT_ROUTE = "/students";
     private const string TOGGLE_ACTIVITY_ROUTE = "/{id}/toggle";
     
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet(string.Empty, GetAll);
-        app.MapGet(ID_ROUTE, GetById);
-        app.MapPost(string.Empty, Create);
-        app.MapPatch(TOGGLE_ACTIVITY_ROUTE, ToggleActivity);
+        app.MapGet(string.Empty, GetAll).RequireAuthorization(ADMIN_POLICY_NAME);
+        app.MapGet(GET_ALL_FOR_STUDENT_ROUTE, GetAllForStudent).RequireAuthorization(STUDENT_POLICY_NAME);
+        app.MapGet(ID_ROUTE, GetById).RequireAuthorization(ADMIN_POLICY_NAME);
+        app.MapPost(string.Empty, Create).RequireAuthorization(ADMIN_POLICY_NAME);
+        app.MapPatch(TOGGLE_ACTIVITY_ROUTE, ToggleActivity).RequireAuthorization(ADMIN_POLICY_NAME);
+    }
+
+    private async Task<Results<Ok<List<ActivityDto>>, UnauthorizedHttpResult>> GetAllForStudent(
+        IActivityService activityService,
+        CancellationToken cancellationToken
+    )
+    {
+        List<ActivityDto> activities = await activityService.GetAllForStudentAsync(cancellationToken);
+
+        return TypedResults.Ok(activities);
     }
     
     private async Task<Results<NoContent, NotFound>> ToggleActivity

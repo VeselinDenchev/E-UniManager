@@ -1,8 +1,8 @@
-﻿using EUniManager.Application.Models.Base.Interfaces;
+﻿using EUniManager.Application.Models.AssigmentSolutions.Dtos;
 
 namespace EUniManager.Application.Models.Assignments.Dtos;
 
-public record AssignmentDetailsDto : IDetailsDto
+public sealed record AssignmentWithSolutionDto
 {
     public string Title { get; set; } = null!;
 
@@ -13,4 +13,6 @@ public record AssignmentDetailsDto : IDetailsDto
     public string DueDate { get; set; } = null!;
     
     public string? Description { get; set; }
+
+    public AssignmentSolutionDetailsDto Solution { get; set; } = null!;
 }

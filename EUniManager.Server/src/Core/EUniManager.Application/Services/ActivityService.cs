@@ -8,15 +8,24 @@ using EUniManager.Domain.Entities;
 using EUniManager.Domain.Entities.Students;
 using EUniManager.Domain.Enums;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace EUniManager.Application.Services;
 
-public class ActivityService(IEUniManagerDbContext dbContext)
-    : BaseService<Activity, Guid, ActivityDto, ActivityDetailsDto>(dbContext), IActivityService
+public class ActivityService
+    : BaseService<Activity, Guid, ActivityDto, ActivityDetailsDto>, 
+      IActivityService
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ActivityMapper _activityMapper = new();
 
+    public ActivityService(IEUniManagerDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        : base(dbContext)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
+    
     public override async Task<List<ActivityDto>> GetAllAsync(CancellationToken cancellationToken)
     {
         List<Activity> activityEntities = await _dbSet.Include(a => a.Teacher)
@@ -164,6 +173,24 @@ public class ActivityService(IEUniManagerDbContext dbContext)
         throw new NotImplementedException();
     }
 
+    public async Task<List<ActivityDto>> GetAllForStudentAsync(CancellationToken cancellationToken)
+    {
+        Guid studentId = await GetStudentIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
+        
+        List<Activity> activityEntities = await _dbSet.Include(a => a.Teacher)
+                                                      .Include(a => a.Subject).ThenInclude(s => s.Course)
+                                                      .Include(a => a.Students)
+                                                      .Where(a => a.Students.Any(s => s.Id == studentId))
+                                                      .OrderByDescending(a => a.Subject.Semester)
+                                                          .ThenBy(a => a.Subject.Course.Name)
+                                                          .ThenByDescending(a => a.Type)
+                                                      .ToListAsync(cancellationToken);
+        
+        List<ActivityDto> activityDtos = _activityMapper.Map(activityEntities);
+
+        return activityDtos;
+    }
+    
     public async Task ToggleActivity(Guid id, CancellationToken cancellationToken)
     {
         int rowsAffected = await _dbSet.Where(a => a.Id == id)

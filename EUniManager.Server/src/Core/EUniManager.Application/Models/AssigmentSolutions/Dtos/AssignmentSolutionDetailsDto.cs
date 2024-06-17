@@ -5,17 +5,21 @@ namespace EUniManager.Application.Models.AssigmentSolutions.Dtos;
 
 public sealed record AssignmentSolutionDetailsDto : IDetailsDto
 {
+    public Guid Id { get; set; }
+    
     public string? FileId { get; set; }
 
-    public DateTime? CreatedAt { get; set; }
+    public string? FileExtension { get; set; }
 
-    public DateTime? SeenOn { get; set; }
+    public string? CreatedAt { get; set; }
+
+    public string? SeenOn { get; set; }
     
-    public DateTime? UploadedOn { get; set; }
+    public string? UploadedOn { get; set; }
     
     public Mark? Mark { get; set; }
 
-    public DateTime? MarkedOn { get; set; }
+    public string? MarkedOn { get; set; }
 
     public string? Comment { get; set; }
 }

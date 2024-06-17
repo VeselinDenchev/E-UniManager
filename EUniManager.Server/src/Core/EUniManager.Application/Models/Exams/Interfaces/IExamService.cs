@@ -6,5 +6,5 @@ namespace EUniManager.Application.Models.Exams.Interfaces;
 
 public interface IExamService : IBaseService<Exam, Guid, ExamDto, ExamDetailsDto>
 {
-    Task<List<StudentExamDto>> GetAllForStudentBySemesterAsync(byte currentYear, CancellationToken cancellationToken);
+    Task<List<StudentExamDto>> GetAllForStudentAsync(CancellationToken cancellationToken);
 }

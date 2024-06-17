@@ -16,7 +16,7 @@ public sealed class ExamModule()
     : CrudCarterModule<IExamService, Exam, ExamDto, ExamDetailsDto, CreateExamDto, UpdateExamDto>
         (string.Format(BASE_ROUTE_TEMPLATE, nameof(IEUniManagerDbContext.Exams).ToLowerInvariant()))
 {
-    private const string GET_EXAMS_FOR_STUDENT_BY_SEMESTER_ROUTE = "/students/years/{currentYear}";
+    private const string GET_EXAMS_FOR_STUDENT_BY_SEMESTER_ROUTE = "/students";
     
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
@@ -29,11 +29,10 @@ public sealed class ExamModule()
     private async Task<Results<Ok<List<StudentExamDto>>, BadRequest, NotFound>> GetAllForStudentBySemester
     (
         IExamService examService,
-        [FromRoute] byte currentYear,
         CancellationToken cancellationToken
     )
     {
-        var semesterExams = await examService.GetAllForStudentBySemesterAsync(currentYear, cancellationToken);
+        var semesterExams = await examService.GetAllForStudentAsync(cancellationToken);
 
         return TypedResults.Ok(semesterExams);
     }

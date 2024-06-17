@@ -6,6 +6,7 @@ using EUniManager.Application.Models.DbContexts;
 using EUniManager.Domain.Entities;
 
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 using static EUniManager.Api.Constants.PoliciesConstant;
 using static EUniManager.Api.Constants.RoutesConstant;
@@ -22,6 +23,7 @@ public sealed class AssignmentModule()
             UpdateAssignmentDto>
         (string.Format(BASE_ROUTE_TEMPLATE, nameof(IEUniManagerDbContext.Assignments).ToLowerInvariant()))
 {
+    private const string GET_WITH_SOLUTION_BY_ID_ROUTE = "/{id}/with-solution";
     private const string GET_STUDENT_ASSIGNMENTS_ROUTE = "/students";
     private const string GET_TEACHER_ASSIGNMENTS_ROUTE = "/teachers";
     
@@ -31,8 +33,21 @@ public sealed class AssignmentModule()
         app.MapPost(string.Empty, Create).RequireAuthorization(TEACHER_POLICY_NAME);
         app.MapPut(ID_ROUTE, Update).RequireAuthorization(TEACHER_POLICY_NAME);
         app.MapDelete(ID_ROUTE, Delete).RequireAuthorization(TEACHER_POLICY_NAME);
+        app.MapGet(GET_WITH_SOLUTION_BY_ID_ROUTE, GetWithSolutionById).RequireAuthorization(STUDENT_POLICY_NAME);
         app.MapGet(GET_STUDENT_ASSIGNMENTS_ROUTE, GetStudentAssignments).RequireAuthorization(STUDENT_POLICY_NAME);
         app.MapGet(GET_TEACHER_ASSIGNMENTS_ROUTE, GetTeacherAssignments).RequireAuthorization(TEACHER_POLICY_NAME);
+    }
+    
+    private async Task<Results<Ok<AssignmentWithSolutionDto>, BadRequest, NotFound>> GetWithSolutionById
+    (
+        IAssignmentService assignmentService,
+        [FromRoute] Guid id,
+        CancellationToken cancellationToken
+    )
+    {
+        var studentAssignments = await assignmentService.GetByIdWithStudentSolutionAsync(id, cancellationToken);
+
+        return TypedResults.Ok(studentAssignments);
     }
     
     private async Task<Results<Ok<List<AssignmentDto>>, BadRequest, NotFound>> GetStudentAssignments

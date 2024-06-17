@@ -6,14 +6,23 @@ using EUniManager.Application.Models.Specialties.Interfaces;
 using EUniManager.Application.Services.Base;
 using EUniManager.Domain.Entities;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace EUniManager.Application.Services;
 
-public sealed class SpecialtyService(IEUniManagerDbContext dbContext)
-    : BaseService<Specialty, Guid, SpecialtyDto, SpecialtyDetailsDto>(dbContext), ISpecialtyService
+public sealed class SpecialtyService
+    : BaseService<Specialty, Guid, SpecialtyDto, SpecialtyDetailsDto>, 
+      ISpecialtyService
 {
+    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly SpecialtyMapper _specialtyMapper = new();
+
+    public SpecialtyService(IEUniManagerDbContext dbContext, IHttpContextAccessor httpContextAccessor)
+        : base(dbContext)
+    {
+        _httpContextAccessor = httpContextAccessor;
+    }
 
     public override async Task<List<SpecialtyDto>> GetAllAsync(CancellationToken cancellationToken)
     {

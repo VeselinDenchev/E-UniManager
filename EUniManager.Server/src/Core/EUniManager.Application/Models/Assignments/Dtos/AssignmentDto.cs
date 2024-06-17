@@ -8,9 +8,9 @@ public record AssignmentDto : IEntityDto
     
     public string Title { get; set; } = null!;
 
-    public DateTime StartDate { get; set; }
-    
-    public DateTime DueDate { get; set; }
+    public string StartDate { get; set; } = null!;
+
+    public string DueDate { get; set; } = null!;
     
     public string? Description { get; set; }
 }

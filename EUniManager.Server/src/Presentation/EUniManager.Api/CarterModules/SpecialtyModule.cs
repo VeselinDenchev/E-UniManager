@@ -23,6 +23,7 @@ public sealed class SpecialtyModule
             IUpdateDto>
 {
     private const string GET_ALL_BY_FACULTY_ROUTE = "/faculties/{facultyId}";
+    private const string GET_SPECIALTY_YEAR_DATA_ROUTE = "/year";
     private const string GRADUATE_ROUTE = "/{id}/graduate";
     private const string INCREMENT_ACADEMIC_YEAR_ROUTE = "/increment-academic-year";
 

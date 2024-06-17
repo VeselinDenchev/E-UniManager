@@ -1,4 +1,7 @@
-﻿using EUniManager.Application.Models.AssigmentSolutions.Dtos;
+﻿using System.Runtime.CompilerServices;
+
+using EUniManager.Application.Extensions;
+using EUniManager.Application.Models.AssigmentSolutions.Dtos;
 using EUniManager.Domain.Entities;
 
 using Riok.Mapperly.Abstractions;
@@ -22,7 +25,15 @@ public partial class AssignmentSolutionMapper
         }).ToList();
     }
     
+    [MapProperty(nameof(AssignmentSolution.Id), nameof(AssignmentSolutionDetailsDto.Id))]
+    [MapProperty(nameof(AssignmentSolution.CreatedAt), nameof(AssignmentSolutionDetailsDto.CreatedAt), Use = nameof(FormatDateToBulgarianDateTime))]
+    [MapProperty(nameof(AssignmentSolution.SeenOn), nameof(AssignmentSolutionDetailsDto.SeenOn), Use = nameof(FormatDateToBulgarianDateTime))]
+    [MapProperty(nameof(AssignmentSolution.UploadedOn), nameof(AssignmentSolutionDetailsDto.UploadedOn), Use = nameof(FormatDateToBulgarianDateTime))]
+    [MapProperty(nameof(AssignmentSolution.SeenOn), nameof(AssignmentSolutionDetailsDto.SeenOn), Use = nameof(FormatDateToBulgarianDateTime))]
+    [MapProperty(nameof(AssignmentSolution.MarkedOn), nameof(AssignmentSolutionDetailsDto.MarkedOn), Use = nameof(FormatDateToBulgarianDateTime))]
     [MapProperty(nameof(@AssignmentSolution.File.Id), nameof(AssignmentSolutionDetailsDto.FileId))]
+    [MapProperty(nameof(@AssignmentSolution.File.Extension), nameof(AssignmentSolutionDetailsDto.FileExtension))]
+
     public partial AssignmentSolutionDetailsDto Map(AssignmentSolution entity);
     
     [MapperIgnoreTarget(nameof(AssignmentSolution.Id))]
@@ -32,4 +43,6 @@ public partial class AssignmentSolutionMapper
     [MapperIgnoreTarget(nameof(AssignmentSolution.Student))]
     [MapperIgnoreTarget(nameof(AssignmentSolution.File))]
     public partial AssignmentSolution Map(ManageAssignmentSolutionDto dto);
+
+    private string? FormatDateToBulgarianDateTime(DateTime? dateTime) => dateTime?.ToBulgarianDateTimeFormatString();
 }

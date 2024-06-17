@@ -187,6 +187,7 @@ public sealed class ResourceService :
             bool hasActivity = await _dbContext.Activities.AsNoTracking()
                                                           .Include(a => a.Students)
                                                           .AnyAsync(a => a.Id == activityId &&
+                                                                         !a.IsStopped &&
                                                                          a.Students.Any(s => s.Id == studentId), 
                                                                     cancellationToken);
 
@@ -197,7 +198,7 @@ public sealed class ResourceService :
                                                    .Include(r => r.Activity).ThenInclude(a => a.Students)
                                                    .Include(r => r.File)
                                                    .Include(r => r.Assignment)
-                                                   .Where(r => r.Activity.Id == activityId && 
+                                                   .Where(r => r.Activity.Id == activityId &&
                                                                r.Activity.Students.Any(s => s.Id == studentId))
                                                    .ToListAsync(cancellationToken);
         }

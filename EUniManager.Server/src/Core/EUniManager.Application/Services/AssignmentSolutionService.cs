@@ -1,4 +1,5 @@
-﻿using EUniManager.Application.Helpers;
+﻿using EUniManager.Application.Extensions;
+using EUniManager.Application.Helpers;
 using EUniManager.Application.Mappers;
 using EUniManager.Application.Models.AssigmentSolutions.Dtos;
 using EUniManager.Application.Models.AssigmentSolutions.Interfaces;
@@ -108,9 +109,8 @@ public sealed class AssignmentSolutionService
         {
             throw new ArgumentException("Unauthorized access!");
         }
-        
-        AssignmentSolution assignmentSolution = _assignmentSolutionMapper.Map(manageSolutionDto);
-        assignmentSolution.Id = id;
+
+        AssignmentSolution assignmentSolution = await _dbSet.FindAsync(id);
         assignmentSolution.Student = student;
         assignmentSolution.Assignment = await _dbSet.Include(asol => asol.Assignment)
                                                     .Where(asol => asol.Id == id)

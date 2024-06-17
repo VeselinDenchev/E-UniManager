@@ -1,4 +1,5 @@
-﻿using EUniManager.Application.Models.Activities.Dtos;
+﻿using EUniManager.Application.Extensions;
+using EUniManager.Application.Models.Activities.Dtos;
 using EUniManager.Domain.Entities;
 using EUniManager.Domain.Enums;
 
@@ -15,6 +16,8 @@ public partial class ActivityMapper
         return entities.Select(a => new ActivityDto
         {
             Id = a.Id,
+            CreatedAt = DateOnly.FromDateTime(a.CreatedAt).ToBulgarianDateFormatString(),
+            Semester = a.Subject.Semester,
             ActivityType = MapActivityTypeToString(a.Type),
             TeacherFullNameWithRank = a.Teacher.FullNameWithRank,
             SubjectCourseName = a.Subject.Course.Name,

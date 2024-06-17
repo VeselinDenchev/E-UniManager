@@ -100,8 +100,7 @@ public sealed class ExamService : BaseService<Exam, Guid, ExamDto, ExamDetailsDt
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<List<StudentExamDto>> GetAllForStudentBySemesterAsync(byte currentYear, 
-                                                                            CancellationToken cancellationToken)
+    public async Task<List<StudentExamDto>> GetAllForStudentAsync(CancellationToken cancellationToken)
     {
         Guid studentId = await GetStudentIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
         
@@ -112,8 +111,7 @@ public sealed class ExamService : BaseService<Exam, Guid, ExamDto, ExamDetailsDt
                                                 .ThenInclude(s => s.Specialty)
                         .Include(e => e.Subject).ThenInclude(s => s.Lecturer)
                         .Where(e => e.Subject.Students.Any(s => s.Id == studentId &&
-                                                                s.ServiceData.EnrolledInSemester >= (currentYear * 2 - 1) &&
-                                                                s.Specialty.CurrentYear == currentYear))
+                                                                s.ServiceData.EnrolledInSemester >= s.Specialty.CurrentYear * 2 - 1))
                         .OrderBy(e => e.Date).ThenBy(e => e.Time)
                         .ToListAsync(cancellationToken);
 
