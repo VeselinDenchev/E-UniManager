@@ -33,7 +33,7 @@ export default function Unauthorized() {
         <LockIcon style={{ fontSize: 100, color: 'grey' }} />
       </Box>
       <Typography variant="h4" component="h1" gutterBottom>
-        Неоторизиан достъп
+        Неоторизиран достъп
       </Typography>
       <Typography variant="body1" gutterBottom>
         Нямате нужните права, за да достъпите тази страница.
