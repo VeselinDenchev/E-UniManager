@@ -6,8 +6,6 @@ services:
     volumes:
       - /app/node_modules
       - ./EUniManager.Client:/app
-      - "/etc/timezone:/etc/timezone:ro"
-      - "/etc/localtime:/etc/localtime:ro"
     environment:
       - CHOKIDAR_USEPOLLING=true # create-ui-app <= 5.x
       - WATCHPACK_POLLING=true # create-ui-app >= 5.x
@@ -21,8 +19,6 @@ services:
     volumes:
       - ./EUniManager.Server:/app
       - ./EUniManager.Server/src/Presentation/EUniManager.Api/https:/https:ro
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
     environment:
       - DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSER=true
       - DOTNET_WATCH_SUPPRESS_MSBUILD_INCREMENTALISM=true
