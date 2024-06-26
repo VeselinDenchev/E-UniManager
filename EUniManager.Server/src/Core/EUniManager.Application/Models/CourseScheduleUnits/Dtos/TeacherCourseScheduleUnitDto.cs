@@ -13,20 +13,18 @@ public sealed record TeacherCourseScheduleUnitDto
     public required string? SchedulePlace { get; set; }
     
     public required short RoomNumber { get; set; }
+    
+    public required string SpecialtyName { get; set; }
 
     public required int SpecialtyCurrentYear { get; set; }
 
-    public required byte? GroupNumber { get; set; } = null!;
-    
-    public required string GroupType { get; set; } = null!;
+    public string? Group { get; set; }
     
     public required string ActivitySubjectCourseName { get; set; } = null!;
     
     public required string ActivityType { get; set; } = null!;
 
     public required string SpecialtyEducationType { get; set; } = null!;
-
-    public required string SemesterType { get; set; } = null!;
 
     public required string ActivitySubjectControlType { get; set; } = null!;
 }

@@ -48,13 +48,12 @@ public partial class CourseScheduleUnitMapper
                 Week = GetMonthlyFrequencyString(csu.MonthlyFrequency),
                 SchedulePlace = GetSchedulePlaceString(csu.Place),
                 RoomNumber = csu.RoomNumber,
+                SpecialtyName = csu.Activity.Subject.Specialty.Name,
                 SpecialtyCurrentYear = csu.Activity.Subject.Specialty.CurrentYear,
-                GroupNumber = csu.GroupNumber,
-                GroupType = GetGroupTypeString(csu.GroupType),
+                Group = GetGroupString(csu.GroupNumber, csu.GroupType),
                 ActivitySubjectCourseName = csu.Activity.Subject.Course.Name,
                 ActivityType = GetActivityTypeString(csu.Activity.Type),
                 SpecialtyEducationType = GetSpecialtyEducationTypeString(csu.Activity.Subject.Specialty.EducationType),
-                SemesterType = GetSemesterTypeString(csu.SemesterType),
                 ActivitySubjectControlType = GetSubjectControlTypeString(csu.Activity.Subject.ControlType)
             }).ToList();
     }
