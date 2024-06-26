@@ -3,14 +3,15 @@ import { useNavigate } from "react-router-dom";
 import { Container, Box, Button, Typography, TextField } from '@mui/material';
 import { login } from '../../../services/identityService';
 import { UserContext } from '../../../contexts/UserContext';
-import { StudentContext } from '../../../contexts/StudentContext';
+import { RoleContext } from '../../../contexts/RoleContext';
 import { containsOnlyDigits } from '../../../utils/regexUtil';
 // import { ThemeContext } from '../../../contexts/ThemeContext';
+import { UserRoles } from '../../../utils/userRoles';
 
 export default function Login() {
     // const { isDarkMode, toggleTheme } = useContext(ThemeContext);
     const { userLogin } = useContext(UserContext);
-    const { setIsStudent } = useContext(StudentContext);
+    const { setUserRole } = useContext(RoleContext);
 
     const navigate = useNavigate();
 
@@ -26,12 +27,12 @@ export default function Login() {
             userLogin(authData);
 
             if (containsOnlyDigits(loginData.email)) {
-                setIsStudent(true);
+                setUserRole(UserRoles.STUDENT);
                 navigate('/students/home');
             }
             else {
-                setIsStudent(false);
-                navigate('/teachers');
+                setUserRole(UserRoles.TEACHER);
+                navigate('/teachers/home');
             }
 
         })

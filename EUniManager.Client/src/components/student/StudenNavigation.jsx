@@ -1,12 +1,30 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate, NavLink } from 'react-router-dom';
-import { AppBar, Box, Toolbar, Typography, Button, CssBaseline, IconButton, Drawer, List, ListItem, Divider } from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  Typography,
+  Button,
+  CssBaseline,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  Divider,
+  Tooltip
+} from '@mui/material';
 import { UserContext } from '../../contexts/UserContext';
-import { StudentContext } from '../../contexts/StudentContext';
+import { RoleContext } from '../../contexts/RoleContext';
 import { getHeaderData } from '../../services/studentService';
-import logo from '../../assets/img/logo.webp'; // Adjust the import path as necessary
+import logo from '../../assets/img/logo.webp';
+import HomeIcon from '@mui/icons-material/Home';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import LogoutIcon from '@mui/icons-material/Logout';
 
-const drawerWidth = 300; // Increase the width here
+const drawerWidth = 300;
+
+const mainNavItemIconsFontSize = 35;
 
 const navItems = [
   { label: 'Персонални данни', path: '/students/personal-data' },
@@ -21,8 +39,8 @@ const navItems = [
 ];
 
 const mainNavItems = [
-  { label: 'Начало', path: '/students/home' },
-  { label: 'Учебни ресурси', path: '/students/activities' },
+  { label: 'Начало', path: '/students/home', icon: <HomeIcon sx={{ fontSize: mainNavItemIconsFontSize }} /> },
+  { label: 'Учебни ресурси', path: '/students/activities', icon: <MenuBookIcon sx={{ fontSize: mainNavItemIconsFontSize }} /> },
 ];
 
 export default function StudentNavigation() {
@@ -40,7 +58,7 @@ export default function StudentNavigation() {
 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const { bearerToken, userLogout } = useContext(UserContext);
-  const { setIsStudent } = useContext(StudentContext);
+  const { setUserRole } = useContext(RoleContext);
 
   const navigate = useNavigate();
 
@@ -51,7 +69,7 @@ export default function StudentNavigation() {
         console.log(error);
         navigate('/login'); // change with error page
       });
-  }, [bearerToken, navigate]);
+  }, [bearerToken]);
 
   const handleDrawerToggle = () => {
     setIsDrawerOpen(!isDrawerOpen);
@@ -59,7 +77,7 @@ export default function StudentNavigation() {
 
   const handleLogout = () => {
     userLogout();
-    setIsStudent(false);
+    setUserRole({});
     navigate('/login');
   };
 
@@ -122,41 +140,51 @@ export default function StudentNavigation() {
             </Box>
           </Box>
           <Box sx={{ display: 'flex' }}>
-          {mainNavItems.map((item) => (
-            <Button
-              key={item.label}
-              color="inherit"
-              component={NavLink}
-              to={item.path}
-              className="nav-item nav-link"
-              sx={{
-                '&:hover': {
-                  backgroundColor: 'rgba(255, 255, 255, 0.2)', // Lighter hover effect
-                  color: 'white',
-                }
-              }}
-            >
-              {item.label}
-            </Button>
-          ))}
-          <Button
-            color="inherit"
-            component={NavLink}
-            to="/logout"
-            onClick={(e) => {
-              e.preventDefault(); // Prevents navigation
-              handleLogout();
-            }}
-            className="nav-item nav-link"
-            sx={{
-              '&:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.2)', // Lighter hover effect
-                color: 'white',
-              },
-            }}
-          >
-            Изход
-          </Button>
+            {mainNavItems.map((item) => (
+            <Tooltip key={item.label} title={<span style={{ fontSize: '1.2em' }}>{item.label}</span>}  arrow>
+              <Button
+                key={item.label}
+                color="inherit"
+                component={NavLink}
+                to={item.path}
+                className="nav-item nav-link"
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  margin: '0 10px', // Adjust the margin as needed
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)', // Lighter hover effect
+                    color: 'white',
+                  }
+                }}
+              >
+                {item.icon}
+              </Button>
+            </Tooltip>
+            ))}
+            <Tooltip title={<span style={{ fontSize: '1.2em' }}>Изход</span>}  arrow>
+              <Button
+                color="inherit"
+                component={NavLink}
+                to="/logout"
+                onClick={(e) => {
+                  e.preventDefault(); // Prevents navigation
+                  handleLogout();
+                }}
+                className="nav-item nav-link"
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  margin: '0 10px', // Adjust the margin as needed
+                  '&:hover': {
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)', // Lighter hover effect
+                    color: 'white',
+                  },
+                }}
+              >
+                <LogoutIcon sx={{ fontSize: mainNavItemIconsFontSize }} />
+              </Button>
+            </Tooltip>
           </Box>
         </Toolbar>
       </AppBar>

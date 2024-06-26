@@ -1,22 +1,24 @@
 import { Routes, Route } from 'react-router-dom';
 import './App.css'
-import TeacherHome from './components/pages/teacher/home/TeacherHome';
 import Login from './components/pages/login/Login'
 import { UserProvider } from './contexts/UserContext'
-import { StudentProvider } from './contexts/StudentContext';
-import StudentLayout from './layouts/StudentLayout'
+import { RoleProvider } from './contexts/RoleContext';
+import StudentLayout from './layouts/StudentLayout';
+import TeacherLayout from './layouts/TeacherLayout';
+import Unauthorized from './components/pages/error/Unauthorized';
 
 function App() {
   return (
     <>
       <UserProvider>
-        <StudentProvider>
+        <RoleProvider>
           <Routes>
-            <Route path="/students/*" element={<StudentLayout />} />
-            <Route exact path="/teachers" element={<TeacherHome />} />
-            <Route exact path="/login" element={<Login />} />
+            <Route path='/students/*' element={<StudentLayout />} />
+            <Route path='/teachers/*' element={<TeacherLayout />} />
+            <Route exact path='/login' element={<Login />} />
+            <Route exact path='/unauthorized' element={<Unauthorized />} />
           </Routes>
-        </StudentProvider>
+        </RoleProvider>
       </UserProvider>
     </>
   )

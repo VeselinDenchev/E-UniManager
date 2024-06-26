@@ -2,7 +2,7 @@ import React from 'react';
 import { useContext } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { UserContext } from '../contexts/UserContext';
-import { StudentContext } from '../contexts/StudentContext';
+import { RoleContext } from '../contexts/RoleContext';
 import StudentHome from '../components/pages/student/home/StudentHome';
 import StudentNavigation from '../components/student/StudenNavigation';
 import StudentPersonalData from '../components/pages/student/personal-data/StudentPersonalData';
@@ -17,16 +17,17 @@ import StudentExamsSchedule from '../components/pages/student/exams-schedule/Stu
 import StudentActivitiesList from '../components/pages/student/activity/StudentActivitiesList';
 import ActivityResourcesList from '../components/pages/resources/ActivityResourcesList';
 import Assignment from '../components/pages/student/assignment/Assignment';
+import { UserRoles } from '../utils/userRoles';
 
 export default function StudentLayout () {
     const { isAuthenticated } = useContext(UserContext);
-    const { isStudent } = useContext(StudentContext);
+    const { userRole } = useContext(RoleContext);
 
     if (!isAuthenticated) {
         return <Navigate to='/login' />;
-      }
+    }
     
-    if (!isStudent) {
+    if (userRole !== UserRoles.STUDENT) {
       return <Navigate to='/unauthorized' />
     }
     
