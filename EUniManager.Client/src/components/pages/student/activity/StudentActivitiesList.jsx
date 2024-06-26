@@ -33,7 +33,7 @@ export default function StudentActivitiesList() {
 
   return (
     <Container sx={{ mt: 4 }}>
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ mb: 6 }}>
         <Typography variant="h4" gutterBottom>Учебни ресурси</Typography>
       </Box>
       <TableContainer component={Paper} elevation={6}>

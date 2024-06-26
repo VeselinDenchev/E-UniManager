@@ -31,18 +31,20 @@ export default function StudentSubjectsList() {
 
   return (
     <Container sx={{ mt: 0 }}>
-      <Box>
+      <Box sx={{ mb: 6 }}>
         <Typography variant="h4" gutterBottom>Резултати от изпитите</Typography>
+      </Box>
+      <Box>
         <TableContainer component={Paper} elevation={6}>
           <Table sx={{ borderCollapse: 'collapse' }}>
             <TableHead>
               <TableRow sx={{ backgroundColor: '#1976d2' }}>
-                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Сем.</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Семестър</TableCell>
                 <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Дисциплина</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Л</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>У</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Лекции</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Упражнения</TableCell>
                 <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Оценка</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Кр.</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Кредити</TableCell>
                 <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Преподавател</TableCell>
                 <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Протокол</TableCell>
               </TableRow>

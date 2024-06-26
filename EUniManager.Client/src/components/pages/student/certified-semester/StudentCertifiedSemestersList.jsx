@@ -33,9 +33,11 @@ export default function StudentSertifiedSemestersList() {
 
   return (
     <Container sx={{ mt: 0 }}>
-      <Box>
+      <Box sx={{ mb: 6 }}>
         <Typography variant="h4" gutterBottom>Заверени семестри</Typography>
-        <TableContainer component={Paper} elevation={6}>
+      </Box>
+      <Box>
+      <TableContainer component={Paper} elevation={6}>
           <Table sx={{ minWidth: 650, borderCollapse: 'collapse' }}>
             <TableHead>
               <TableRow sx={{ backgroundColor: '#1976d2' }}>

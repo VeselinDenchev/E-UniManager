@@ -32,8 +32,10 @@ export default function StudentIndividualProtocolsList() {
 
   return (
     <Container sx={{ mt: 0 }}>
-      <Box>
+      <Box sx={{ mb:6 }}>
         <Typography variant="h4" gutterBottom>Индивидуални протоколи</Typography>
+      </Box>
+      <Box>
         <TableContainer component={Paper} elevation={6}>
           <Table sx={{ minWidth: 650, borderCollapse: 'collapse' }}>
             <TableHead>

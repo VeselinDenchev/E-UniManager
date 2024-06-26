@@ -42,7 +42,7 @@ export default function StudentSchedule({ title, type }) {
 
   return (
     <Container sx={{ mt: 4 }}>
-      <Box sx={{ mb: 2 }}>
+      <Box sx={{ mb: 6 }}>
         <Typography variant="h4" gutterBottom>{title}</Typography>
       </Box>
       <FormControl sx={{ mr: 2, minWidth: 150 }}>
