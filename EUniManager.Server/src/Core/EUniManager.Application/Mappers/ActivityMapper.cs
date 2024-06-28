@@ -11,21 +11,37 @@ namespace EUniManager.Application.Mappers;
 public partial class ActivityMapper
 {
     [UserMapping]
-    public List<ActivityDto> Map(List<Activity> entities)
+    public List<ActivityDto> MapStudentActivitiesList(List<Activity> entities)
     {
         return entities.Select(a => new ActivityDto
         {
             Id = a.Id,
             CreatedAt = DateOnly.FromDateTime(a.CreatedAt).ToBulgarianDateFormatString(),
             Semester = a.Subject.Semester,
-            ActivityType = MapActivityTypeToString(a.Type),
+            ActivityType = a.Type.ToBulgarianString(),
             TeacherFullNameWithRank = a.Teacher.FullNameWithRank,
             SubjectCourseName = a.Subject.Course.Name,
             IsStopped = a.IsStopped
         }).ToList();
     }
     
-    [MapProperty(nameof(Activity.Type), nameof(ActivityDetailsDto.ActivityType), Use = nameof(MapActivityTypeToString))]
+    [UserMapping]
+    public List<TeacherActivityDto> MapTeacherActivitiesList(List<Activity> entities)
+    {
+        return entities.Select(a => new TeacherActivityDto()
+        {
+            Id = a.Id,
+            SpecialtyName = a.Subject.Specialty.Name,
+            EducationType = a.Subject.Specialty.EducationType.ToBulgarianString(),
+            FacultyName = a.Subject.Specialty.Faculty.Name,
+            CourseName = a.Subject.Course.Name,
+            Semester = a.Subject.Semester,
+            ActivityType = a.Type.ToBulgarianString(),
+            IsStopped = a.IsStopped
+        }).ToList();
+    }
+    
+    [MapProperty(nameof(Activity.Type), nameof(ActivityDetailsDto.ActivityType), Use = nameof(ActivityTypeToBulgarianString))]
     [MapProperty(nameof(@Activity.Teacher.FullNameWithRank), nameof(ActivityDetailsDto.TeacherFullNameWithRank))]
     [MapProperty(nameof(@Activity.Subject.Course.Name), nameof(ActivityDetailsDto.SubjectCourseName))]
     public partial ActivityDetailsDto Map(Activity entity);
@@ -46,13 +62,5 @@ public partial class ActivityMapper
     [MapperIgnoreTarget(nameof(Activity.Teacher))]
     public partial Activity Map(UpdateActivityDto dto);
 
-    private string MapActivityTypeToString(ActivityType activityType)
-    {
-        return activityType switch
-        {
-            ActivityType.Lecture => "Лекция",
-            ActivityType.Exercise => "Упражнение",
-            _ => throw new ArgumentException("Invalid specialty activity type!")
-        };
-    }
+    private string ActivityTypeToBulgarianString(ActivityType activityType) => activityType.ToBulgarianString();
 }

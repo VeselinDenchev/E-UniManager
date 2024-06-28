@@ -32,7 +32,7 @@ public class ActivityService
                                                       .Include(a => a.Subject).ThenInclude(s => s.Course)
                                                       .ToListAsync(cancellationToken);
         
-        List<ActivityDto> activityDtos = _activityMapper.Map(activityEntities);
+        List<ActivityDto> activityDtos = _activityMapper.MapStudentActivitiesList(activityEntities);
 
         return activityDtos;
     }
@@ -177,7 +177,8 @@ public class ActivityService
     {
         Guid studentId = await GetStudentIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
         
-        List<Activity> activityEntities = await _dbSet.Include(a => a.Teacher)
+        List<Activity> activityEntities = await _dbSet.AsNoTracking()
+                                                      .Include(a => a.Teacher)
                                                       .Include(a => a.Subject).ThenInclude(s => s.Course)
                                                       .Include(a => a.Students)
                                                       .Where(a => a.Students.Any(s => s.Id == studentId))
@@ -186,7 +187,26 @@ public class ActivityService
                                                           .ThenByDescending(a => a.Type)
                                                       .ToListAsync(cancellationToken);
         
-        List<ActivityDto> activityDtos = _activityMapper.Map(activityEntities);
+        List<ActivityDto> activityDtos = _activityMapper.MapStudentActivitiesList(activityEntities);
+
+        return activityDtos;
+    }
+    
+    public async Task<List<TeacherActivityDto>> GetAllForTeacherAsync(CancellationToken cancellationToken)
+    {
+        Guid teacherId = await GetTeacherIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
+        
+        List<Activity> activityEntities = await _dbSet.Include(a => a.Teacher)
+                                                      .Include(a => a.Subject).ThenInclude(s => s.Course)
+                                                      .Include(a => a.Subject).ThenInclude(s => s.Specialty)
+                                                                              .ThenInclude(s => s.Faculty)
+                                                      .Where(a => a.Teacher.Id == teacherId)
+                                                      .OrderByDescending(a => a.Subject.Semester)
+                                                          .ThenBy(a => a.Subject.Course.Name)
+                                                          .ThenByDescending(a => a.Type)
+                                                      .ToListAsync(cancellationToken);
+        
+        List<TeacherActivityDto> activityDtos = _activityMapper.MapTeacherActivitiesList(activityEntities);
 
         return activityDtos;
     }

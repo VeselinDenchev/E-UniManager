@@ -4,7 +4,7 @@ using static EUniManager.Application.Constants.ServiceConstant;
 
 namespace EUniManager.Application.Extensions;
 
-public static class ApplicationLayerConfiguration
+public static class ApplicationLayerConfigurationExtensions
 {
     public static IServiceCollection AddApplicationLayerConfiguration(this IServiceCollection services)
     {
