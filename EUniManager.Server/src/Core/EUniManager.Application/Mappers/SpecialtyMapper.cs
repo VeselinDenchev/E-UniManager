@@ -1,7 +1,9 @@
-﻿using EUniManager.Application.Models.Specialties.Dtos;
+﻿using EUniManager.Application.Extensions;
+using EUniManager.Application.Models.Specialties.Dtos;
 using EUniManager.Application.Models.Students.Dtos;
 using EUniManager.Domain.Entities;
 using EUniManager.Domain.Entities.Students;
+using EUniManager.Domain.Enums;
 
 using Riok.Mapperly.Abstractions;
 
@@ -11,11 +13,14 @@ namespace EUniManager.Application.Mappers;
 public partial class SpecialtyMapper
 {
     [MapProperty(nameof(@Specialty.Faculty.Name), nameof(SpecialtyDto.FacultyName))]
+    [MapProperty(nameof(Specialty.EducationalAndQualificationDegree), nameof(SpecialtyDto.EducationalAndQualificationDegree),
+        Use = nameof(EducationAndQualificationDegreeToBulgarianString))]
     public partial List<SpecialtyDto> Map(List<Specialty> entities);
     
     [MapProperty(nameof(@Specialty.Faculty.Name), nameof(SpecialtyDetailsDto.FacultyName))]
-    [MapProperty(nameof(Specialty.Name), nameof(SpecialtyDetailsDto.SpecialtyName))]
-    [MapProperty(nameof(Specialty.Students), nameof(SpecialtyDetailsDto.Students), Use = nameof(MapStudentsToStudentIds))]
+    [MapProperty(nameof(Specialty.Name), nameof(SpecialtyDetailsDto.Name))]
+    [MapProperty(nameof(Specialty.EducationalAndQualificationDegree), nameof(SpecialtyDetailsDto.EducationalAndQualificationDegree), 
+        Use = nameof(EducationAndQualificationDegreeToBulgarianString))]
     public partial SpecialtyDetailsDto Map(Specialty entity);
     
     [MapperIgnoreTarget(nameof(Specialty.Id))]
@@ -30,4 +35,7 @@ public partial class SpecialtyMapper
                Pin = s.ServiceData.Pin,
                FullName = s.FullName
            }).ToList();
+
+    private string EducationAndQualificationDegreeToBulgarianString(EducationalAndQualificationDegree degree)
+        => degree.ToBulgarianString();
 }

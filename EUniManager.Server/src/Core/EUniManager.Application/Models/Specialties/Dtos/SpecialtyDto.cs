@@ -1,4 +1,6 @@
-﻿using EUniManager.Application.Models.Base.Interfaces;
+﻿using System.Text;
+
+using EUniManager.Application.Models.Base.Interfaces;
 
 namespace EUniManager.Application.Models.Specialties.Dtos;
 
@@ -9,6 +11,8 @@ public sealed record SpecialtyDto : IEntityDto
     public string FacultyName { get; set; } = null!;
 
     public string Name { get; set; } = null!;
+
+    public string EducationalAndQualificationDegree { get; set; } = null!;
 
     public int FirstAcademicYearStart { get; set; }
 

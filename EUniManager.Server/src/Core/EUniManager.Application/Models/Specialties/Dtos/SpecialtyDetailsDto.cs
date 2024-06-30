@@ -7,7 +7,9 @@ public sealed record SpecialtyDetailsDto : IDetailsDto
 {
     public string FacultyName { get; set; } = null!;
 
-    public string SpecialtyName { get; set; } = null!;
+    public string Name { get; set; } = null!;
+    
+    public string EducationalAndQualificationDegree { get; set; } = null!;
     
     public int FirstAcademicYearStart { get; set; }
 

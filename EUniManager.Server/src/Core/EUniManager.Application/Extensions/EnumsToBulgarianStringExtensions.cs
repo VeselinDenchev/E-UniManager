@@ -14,6 +14,17 @@ internal static class EnumsToBulgarianStringExtensions
         };
     }
     
+    internal static string ToBulgarianString(this EducationalAndQualificationDegree educationalAndQualificationDegree)
+    {
+        return educationalAndQualificationDegree switch
+        {
+            EducationalAndQualificationDegree.HighSchool => "Средно образование",
+            EducationalAndQualificationDegree.Bachelor => "Бакалавър",
+            EducationalAndQualificationDegree.Master => "Магистър",
+            _ => throw new ArgumentException("Invalid degree!")
+        };
+    }
+    
     internal static string ToBulgarianString(this SpecialtyEducationType educationType)
     {
         return educationType switch

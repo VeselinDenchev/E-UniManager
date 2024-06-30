@@ -34,7 +34,7 @@ public sealed class ActivityModule()
         app.MapGet(GET_ALL_FOR_TEACHER_ROUTE, GetAllForTeacher).RequireAuthorization(TEACHER_POLICY_NAME);
         app.MapGet(ID_ROUTE, GetById).RequireAuthorization(ADMIN_POLICY_NAME);
         app.MapPost(string.Empty, Create).RequireAuthorization(ADMIN_POLICY_NAME);
-        app.MapPatch(TOGGLE_ACTIVITY_ROUTE, ToggleActivity).RequireAuthorization(ADMIN_POLICY_NAME);
+        app.MapPatch(TOGGLE_ACTIVITY_ROUTE, ToggleActivity).RequireAuthorization(TEACHER_POLICY_NAME);
     }
 
     private async Task<Results<Ok<List<ActivityDto>>, UnauthorizedHttpResult>> GetAllForStudent(

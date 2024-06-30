@@ -32,6 +32,7 @@ public partial class ActivityMapper
         {
             Id = a.Id,
             SpecialtyName = a.Subject.Specialty.Name,
+            EducationalAndQualificationDegree = a.Subject.Specialty.EducationalAndQualificationDegree.ToBulgarianString(),
             EducationType = a.Subject.Specialty.EducationType.ToBulgarianString(),
             FacultyName = a.Subject.Specialty.Faculty.Name,
             CourseName = a.Subject.Course.Name,

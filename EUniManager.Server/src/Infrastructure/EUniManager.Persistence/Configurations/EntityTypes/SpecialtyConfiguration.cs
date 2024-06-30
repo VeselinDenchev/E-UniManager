@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using static EUniManager.Persistence.Constants.SqlConstant;
 using static EUniManager.Persistence.Constants.Entities.SpecialtyConstant;
 using static EUniManager.Persistence.Constants.Entities.YearConstant;
+using static EUniManager.Persistence.Constants.Entities.EducationalAndQualificationDegreeConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes;
 
@@ -50,6 +51,11 @@ public sealed class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, 
                                              .HasConversion<string>()
                                              .IsUnicode(false)
                                              .HasMaxLength(EDUCATION_TYPE_MAX_STRING_LENGTH);
+        
+        entity.Property(s => s.EducationalAndQualificationDegree).IsRequired()
+                                                                 .HasConversion<string>()
+                                                                 .IsUnicode(false)
+                                                                 .HasMaxLength(EDUCATIONAL_AND_QUALIFICATION_DEGREE_MAX_STRING_LENGTH);
 
         entity.ToTable(table =>
         {

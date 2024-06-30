@@ -168,13 +168,13 @@ public partial class StudentMapper
         };
     }
     
-    private string GetEducationalAndQualificationalDegreeString(EducationalAndQualificationalDegree degree)
+    private string GetEducationalAndQualificationalDegreeString(EducationalAndQualificationDegree degree)
     {
         return degree switch
         {
-            EducationalAndQualificationalDegree.HighSchool => "Средно образование",
-            EducationalAndQualificationalDegree.Bachelor => "Бакалавър",
-            EducationalAndQualificationalDegree.Master => "Магистър",
+            EducationalAndQualificationDegree.HighSchool => "Средно образование",
+            EducationalAndQualificationDegree.Bachelor => "Бакалавър",
+            EducationalAndQualificationDegree.Master => "Магистър",
             _ => throw new ArgumentException("Invalid degree!")
         };
     }

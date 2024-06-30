@@ -2,8 +2,6 @@
 
 public static class DiplomaConstant
 {
-    public const byte EDUCATIONAL_AND_QUALIFICATION_DEGREE_MAX_STRING_LENGTH = 30;
-    
     public const byte SERIES_MAX_STRING_LENGTH = 4;
 
     public const byte NUMBER_MAX_STRING_LENGTH = 6;

@@ -9,6 +9,7 @@ using static EUniManager.Persistence.Constants.SqlConstant;
 using static EUniManager.Persistence.Constants.Entities.Students.DiplomaConstant;
 using static EUniManager.Persistence.Constants.Entities.Students.CityAreaConstant;
 using static EUniManager.Persistence.Constants.Entities.YearConstant;
+using static EUniManager.Persistence.Constants.Entities.EducationalAndQualificationDegreeConstant;
 
 namespace EUniManager.Persistence.Configurations.EntityTypes.Students;
 

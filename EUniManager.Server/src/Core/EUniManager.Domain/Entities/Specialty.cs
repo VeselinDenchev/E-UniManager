@@ -23,4 +23,6 @@ public class Specialty : BaseEntity<Guid>
     public bool HasGraduated { get; set; }
 
     public SpecialtyEducationType EducationType { get; set; }
+
+    public EducationalAndQualificationDegree EducationalAndQualificationDegree { get; set; }
 }

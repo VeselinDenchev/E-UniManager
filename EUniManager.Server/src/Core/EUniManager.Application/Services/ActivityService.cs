@@ -213,14 +213,20 @@ public class ActivityService
     
     public async Task ToggleActivity(Guid id, CancellationToken cancellationToken)
     {
-        int rowsAffected = await _dbSet.Where(a => a.Id == id)
-                                       .ExecuteUpdateAsync(s => s.SetProperty(p => p.IsStopped,
-                                                           p => !p.IsStopped),
-                                                           cancellationToken);
+        Guid teacherId = await GetTeacherIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
 
-        if (rowsAffected > 0) return;
+        Activity activity = await _dbSet.Include(a => a.Teacher)
+                                        .FirstOrDefaultAsync(a => a.Id == id, cancellationToken) ??
+                            throw new ArgumentException($"Such {nameof(Activity).ToLowerInvariant()} doesn't exist");
+
+        if (activity.Teacher.Id != teacherId)
+        {
+            throw new ArgumentException("Unauthorized access!");
+        }
+
+        activity.IsStopped = !activity.IsStopped;
         
-        throw new ArgumentException($"Such {nameof(Exam).ToLowerInvariant()} doesn't exist");
+        await base.UpdateEntityAsync(activity, cancellationToken);
     }
 
     protected override void SetNotModifiedPropertiesOnUpdate(Activity entity)
