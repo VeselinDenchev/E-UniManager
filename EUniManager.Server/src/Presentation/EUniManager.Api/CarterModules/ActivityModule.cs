@@ -56,7 +56,7 @@ public sealed class ActivityModule()
         return TypedResults.Ok(activities);
     }
     
-    private async Task<Results<NoContent, NotFound>> ToggleActivity
+    private async Task<Results<NoContent, UnauthorizedHttpResult, NotFound>> ToggleActivity
     (
         IActivityService assignmentService, 
         [FromRoute] Guid id,
