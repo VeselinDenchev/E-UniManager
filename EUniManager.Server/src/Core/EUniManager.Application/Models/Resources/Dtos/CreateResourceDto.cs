@@ -11,6 +11,8 @@ public sealed record CreateResourceDto : ICreateDto
     public string Title { get; set; } = null!;
     
     public string ResourceType { get; set; } = null!;
+    
+    public string? Info { get; set; }
 
     public UploadFileDto? File { get; set; } = null!;
 }
