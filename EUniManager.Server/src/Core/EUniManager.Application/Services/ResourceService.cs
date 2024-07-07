@@ -209,6 +209,7 @@ public sealed class ResourceService :
             bool hasActivity = await _dbContext.Activities.AsNoTracking()
                                                           .Include(a => a.Teacher)
                                                           .AnyAsync(a => a.Id == activityId &&
+                                                                         !a.IsStopped &&
                                                                          a.Teacher.Id == teacherId, cancellationToken);
 
             if (!hasActivity) throw new ArgumentException($"{nameof(Teacher)} doesn't have this activity"); // Unauthorized
