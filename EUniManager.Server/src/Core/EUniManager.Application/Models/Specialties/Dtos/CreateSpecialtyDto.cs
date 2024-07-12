@@ -13,4 +13,6 @@ public sealed record CreateSpecialtyDto : ICreateDto
     public byte CurrentYear { get; set; } // Default value 1
 
     public string EducationType { get; set; } = null!;
+
+    public string EducationalAndQualificationDegree { get; set; } = null!;
 }
