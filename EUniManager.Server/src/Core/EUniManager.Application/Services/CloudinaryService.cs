@@ -23,18 +23,18 @@ public sealed class CloudinaryService : ICloudinaryService
     // Without dots
     private readonly string[] imageFileExtensionsSupportedByCloudinary =
     [
-        MimeTypeMap.Extensions.JPG.Substring(1),
-        MimeTypeMap.Extensions.PNG.Substring(1),
-        MimeTypeMap.Extensions.GIF.Substring(1),
-        MimeTypeMap.Extensions.BMP.Substring(1),
-        MimeTypeMap.Extensions.TIFF.Substring(1),
-        MimeTypeMap.Extensions.ICO.Substring(1),
-        MimeTypeMap.Extensions.PDF.Substring(1),
-        MimeTypeMap.Extensions.EPS.Substring(1),
-        MimeTypeMap.Extensions.PSD.Substring(1),
-        MimeTypeMap.Extensions.SVG.Substring(1),
-        MimeTypeMap.Extensions.WEBP.Substring(1),
-        MimeTypeMap.Extensions.WDP.Substring(1),
+        MimeTypeMap.Extensions.JPG,
+        MimeTypeMap.Extensions.PNG,
+        MimeTypeMap.Extensions.GIF,
+        MimeTypeMap.Extensions.BMP,
+        MimeTypeMap.Extensions.TIFF,
+        MimeTypeMap.Extensions.ICO,
+        MimeTypeMap.Extensions.PDF,
+        MimeTypeMap.Extensions.EPS,
+        MimeTypeMap.Extensions.PSD,
+        MimeTypeMap.Extensions.SVG,
+        MimeTypeMap.Extensions.WEBP,
+        MimeTypeMap.Extensions.WDP,
     ];
 
     private readonly IEUniManagerDbContext _dbContext;
@@ -76,7 +76,7 @@ public sealed class CloudinaryService : ICloudinaryService
         string publicId = Guid.NewGuid().ToString();
         string fileName = $"{publicId}.{fileExtension}";
 
-        bool willBeUploadedLikeImage = mimeType.Contains("image") || fileExtension == "pdf";
+        bool willBeUploadedLikeImage = mimeType.Contains("image") || fileExtension == MimeTypeMap.Extensions.PDF;
         RawUploadParams uploadParams = willBeUploadedLikeImage ? new ImageUploadParams() : new RawUploadParams();
         
         await using MemoryStream stream = new(fileBytes);
@@ -111,9 +111,9 @@ public sealed class CloudinaryService : ICloudinaryService
         await SetFileExtensionAndCheckExistenceInDatabaseAndCloudinaryAsync(id, cancellationToken);
         
         string fileExtension = MimeTypeMap.GetExtensionWithoutDot(mimeType);
-        string fileName = $"{id}.{fileExtension}";
+        string fileName = $"{id}{fileExtension}";
 
-        bool willBeUploadedLikeImage = mimeType.Contains("image") || fileExtension == "pdf";
+        bool willBeUploadedLikeImage = mimeType.Contains("image") || fileExtension == MimeTypeMap.Extensions.PDF;
         RawUploadParams uploadParams = willBeUploadedLikeImage ? new ImageUploadParams() : new RawUploadParams();
         
         await using MemoryStream stream = new(fileBytes);
