@@ -21,7 +21,7 @@ public interface IEUniManagerDbContext
     
     public DbSet<Assignment> Assignments { get; set; }
     
-    public DbSet<AssignmentSolution> AssignmentsSolutions{ get; set; }
+    public DbSet<AssignmentSolution> AssignmentSolutions{ get; set; }
     
     public DbSet<CloudinaryFile> CloudinaryFiles { get; set; }
     

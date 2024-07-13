@@ -16,7 +16,7 @@ public class AssignmentSolution : BaseEntity<Guid>
 
     public DateTime? SeenOn { get; set; }
     
-    public DateTime? UploadedOn { get; set; }
+    public DateTime? SubmittedOn { get; set; }
     
     public Mark? Mark { get; set; }
 

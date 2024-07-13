@@ -31,7 +31,7 @@ public sealed class AssignmentSolutionConfiguration : BaseEntityConfiguration<As
         
         entity.Property(asol => asol.SeenOn).IsRequired(false);
         
-        entity.Property(asol => asol.UploadedOn).IsRequired(false);
+        entity.Property(asol => asol.SubmittedOn).IsRequired(false);
 
         entity.Property(asol => asol.Mark).IsRequired(false);
 
@@ -58,20 +58,20 @@ public sealed class AssignmentSolutionConfiguration : BaseEntityConfiguration<As
             $"{nameof(AssignmentSolution.SeenOn)} > {nameof(IAuditable.CreatedAt)}");
 
         checkConstraintTableColumns = checkConstraintTableColumns.Replace(nameof(AssignmentSolution.SeenOn), 
-                                                                          nameof(AssignmentSolution.UploadedOn))
+                                                                          nameof(AssignmentSolution.SubmittedOn))
                                                                  .Replace(nameof(IAuditable.CreatedAt),
                                                                           nameof(AssignmentSolution.SeenOn));
         assignmentSolutionsTable.HasCheckConstraint(string.Format(CHECK_CONSTRAINT_TEMPLATE, checkConstraintTableColumns), 
-            $"{nameof(AssignmentSolution.UploadedOn)} IS NULL OR " +
-            $"{nameof(AssignmentSolution.UploadedOn)} > {nameof(AssignmentSolution.SeenOn)}");
+            $"{nameof(AssignmentSolution.SubmittedOn)} IS NULL OR " +
+            $"{nameof(AssignmentSolution.SubmittedOn)} > {nameof(AssignmentSolution.SeenOn)}");
         
-        checkConstraintTableColumns = checkConstraintTableColumns.Replace(nameof(AssignmentSolution.UploadedOn), 
+        checkConstraintTableColumns = checkConstraintTableColumns.Replace(nameof(AssignmentSolution.SubmittedOn), 
                                                                           nameof(AssignmentSolution.MarkedOn))
                                                                  .Replace(nameof(AssignmentSolution.SeenOn),
-                                                                          nameof(AssignmentSolution.UploadedOn));
+                                                                          nameof(AssignmentSolution.SubmittedOn));
         assignmentSolutionsTable.HasCheckConstraint(string.Format(CHECK_CONSTRAINT_TEMPLATE, checkConstraintTableColumns), 
             $"{nameof(AssignmentSolution.MarkedOn)} IS NULL OR " +
-            $"{nameof(AssignmentSolution.MarkedOn)} > {nameof(AssignmentSolution.UploadedOn)}");
+            $"{nameof(AssignmentSolution.MarkedOn)} > {nameof(AssignmentSolution.SubmittedOn)}");
         
         checkConstraintTokens.RemoveAt(2);
         checkConstraintTokens[1] = nameof(AssignmentSolution.Mark);

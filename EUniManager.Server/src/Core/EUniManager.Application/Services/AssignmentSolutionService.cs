@@ -95,42 +95,40 @@ public sealed class AssignmentSolutionService
 
     public override async Task UpdateAsync(Guid id, IUpdateDto dto, CancellationToken cancellationToken)
     {
-        ManageAssignmentSolutionDto manageSolutionDto = (dto as ManageAssignmentSolutionDto)!;
-        
-        Student student  = await _dbSet.AsNoTracking()
-                                       .Include(asol => asol.Student)
-                                       .Where(asol => asol.Id == id)
-                                       .Select(asol => asol.Student)
-                                       .FirstAsync(cancellationToken);
+        ManageAssignmentSolutionDto solutionDto = (dto as ManageAssignmentSolutionDto)!;
 
+
+        AssignmentSolution solutionEntity = await _dbSet.Include(asol => asol.Assignment)
+                                                        .Include(asol => asol.Student)
+                                                        .FirstOrDefaultAsync(asol => asol.Id == id, cancellationToken) ??
+                                            throw new ArgumentException("Such assignment solution doesn't exist!");
+        
         Guid studentIdFromHttpContext = await GetStudentIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
 
-        if (student.Id != studentIdFromHttpContext)
+        if (solutionEntity.Student.Id != studentIdFromHttpContext)
         {
             throw new ArgumentException("Unauthorized access!");
         }
 
-        AssignmentSolution assignmentSolution = await _dbSet.FindAsync(id);
-        assignmentSolution.Student = student;
-        assignmentSolution.Assignment = await _dbSet.Include(asol => asol.Assignment)
-                                                    .Where(asol => asol.Id == id)
-                                                    .Select(asol => asol.Assignment)
-                                                    .FirstOrDefaultAsync(cancellationToken) ??
-                                         throw new ArgumentException("Such assignment solution doesn't exist!");
-
-        bool hasFileDataInRequest = manageSolutionDto.File is { Bytes: { Length: > 0 } } &&
-                                    !string.IsNullOrWhiteSpace(manageSolutionDto.File.MimeType);
-        if (assignmentSolution.Assignment.Type == AssignmentType.File && hasFileDataInRequest)
+        bool hasFileDataInRequest = solutionDto.File is { Bytes: { Length: > 0 } } &&
+                                    !string.IsNullOrWhiteSpace(solutionDto.File.MimeType);
+        if (solutionEntity.Assignment.Type is AssignmentType.File && hasFileDataInRequest)
         {
-            assignmentSolution.File = await _cloudinaryService.UploadAsync(manageSolutionDto.File!.Bytes,
-                                                                           manageSolutionDto.File.MimeType, 
-                                                                           cancellationToken);
-            assignmentSolution.UploadedOn = DateTime.Now;
+            solutionEntity.File = await _cloudinaryService.UploadAsync(solutionDto.File!.Bytes,
+                                                                       solutionDto.File.MimeType, 
+                                                                       cancellationToken);
+        }
+        else if (solutionEntity.Assignment.Type is AssignmentType.Text)
+        {
+            solutionEntity.Text = solutionDto.Text;
         }
         
-        SetNotModifiedPropertiesOnUpdate(assignmentSolution);
+        bool hasSolution = solutionEntity.File is not null || solutionEntity.Text is not null;
+        solutionEntity.SubmittedOn = hasSolution ? DateTime.Now : null;
         
-        await UpdateEntityAsync(assignmentSolution, cancellationToken);
+        SetNotModifiedPropertiesOnUpdate(solutionEntity);
+        
+        await UpdateEntityAsync(solutionEntity, cancellationToken);
     }
 
     // Can't delete single solution. All solutions related to assignment are deleted with it.

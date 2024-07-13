@@ -155,7 +155,7 @@ public sealed class AssignmentService
         if (solution.SeenOn is null)
         {
             solution.SeenOn = DateTime.Now;
-            _dbContext.AssignmentsSolutions.Update(solution);
+            _dbContext.AssignmentSolutions.Update(solution);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
         

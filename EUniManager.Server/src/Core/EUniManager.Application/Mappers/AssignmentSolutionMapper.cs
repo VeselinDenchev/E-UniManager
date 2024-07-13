@@ -28,7 +28,7 @@ public partial class AssignmentSolutionMapper
     [MapProperty(nameof(AssignmentSolution.Id), nameof(AssignmentSolutionDetailsDto.Id))]
     [MapProperty(nameof(AssignmentSolution.CreatedAt), nameof(AssignmentSolutionDetailsDto.CreatedAt), Use = nameof(FormatDateToBulgarianDateTime))]
     [MapProperty(nameof(AssignmentSolution.SeenOn), nameof(AssignmentSolutionDetailsDto.SeenOn), Use = nameof(FormatDateToBulgarianDateTime))]
-    [MapProperty(nameof(AssignmentSolution.UploadedOn), nameof(AssignmentSolutionDetailsDto.UploadedOn), Use = nameof(FormatDateToBulgarianDateTime))]
+    [MapProperty(nameof(AssignmentSolution.SubmittedOn), nameof(AssignmentSolutionDetailsDto.SubmittedOn), Use = nameof(FormatDateToBulgarianDateTime))]
     [MapProperty(nameof(AssignmentSolution.SeenOn), nameof(AssignmentSolutionDetailsDto.SeenOn), Use = nameof(FormatDateToBulgarianDateTime))]
     [MapProperty(nameof(AssignmentSolution.MarkedOn), nameof(AssignmentSolutionDetailsDto.MarkedOn), Use = nameof(FormatDateToBulgarianDateTime))]
     [MapProperty(nameof(@AssignmentSolution.File.Id), nameof(AssignmentSolutionDetailsDto.FileId))]
