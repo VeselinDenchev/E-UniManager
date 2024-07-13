@@ -60,6 +60,7 @@ public class ActivityService
         
         activity.Subject = await _dbContext.Subjects.Include(s => s.Lecturer)
                                                     .Include(s => s.Assistants)
+                                                    .Include(s => s.Students)
                                                     .FirstOrDefaultAsync(s => s.Id == createActivityDto.SubjectId, 
                                                                          cancellationToken) ??
                            throw new ArgumentException($"Such {nameof(Subject).ToLowerInvariant()} doesn't exist!");
