@@ -1,16 +1,16 @@
 import { apiRoute } from '../utils/baseRoutes.js'
-import { HttpMethod } from '../utils/httpMethods.js';
-import { getDefaultHeaders } from '../utils/headersUtils.js';
+import { HttpMethod, getDefaultHeaders, handleHttpResponse } from '../utils/httpUtils.js';
  
 const baseUrl = `${apiRoute}/course-schedule-units`;
 
 export async function getSchedule(scheduleType, semesterType, bearerToken) {
-    const response = await fetch(`${baseUrl}/schedule/${scheduleType}/semester-type/${semesterType}`, {
+    const url = `${baseUrl}/schedule/${scheduleType}/semester-type/${semesterType}`;
+    const response = await fetch(url, {
         method: HttpMethod.GET,
         headers: getDefaultHeaders(bearerToken)
     });
 
-    const result = await response.json(); 
+    const schedule = await handleHttpResponse(response);
 
-    return result;
+    return schedule;
 }

@@ -1,5 +1,5 @@
 import { apiRoute } from '../utils/baseRoutes.js'
-import { HttpMethod } from '../utils/httpMethods.js';
+import { HttpMethod, handleHttpResponse } from '../utils/httpUtils.js';
  
 const baseUrl = `${apiRoute}/identity`;
 
@@ -12,7 +12,7 @@ export async function login(userData) {
         body: JSON.stringify(userData)
     });
 
-    const result = await response.json(); 
+    const result = await handleHttpResponse(response);
 
     return result;
 }
@@ -26,7 +26,7 @@ export async function register(userData) {
         body: JSON.stringify(userData)
     });
 
-    const result = await response.json(); 
+    const result = await handleHttpResponse(response);
 
     return result;
 }

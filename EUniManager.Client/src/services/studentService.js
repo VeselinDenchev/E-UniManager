@@ -1,19 +1,15 @@
 import { apiRoute } from '../utils/baseRoutes.js'
-import { HttpMethod } from '../utils/httpMethods.js';
-import { getDefaultHeaders } from '../utils/headersUtils.js';
+import { HttpMethod, getDefaultHeaders, handleHttpResponse } from '../utils/httpUtils.js';
  
 const baseUrl = `${apiRoute}/students`;
 
 export async function getHeaderData(bearerToken) {
     const response = await fetch(`${baseUrl}/header`, {
         method: HttpMethod.GET,
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': bearerToken
-        }
+        headers: getDefaultHeaders(bearerToken)
     });
 
-    const result = await response.json(); 
+    const result = await handleHttpResponse(response);
 
     return result;
 }
@@ -24,7 +20,7 @@ export async function getDetails(bearerToken) {
         headers: getDefaultHeaders(bearerToken)
     });
 
-    const result = await response.json(); 
+    const result = await handleHttpResponse(response);
 
     return result;
 }

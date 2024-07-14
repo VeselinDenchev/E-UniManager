@@ -1,6 +1,5 @@
 import { apiRoute } from '../utils/baseRoutes.js'
-import { HttpMethod } from '../utils/httpMethods.js';
-import { getDefaultHeaders } from '../utils/headersUtils.js';
+import { HttpMethod, getDefaultHeaders, handleHttpResponse } from '../utils/httpUtils.js';
  
 const baseUrl = `${apiRoute}/assignments`;
 
@@ -10,9 +9,7 @@ export async function getAssignmentByIdWithSolution(id, bearerToken) {
         headers: getDefaultHeaders(bearerToken)
     });
 
-    const assignment =  await response.json();
-
-    console.log(JSON.stringify(assignment));
+    const assignment =  await handleHttpResponse(response);
 
     return assignment;
 }
@@ -23,7 +20,7 @@ export async function getAllAssignmentsForStudent(bearerToken) {
         headers: getDefaultHeaders(bearerToken)
     });
 
-    const assignments =  await response.json();
+    const assignments = await handleHttpResponse(response);
 
     return assignments;
 }
@@ -34,7 +31,7 @@ export async function getAllAssignmentsForTeacher(bearerToken) {
         headers: getDefaultHeaders(bearerToken)
     });
 
-    const assignments =  await response.json();
+    const assignments = await handleHttpResponse(response);
 
     return assignments;
 }

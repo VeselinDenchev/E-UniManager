@@ -1,6 +1,5 @@
 import { apiRoute } from '../utils/baseRoutes.js';
-import { HttpMethod } from '../utils/httpMethods.js';
-import { getDefaultHeaders } from '../utils/headersUtils.js';
+import { HttpMethod, getDefaultHeaders } from '../utils/httpUtils.js';
 
 const baseUrl = `${apiRoute}/files`;
 

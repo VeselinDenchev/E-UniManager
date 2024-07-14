@@ -1,6 +1,5 @@
 import { apiRoute } from '../utils/baseRoutes.js'
-import { HttpMethod } from '../utils/httpMethods.js';
-import { getDefaultHeaders } from '../utils/headersUtils.js';
+import { HttpMethod, getDefaultHeaders, handleHttpResponse } from '../utils/httpUtils.js';
  
 const baseUrl = `${apiRoute}/certified-semesters`;
 
@@ -10,7 +9,7 @@ export async function getStudentCertifiedSemesters(bearerToken) {
         headers: getDefaultHeaders(bearerToken)
     });
 
-    const result = await response.json(); 
+    const certifiedSemesters = await handleHttpResponse(response);
 
-    return result;
+    return certifiedSemesters;
 }
