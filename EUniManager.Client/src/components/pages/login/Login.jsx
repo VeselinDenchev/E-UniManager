@@ -1,4 +1,5 @@
-import { React, useState, useContext } from 'react';
+import React from 'react';
+import { useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Container, Box, Button, Typography, TextField } from '@mui/material';
 import { login } from '../../../services/identityService';
@@ -41,6 +42,12 @@ export default function Login() {
         });
     }
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleLogin();
+        }
+    };
+
     return (
         <Container
           maxWidth="sm"
@@ -69,7 +76,7 @@ export default function Login() {
             <Typography variant="h4" component="h1" gutterBottom>
               Вход
             </Typography>
-            <Box component="form" noValidate autoComplete="off" sx={{ mt: 1, width: '100%' }}>
+            <Box component="form" noValidate autoComplete="off" sx={{ mt: 1, width: '100%' }} onKeyPress={handleKeyPress}>
               <TextField
                 margin="normal"
                 required
