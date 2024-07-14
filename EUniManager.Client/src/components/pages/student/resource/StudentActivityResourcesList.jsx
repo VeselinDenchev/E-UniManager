@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useParams, useLocation, useNavigate, Link } from 'react-router-dom';
 import { 
     Container,
@@ -12,41 +11,41 @@ import {
     IconButton,
     Paper
 } from '@mui/material';
-import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-import ImageIcon from '@mui/icons-material/Image';
-import DescriptionIcon from '@mui/icons-material/Description';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import CreateIcon from '@mui/icons-material/Create';
 import DownloadIcon from '@mui/icons-material/Download';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import SchoolIcon from '@mui/icons-material/School';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
-import { UserContext } from '../../../contexts/UserContext';
-import { getActivityResources } from '../../../services/resourcesService';
-import { download } from '../../../services/fileService';
+import { UserContext } from '../../../../contexts/UserContext';
+import { getActivityResources } from '../../../../services/resourcesService';
+import { getIcon } from '../../../../utils/fileUtils';
+import { download } from '../../../../services/fileService';
 
-const getIcon = (type) => {
-  console.log(type);
-  switch (type) {
-    case 'pdf':
-      return <PictureAsPdfIcon sx={{ color: '#ff0000', fontSize: 40 }} />;
-    case 'png':
-    case 'jpg':
-    case 'gif':
-    case 'tiff':
-      return <ImageIcon sx={{ color: '#4caf50', fontSize: 40 }} />;
-    case 'docx':
-      return <DescriptionIcon sx={{ color: '#3b5998', fontSize: 40 }} />;
-    case 'xslx':
-      return <InsertDriveFileIcon sx={{ color: '#0d820d', fontSize: 40 }} />;
-    case 'pptx':
-      return <InsertDriveFileIcon sx={{ color: '#d24726', fontSize: 40 }} />;
-    default:
-      return <InsertDriveFileIcon sx={{ fontSize: 40 }} />;
+const iconButtonStyle = {
+  borderRadius: '50%',
+  padding: '12px',
+  color: 'white',
+};
+
+const hoverStyles = {
+  downloadButton: {
+    backgroundColor: '#4caf50',
+    '&:hover': {
+      backgroundColor: '#388e3c',
+      color: 'white'
+    }
+  },
+  visibilityButton: {
+    backgroundColor: '#64b5f6',
+    '&:hover': {
+      backgroundColor: '#42a5f5',
+      color: 'white'
+    }
   }
 };
 
-export default function ActivityResourcesList() {
+export default function StudentActivityResourcesList() {
   const { activityId } = useParams();
   const [resources, setResources] = useState([]);
   const { bearerToken } = useContext(UserContext);
@@ -76,20 +75,20 @@ export default function ActivityResourcesList() {
       <Box sx={{ textAlign: 'left' }}>
         <Typography variant="h4" gutterBottom>Учебен курс</Typography>
         <Box display="flex" alignItems="center">
-          <MenuBookIcon sx={{ marginRight: 1, verticalAlign: 'middle', fontSize: '1.5rem' }} /> {/* Subject icon */}
-          <Typography variant="h5" gutterBottom>{activity?.subjectCourseName}</Typography>
+          <MenuBookIcon sx={{ marginRight: 1, verticalAlign: 'middle', fontSize: '1.5rem' }} />
+          <Typography variant="h5">{activity?.subjectCourseName}</Typography>
         </Box>
         <Box display="flex" alignItems="center">
-          <SchoolIcon sx={{ marginRight: 1, verticalAlign: 'middle', fontSize: '1.25rem' }} /> {/* Teacher icon */}
-          <Typography variant="h6" gutterBottom>{activity?.teacherFullNameWithRank}</Typography>
+          <SchoolIcon sx={{ marginRight: 1, verticalAlign: 'middle', fontSize: '1.25rem' }} />
+          <Typography variant="h6">{activity?.teacherFullNameWithRank}</Typography>
         </Box>
       </Box>
       <Box sx={{ mb: 2, textAlign: 'left', paddingTop: 5 }}>
         <List>
           {resources.map(resource => (
             <Paper key={resource.id} sx={{ mb: 3, p: 2, border: '1px solid #ddd' }}>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', position: 'relative' }}>
-                <ListItem sx={{ flexGrow: 1 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative' }}>
+                <ListItem sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
                   <ListItemIcon sx={{ minWidth: '50px' }}>
                     {resource.file ? getIcon(resource.file.extension) : <InsertDriveFileIcon sx={{ fontSize: 40 }} />}
                   </ListItemIcon>
@@ -99,25 +98,23 @@ export default function ActivityResourcesList() {
                     sx={{ wordBreak: 'break-word' }}
                   />
                 </ListItem>
-                {resource.file && (
-                  <IconButton 
-                    sx={{ 
-                      backgroundColor: '#4caf50', 
-                      color: 'white', 
-                      '&:hover': {
-                        backgroundColor: '#388e3c',
-                        color: 'white'
-                      }
-                    }}
-                    onClick={() => handleDownload(resource.file.id)}
-                  >
-                    <DownloadIcon />
-                  </IconButton>
-                )}
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  {resource.file && (
+                    <IconButton 
+                      sx={{ 
+                        ...iconButtonStyle,
+                        ...hoverStyles.downloadButton
+                      }}
+                      onClick={() => handleDownload(resource.file.id)}
+                    >
+                      <DownloadIcon />
+                    </IconButton>
+                  )}
+                </Box>
               </Box>
               {resource.assignment && (
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mt: 2, position: 'relative' }}>
-                  <ListItem sx={{ flexGrow: 1 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 2, position: 'relative' }}>
+                  <ListItem sx={{ flexGrow: 1, display: 'flex', alignItems: 'center' }}>
                     <ListItemIcon sx={{ minWidth: '50px' }}>
                       <CreateIcon sx={{ color: '#ff9800', fontSize: 40 }} />
                     </ListItemIcon>
@@ -137,12 +134,8 @@ export default function ActivityResourcesList() {
                   </ListItem>
                   <IconButton 
                     sx={{ 
-                      backgroundColor: '#64b5f6', 
-                      color: 'white', 
-                      '&:hover': {
-                        backgroundColor: '#42a5f5',
-                        color: 'white'
-                      }
+                      ...iconButtonStyle,
+                      ...hoverStyles.visibilityButton
                     }}
                     component={Link}
                     to={`/students/assignments/${resource.assignment.id}`}

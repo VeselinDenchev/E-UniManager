@@ -15,7 +15,7 @@ import SpecialtySchedule from '../components/pages/student/schedules/SpecialtySc
 import FilteredStudentSchedule from '../components/pages/student/schedules/FilteredStudentSchedule';
 import StudentExamsSchedule from '../components/pages/student/exams-schedule/StudentExamsSchedule';
 import StudentActivitiesList from '../components/pages/student/activity/StudentActivitiesList';
-import ActivityResourcesList from '../components/pages/resources/ActivityResourcesList';
+import StudentActivityResourcesList from '../components/pages/student/resource/StudentActivityResourcesList';
 import Assignment from '../components/pages/student/assignment/Assignment';
 import { UserRoles } from '../utils/userRoles';
 
@@ -46,7 +46,7 @@ export default function StudentLayout () {
           <Route path='/schedule/filtered' element={<FilteredStudentSchedule />} />
           <Route path='/exams-schedule' element={<StudentExamsSchedule />} />
           <Route path='/activities' element={<StudentActivitiesList />} />
-          <Route path='/activities/:activityId' element={<ActivityResourcesList />} />
+          <Route path='/activities/:activityId/resources' element={<StudentActivityResourcesList />} />
           <Route path='/assignments/:assignmentId' element={<Assignment />} />
         </Routes>
       </>

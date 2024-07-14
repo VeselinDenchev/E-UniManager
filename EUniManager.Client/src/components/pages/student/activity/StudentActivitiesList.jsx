@@ -62,7 +62,7 @@ export default function StudentActivitiesList() {
                   {!activity.isStopped && (
                     <IconButton
                       component={Link}
-                      to={`/students/activities/${activity.id}`}
+                      to={`/students/activities/${activity.id}/resources`}
                       state = {{ activity }}
                       rel="noopener noreferrer"
                       sx={{

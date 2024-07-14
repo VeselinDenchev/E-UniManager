@@ -41,7 +41,7 @@ export default function StudentHome() {
             </CardMedia>
             <CardContent>
               <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
-                Учебни материали
+                Учебни ресурси
               </Typography>
               <Typography variant="body1" sx={{ color: 'gray' }}>
                 Достъп до лекции, упражнения и курсови проекти, организирани по дисциплини и курсове.
