@@ -1,18 +1,118 @@
-import { useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../../../contexts/UserContext';
-import StudentHeader from '../../../student/StudenNavigation';
+import React from 'react';
+import { Container, Box, Typography, Grid, Card, CardContent, CardMedia } from '@mui/material';
+import SupportIcon from '@mui/icons-material/Support';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import SchoolIcon from '@mui/icons-material/School';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ContactMailIcon from '@mui/icons-material/ContactMail';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import PeopleIcon from '@mui/icons-material/People';
 
 export default function TeacherHome() {
-    const { user } = useContext(UserContext);
+  return (
+    <Container sx={{ mt: 4, mb: 4, paddingTop: 4 }}>
+      <Box sx={{ textAlign: 'center', mb: 4 }}>
+        <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold' }}>
+          Добре дошли в преподавателския портал!
+        </Typography>
+        <Typography variant="h5" gutterBottom sx={{ color: 'gray' }}>
+          Вашето пространство за информация и ресурси
+        </Typography>
+      </Box>
 
-    const navigate = useNavigate();
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={6}>
+          <Card sx={{ display: 'flex', backgroundColor: '#f0f4f8', boxShadow: 3 }}>
+            <CardMedia>
+              <AccountCircleIcon sx={{ fontSize: 80, color: '#1976d2', m: 2 }} />
+            </CardMedia>
+            <CardContent>
+              <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
+                Персонален профил
+              </Typography>
+              <Typography variant="body1" sx={{ color: 'gray' }}>
+                Лесен достъп до вашите лични и професионални данни.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card sx={{ display: 'flex', backgroundColor: '#f0f4f8', boxShadow: 3 }}>
+            <CardMedia>
+              <SchoolIcon sx={{ fontSize: 80, color: '#1976d2', m: 2 }} />
+            </CardMedia>
+            <CardContent>
+              <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
+                Учебни ресурси
+              </Typography>
+              <Typography variant="body1" sx={{ color: 'gray' }}>
+                Достъп до лекции, упражнения и курсови проекти, организирани по дисциплини и курсове.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card sx={{ display: 'flex', backgroundColor: '#f0f4f8', boxShadow: 3 }}>
+            <CardMedia>
+              <AccessTimeIcon sx={{ fontSize: 80, color: '#1976d2', m: 2 }} />
+            </CardMedia>
+            <CardContent>
+              <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
+                Графици
+              </Typography>
+              <Typography variant="body1" sx={{ color: 'gray' }}>
+                Вижте графици за лекции, изпити и други важни събития.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Card sx={{ display: 'flex', backgroundColor: '#f0f4f8', boxShadow: 3 }}>
+            <CardMedia>
+              <PeopleIcon sx={{ fontSize: 80, color: '#1976d2', m: 2 }} />
+            </CardMedia>
+            <CardContent>
+              <Typography variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
+                Управление на дисциплини
+              </Typography>
+              <Typography variant="body1" sx={{ color: 'gray' }}>
+                Лесно управление на вашите дисциплини и студенти.
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
 
-    useEffect(() => {
-        if (!user.email) {
-            navigate('/login');
-        }
-    }, [])
+      <Box sx={{ textAlign: 'left', mt: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Защо да изберете нас?
+        </Typography>
+        <Typography variant="body1" gutterBottom sx={{ ml: 2 }}>
+          <strong>Удобство:</strong> <span style={{ color: '#1976d2' }}>Всички важни ресурси и информация на едно място.</span>
+        </Typography>
+        <Typography variant="body1" gutterBottom sx={{ ml: 2 }}>
+          <strong>Лесна навигация:</strong> <span style={{ color: '#1976d2' }}>Интуитивен интерфейс, създаден с мисъл за вас.</span>
+        </Typography>
+        <Typography variant="body1" gutterBottom sx={{ ml: 2 }}>
+          <strong>Актуалност:</strong> <span style={{ color: '#1976d2' }}>Винаги актуални и точни данни за вашето преподаване.</span>
+        </Typography>
+        <Typography variant="body1" gutterBottom sx={{ ml: 2 }}>
+          <strong>Поддръжка:</strong> <span style={{ color: '#1976d2' }}>Винаги до вас при нужда от помощ или съвет.</span>
+        </Typography>
+      </Box>
 
-    return <StudentHeader />
-};
+      <Box sx={{ textAlign: 'left', mt: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Свържете се с нас
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
+          <ContactMailIcon sx={{ fontSize: 40, color: '#1976d2', mr: 2 }} />
+          <Typography variant="body1">
+            Ако имате въпроси или нужда от помощ, не се колебайте да се свържете с нашия екип за поддръжка. Ние сме тук, за да ви помогнем!
+          </Typography>
+        </Box>
+      </Box>
+      
+    </Container>
+  );
+}
