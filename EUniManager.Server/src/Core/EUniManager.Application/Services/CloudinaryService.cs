@@ -1,4 +1,6 @@
-﻿using CloudinaryDotNet;
+﻿using System.Net;
+
+using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 
 using EUniManager.Application.Mappers;
@@ -72,11 +74,11 @@ public sealed class CloudinaryService : ICloudinaryService
 
     public async Task<CloudinaryFile> UploadAsync(byte[] fileBytes, string mimeType, CancellationToken cancellationToken)
     {
-        string fileExtension = MimeTypeMap.GetExtensionWithoutDot(mimeType);
+        string fileExtensionWithDot = MimeTypeMap.GetExtension(mimeType);
         string publicId = Guid.NewGuid().ToString();
-        string fileName = $"{publicId}.{fileExtension}";
+        string fileName = $"{publicId}{fileExtensionWithDot}";
 
-        bool willBeUploadedLikeImage = mimeType.Contains("image") || fileExtension == MimeTypeMap.Extensions.PDF;
+        bool willBeUploadedLikeImage = mimeType.Contains("image") || fileExtensionWithDot is MimeTypeMap.Extensions.PDF;
         RawUploadParams uploadParams = willBeUploadedLikeImage ? new ImageUploadParams() : new RawUploadParams();
         
         await using MemoryStream stream = new(fileBytes);
@@ -87,7 +89,7 @@ public sealed class CloudinaryService : ICloudinaryService
         ValidateUploadResult(uploadResult);
 
         CloudinaryFile cloudinaryFile = _mapper.Map(uploadResult!);
-        cloudinaryFile.Extension = fileExtension;
+        cloudinaryFile.Extension = fileExtensionWithDot;
 
         try
         {
@@ -110,10 +112,10 @@ public sealed class CloudinaryService : ICloudinaryService
     {
         await SetFileExtensionAndCheckExistenceInDatabaseAndCloudinaryAsync(id, cancellationToken);
         
-        string fileExtension = MimeTypeMap.GetExtensionWithoutDot(mimeType);
-        string fileName = $"{id}{fileExtension}";
+        string fileExtensionWithDot = MimeTypeMap.GetExtension(mimeType);
+        string fileName = $"{id}{fileExtensionWithDot}";
 
-        bool willBeUploadedLikeImage = mimeType.Contains("image") || fileExtension == MimeTypeMap.Extensions.PDF;
+        bool willBeUploadedLikeImage = mimeType.Contains("image") || fileExtensionWithDot is MimeTypeMap.Extensions.PDF;
         RawUploadParams uploadParams = willBeUploadedLikeImage ? new ImageUploadParams() : new RawUploadParams();
         
         await using MemoryStream stream = new(fileBytes);
@@ -127,7 +129,7 @@ public sealed class CloudinaryService : ICloudinaryService
 
         CloudinaryFile cloudinaryFile = _mapper.Map(uploadResult!);
         cloudinaryFile.Id = id;
-        cloudinaryFile.Extension = fileExtension;
+        cloudinaryFile.Extension = fileExtensionWithDot;
         
         _dbSet.Attach(cloudinaryFile);
         _dbContext.Entry(cloudinaryFile).State = EntityState.Modified;
@@ -157,11 +159,11 @@ public sealed class CloudinaryService : ICloudinaryService
             throw new ArgumentException("File is not found or has missing extension!");
         }
         
-        GetResourceResult? result = await GetResourceResultAsync(id, fileExtension);
-        bool existsInCloudinary = result is not null;
+        GetResourceResult result = await GetResourceResultAsync(id, fileExtension);
+        bool existsInCloudinary = result.StatusCode is not HttpStatusCode.NotFound;
         if (!existsInCloudinary) throw new FileNotFoundException("File is not found!");
 
-        if (string.IsNullOrWhiteSpace(result!.SecureUrl) && string.IsNullOrWhiteSpace(result.Url))
+        if (string.IsNullOrWhiteSpace(result.SecureUrl) && string.IsNullOrWhiteSpace(result.Url))
         {
             throw new ArgumentException("Missing URL!");
         }
@@ -235,7 +237,7 @@ public sealed class CloudinaryService : ICloudinaryService
     private async Task CheckExistenceInCloudinaryAsync(string id, string fileExtension)
     {
         GetResourceResult? result = await GetResourceResultAsync(id, fileExtension);
-        bool existsInCloudinary = result is not null;
+        bool existsInCloudinary = result.StatusCode is not HttpStatusCode.NotFound;
         if (!existsInCloudinary) throw new FileNotFoundException("File is not found!");
     }
 
@@ -249,13 +251,13 @@ public sealed class CloudinaryService : ICloudinaryService
         return fileExtension;
     }
 
-    private async Task<GetResourceResult?> GetResourceResultAsync(string id, string fileExtension)
+    private async Task<GetResourceResult> GetResourceResultAsync(string id, string fileExtension)
     {
         string publicId = id;
         ResourceType resourceType = ResourceType.Image;
         if (!imageFileExtensionsSupportedByCloudinary.Contains(fileExtension))
         {
-            publicId = $"{id}.{fileExtension}";
+            publicId = $"{id}{fileExtension}";
             resourceType = ResourceType.Raw;
         }
         
@@ -275,8 +277,6 @@ public sealed class CloudinaryService : ICloudinaryService
     {
         uploadParams.File = new FileDescription(fileName, stream);
         uploadParams.AssetFolder = nameof(EUniManager);
-        uploadParams.UniqueFilename = false;
-        uploadParams.UseFilename = true;
         uploadParams.UseAssetFolderAsPublicIdPrefix = false;
         uploadParams.PublicId = publicId;
     }

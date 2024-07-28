@@ -16,7 +16,7 @@ public partial class ResourceMapper
         {
             Id = r.Id,
             Title = r.Title,
-            ResourceType = GetResourceTypeString(r.Type),
+            ResourceType = r.Type.ToString(),
             Info = r.Info
         }).ToList();
     }
@@ -38,13 +38,13 @@ public partial class ResourceMapper
     [MapProperty(nameof(UpdateResourceDto.ResourceType),nameof(Resource.Type))]
     public partial Resource Map(UpdateResourceDto dto);
 
-    private string GetResourceTypeString(ResourceType resourceType)
-    {
-        return resourceType switch
-        {
-            ResourceType.Info => "Информация",
-            ResourceType.Assignment => "Задание",
-            _ => throw new ArgumentException("Invalid resource type!")
-        };
-    }
+    // private string GetResourceTypeString(ResourceType resourceType)
+    // {
+    //     return resourceType switch
+    //     {
+    //         ResourceType.Info => "Информация",
+    //         ResourceType.Assignment => "Задание",
+    //         _ => throw new ArgumentException("Invalid resource type!")
+    //     };
+    // }
 }
