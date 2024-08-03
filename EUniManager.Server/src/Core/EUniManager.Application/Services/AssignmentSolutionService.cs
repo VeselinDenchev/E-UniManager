@@ -203,7 +203,7 @@ public sealed class AssignmentSolutionService
             List<Task> deleteFileTasks = new();
             foreach (AssignmentSolution solution in assignmentSolutions.Where(asol => asol.File is not null))
             {
-                deleteFileTasks.Add(_cloudinaryService.DeleteByIdAsync(solution.File!.Id));
+                deleteFileTasks.Add(_cloudinaryService.DeleteAsync(solution.File!));
             }
             await Task.WhenAll(deleteFileTasks);
         }

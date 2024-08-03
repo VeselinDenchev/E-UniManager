@@ -97,7 +97,7 @@ public sealed class CloudinaryService : ICloudinaryService
         }
         catch (Exception)
         {
-            await DeleteByIdAsync(publicId);
+            await DeleteAsync(cloudinaryFile);
             
             throw;
         }
@@ -140,7 +140,7 @@ public sealed class CloudinaryService : ICloudinaryService
         }
         catch (Exception)
         {
-            await DeleteByIdAsync(id);
+            await DeleteAsync(cloudinaryFile);
             
             throw;
         }
@@ -176,35 +176,26 @@ public sealed class CloudinaryService : ICloudinaryService
 
         return (fileBytes, mimeType);
     }
-    
-    public async Task DeleteByIdAsync(string id)
-    {
-        await SetFileExtensionAndCheckExistenceInDatabaseAndCloudinaryAsync(id);
-        await DeleteFromCloudinaryAndDatabaseByIdAsync(id);
-    }
 
     // If we have the file extension we assume the file exists in the database
-    public async Task DeleteByIdAndExtensionAsync(string id, string fileExtension)
+    public async Task DeleteAsync(CloudinaryFile cloudinaryFile)
     {
-        await CheckExistenceInCloudinaryAsync(id, fileExtension);
-        await DeleteFromCloudinaryAndDatabaseByIdAsync(id);
+        await CheckExistenceInCloudinaryAsync(cloudinaryFile.Id, cloudinaryFile.Extension);
+        await DeleteFromCloudinaryAndDatabaseByIdAsync(cloudinaryFile);
     }
 
-    private async Task DeleteFromCloudinaryAndDatabaseByIdAsync(string id)
+    private async Task DeleteFromCloudinaryAndDatabaseByIdAsync(CloudinaryFile cloudinaryFile)
     {
-        DeletionParams deletionParams = new(id);
+        DeletionParams deletionParams = new(cloudinaryFile.Id);
         DeletionResult deletionResult = await _cloudinary.DestroyAsync(deletionParams);
 
         if (deletionResult.Result != "ok")
         {
             // Change to log after implementing logger
-            Console.WriteLine($"Unable to delete file with id {id}!");
+            Console.WriteLine($"Unable to delete file with id {cloudinaryFile.Id}!");
         }
         
-        // We have checked previously so it can be null
-        CloudinaryFile deletedFile = (await _dbSet.FindAsync(id))!;
-        
-        _dbSet.Remove(deletedFile);
+        _dbSet.Remove(cloudinaryFile);
     }
 
     private async Task<byte[]> GetFileBytesFromCloudinaryAsync(string url)
@@ -236,7 +227,7 @@ public sealed class CloudinaryService : ICloudinaryService
     
     private async Task CheckExistenceInCloudinaryAsync(string id, string fileExtension)
     {
-        GetResourceResult? result = await GetResourceResultAsync(id, fileExtension);
+        GetResourceResult result = await GetResourceResultAsync(id, fileExtension);
         bool existsInCloudinary = result.StatusCode is not HttpStatusCode.NotFound;
         if (!existsInCloudinary) throw new FileNotFoundException("File is not found!");
     }

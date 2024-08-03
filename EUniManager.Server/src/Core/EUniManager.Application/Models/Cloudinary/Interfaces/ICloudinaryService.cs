@@ -8,9 +8,7 @@ public interface ICloudinaryService
 
     Task<CloudinaryFile> UpdateAsync(string id, byte[] fileBytes, string mimeType, CancellationToken cancellationToken);
 
-    Task DeleteByIdAsync(string id);
-
-    Task DeleteByIdAndExtensionAsync(string id, string fileExtension);
+    Task DeleteAsync(CloudinaryFile cloudinaryFile);
 
     Task<(byte[] fileBytes, string mimeType)> DownloadAsync(string id, CancellationToken cancellationToken);
 }

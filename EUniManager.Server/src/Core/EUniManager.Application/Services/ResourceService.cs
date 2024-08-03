@@ -82,12 +82,11 @@ public sealed class ResourceService :
 
     public override async Task UpdateAsync(Guid id, IUpdateDto dto, CancellationToken cancellationToken)
     {
-        Resource existingResource = await _dbSet.AsNoTracking()
-                                                .Include(r => r.File)
+        Resource existingResource = await _dbSet.Include(r => r.File)
                                                 .Include(r => r.Assignment)
                                                 .Include(r => r.Activity).ThenInclude(a => a.Teacher)
-                                                .FirstOrDefaultAsync(r => r.Id == id, cancellationToken) ??
-                                    throw new ArgumentException("Such resource doesn't exist!");
+                                                .FirstOrDefaultAsync(r => r.Id == id, cancellationToken) 
+                                                ?? throw new ArgumentException("Such resource doesn't exist!");
 
         Guid teacherIdFromHttpContext = await GetTeacherIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
 
@@ -95,52 +94,65 @@ public sealed class ResourceService :
         {
             throw new ArgumentException("Unauthorized access!");
         }
-        
-        UpdateResourceDto updateResourceDto = (dto as UpdateResourceDto)!;
-        Resource updatedResource = _resourceMapper.Map(updateResourceDto);
-        updatedResource.Id = id;
 
-        bool isUpdatedWithInfoType = updatedResource.Type == ResourceType.Info;
-        bool hadFile = existingResource is { Type: ResourceType.Info, File: not null };
-        bool hasFileDataInRequest = updateResourceDto.File is { Bytes: { Length: > 0 } } && 
-                                    !string.IsNullOrWhiteSpace(updateResourceDto.File.MimeType);
+        var updateResourceDto = (dto as UpdateResourceDto)!;
+        // Resource updatedResource = _resourceMapper.Map(updateResourceDto);
+        // updatedResource.Id = id;
         
-        bool willUploadFile = isUpdatedWithInfoType && !hadFile && hasFileDataInRequest;
-        bool willUpdateFile = isUpdatedWithInfoType && hadFile && hasFileDataInRequest;
-        bool willDeleteFile = hadFile && !hasFileDataInRequest;
-        if (willUploadFile)
+        
+        if (updateResourceDto.IsFileChanged)
         {
-            updatedResource.File = await _cloudinaryService.UploadAsync(updateResourceDto.File!.Bytes, 
-                                                                        updateResourceDto.File.MimeType, 
-                                                                        cancellationToken);
+            bool isUpdatedWithInfoType = updateResourceDto.ResourceType == nameof(ResourceType.Info);
+            bool hadFile = existingResource is { Type: ResourceType.Info, File: not null };
+
+            bool hasFileDataInRequest = updateResourceDto.File is { Bytes.Length: > 0 } && 
+                                        !string.IsNullOrWhiteSpace(updateResourceDto.File.MimeType);
+            
+            bool willUploadFile = isUpdatedWithInfoType && !hadFile && hasFileDataInRequest;
+            bool willUpdateFile = isUpdatedWithInfoType && hadFile && hasFileDataInRequest;
+            bool willDeleteFile = hadFile && !hasFileDataInRequest;
+            if (willUploadFile)
+            {
+                existingResource.File = await _cloudinaryService.UploadAsync(updateResourceDto.File!.Bytes, 
+                                                                            updateResourceDto.File.MimeType, 
+                                                                            cancellationToken);
+            }
+            else if (willUpdateFile)
+            {
+                _dbContext.CloudinaryFiles.Entry(existingResource.File).State = EntityState.Detached;
+                await _cloudinaryService.UpdateAsync(existingResource.File!.Id,
+                                                     updateResourceDto.File!.Bytes,
+                                                     updateResourceDto.File.MimeType,
+                                                     cancellationToken);
+            }
+            else if (willDeleteFile)
+            {
+                CloudinaryFile fileToBeDeleted = existingResource.File!;
+                existingResource.File = null;
+                _dbSet.Update(existingResource);
+                await _dbContext.SaveChangesAsync();
+                
+                await _cloudinaryService.DeleteAsync(fileToBeDeleted);
+            }
+            else throw new ArgumentException("Invalid file update!");
         }
-        else if (willUpdateFile)
-        {
-            updatedResource.File = await _cloudinaryService.UpdateAsync(existingResource.File!.Id,
-                                                                        updateResourceDto.File!.Bytes,
-                                                                        updateResourceDto.File.MimeType,
-                                                                        cancellationToken);
-        }
-        else if (willDeleteFile)
-        {
-            await _cloudinaryService.DeleteByIdAsync(existingResource.File!.Id);
-            updatedResource.File = null;
-        }
-        else throw new ArgumentException("Invalid file update!");
 
         // Resource assignment
-        bool isAssignmentToInfoUpdate = existingResource.Type == ResourceType.Assignment &&
-                                        updatedResource.Type == ResourceType.Info;
+        bool isAssignmentToInfoUpdate = existingResource.Type is ResourceType.Assignment &&
+                                        updateResourceDto.ResourceType == nameof(ResourceType.Info);
         if (isAssignmentToInfoUpdate && existingResource.Assignment is not null)
         {
             await _assignmentService.DeleteByAssignmentAsync(existingResource.Assignment);
-            updatedResource.Assignment = null;
+            existingResource.Assignment = null;
         }
         
-        SetNotModifiedPropertiesOnUpdate(updatedResource);
-        await UpdateEntityAsync(updatedResource, cancellationToken);
+        existingResource.Title = updateResourceDto.Title;
+        existingResource.Info = updateResourceDto.Info;
+        
+        SetNotModifiedPropertiesOnUpdate(existingResource);
+        _dbSet.Update(existingResource);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
-
     public override async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
         Resource resource = await _dbSet.Include(r => r.File)
@@ -160,7 +172,7 @@ public sealed class ResourceService :
         
         if (resource.File is not null)
         {
-            deleteTasks.Add(_cloudinaryService.DeleteByIdAndExtensionAsync(resource.File.Id, resource.File.Extension));
+            deleteTasks.Add(_cloudinaryService.DeleteAsync(resource.File));
         }
 
         if (resource.Assignment is not null)
@@ -180,7 +192,7 @@ public sealed class ResourceService :
         UserRole userRole = AuthorizationHelper.GetCurrentUserRole(_httpContextAccessor);
 
         List<Resource> activityResourceEntities;
-        if (userRole == UserRole.Student)
+        if (userRole is UserRole.Student)
         {
             Guid studentId = await GetStudentIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
 
@@ -202,7 +214,7 @@ public sealed class ResourceService :
                                                                r.Activity.Students.Any(s => s.Id == studentId))
                                                    .ToListAsync(cancellationToken);
         }
-        else if (userRole == UserRole.Teacher)
+        else if (userRole is UserRole.Teacher)
         {
             Guid teacherId = await GetTeacherIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
             

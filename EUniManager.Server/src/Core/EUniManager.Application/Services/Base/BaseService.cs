@@ -57,7 +57,7 @@ public abstract class BaseService<TEntity, TId, TEntityDto, TDetailsDto>
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
     
-    protected async Task UpdateEntityAsync(TEntity entity, CancellationToken cancellationToken)
+    protected async Task UpdateEntityAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
         _dbSet.Update(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
