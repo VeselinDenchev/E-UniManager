@@ -13,7 +13,7 @@ public sealed class ResourceConfiguration : BaseEntityConfiguration<Resource, Gu
     {
         base.Configure(entity);
 
-        entity.Property(r => r.Title).IsRequired()
+        entity.Property(r => r.Title).IsRequired(false)
                                      .IsUnicode()
                                      .HasMaxLength(TITLE_MAX_STRING_LENGTH);
 

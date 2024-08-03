@@ -5,7 +5,7 @@ namespace EUniManager.Domain.Entities;
 
 public class Resource : BaseEntity<Guid>
 {
-    public string Title { get; set; } = null!;
+    public string? Title { get; set; }
 
     public ResourceType Type { get; set; }
 

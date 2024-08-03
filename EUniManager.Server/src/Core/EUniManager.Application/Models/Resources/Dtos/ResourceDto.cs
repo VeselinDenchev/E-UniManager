@@ -8,7 +8,7 @@ public sealed record ResourceDto : IEntityDto
 {
     public required Guid Id { get; set; }
     
-    public required string Title { get; set; } = null!;
+    public required string? Title { get; set; }
 
     public required string ResourceType { get; set; } = null!;
 

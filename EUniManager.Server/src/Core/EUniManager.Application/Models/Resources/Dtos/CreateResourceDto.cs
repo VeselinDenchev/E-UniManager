@@ -8,7 +8,7 @@ public sealed record CreateResourceDto : ICreateDto
 {
     public Guid ActivityId { get; set; }
     
-    public string Title { get; set; } = null!;
+    public string? Title { get; set; }
     
     public string ResourceType { get; set; } = null!;
     
