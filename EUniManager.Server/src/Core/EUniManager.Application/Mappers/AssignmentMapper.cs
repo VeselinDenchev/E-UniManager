@@ -16,8 +16,6 @@ public partial class AssignmentMapper
     public partial AssignmentDto MapAssignmentToAssignmentDto(Assignment entity);
     
     [MapProperty(nameof(Assignment.Type), nameof(AssignmentDetailsDto.Type), Use = nameof(GetTypeString))]
-    [MapProperty(nameof(Assignment.StartDate), nameof(AssignmentDetailsDto.StartDate), Use = nameof(FormatDateToBulgarianDateTime))]
-    [MapProperty(nameof(Assignment.DueDate), nameof(AssignmentDetailsDto.DueDate), Use = nameof(FormatDateToBulgarianDateTime))]
     public partial AssignmentDetailsDto MapAssignmentToAssignmentDetailsDto(Assignment entity);
     
     [MapProperty(nameof(Assignment.Type), nameof(AssignmentDetailsDto.Type), Use = nameof(GetTypeString))]
