@@ -201,7 +201,7 @@ public sealed class AssignmentSolutionService
     public async Task UpdateCommentAsync(Guid id, string comment, CancellationToken cancellationToken)
     {
         bool exists = await _dbSet.AsNoTracking()
-                                  .AnyAsync(asol => asol.Id == id && asol.Mark == null, cancellationToken);
+                                  .AnyAsync(asol => asol.Id == id && asol.Mark != null, cancellationToken);
         if (!exists) throw new ArgumentException($"Such assignment solution doesn't exist or it doesn't have mark!");
         
         Guid assignmentTeacherId = await GetAssignmentTeacherBySolutionIdAsync(id, cancellationToken);

@@ -21,7 +21,8 @@ public partial class AssignmentSolutionMapper
             StudentFullName = asol.Student.FullName,
             FileId = asol.File?.Id,
             Text = asol.Text,
-            Mark = asol.Mark
+            Mark = asol.Mark,
+            Comment = asol.Comment
         }).ToList();
     }
     
@@ -36,13 +37,13 @@ public partial class AssignmentSolutionMapper
 
     public partial AssignmentSolutionDetailsDto Map(AssignmentSolution entity);
     
-    [MapperIgnoreTarget(nameof(AssignmentSolution.Id))]
-    [MapperIgnoreTarget(nameof(AssignmentSolution.CreatedAt))]
-    [MapperIgnoreTarget(nameof(AssignmentSolution.ModifiedAt))]
-    [MapperIgnoreTarget(nameof(AssignmentSolution.Assignment))]
-    [MapperIgnoreTarget(nameof(AssignmentSolution.Student))]
-    [MapperIgnoreTarget(nameof(AssignmentSolution.File))]
-    public partial AssignmentSolution Map(ManageAssignmentSolutionDto dto);
+    // [MapperIgnoreTarget(nameof(AssignmentSolution.Id))]
+    // [MapperIgnoreTarget(nameof(AssignmentSolution.CreatedAt))]
+    // [MapperIgnoreTarget(nameof(AssignmentSolution.ModifiedAt))]
+    // [MapperIgnoreTarget(nameof(AssignmentSolution.Assignment))]
+    // [MapperIgnoreTarget(nameof(AssignmentSolution.Student))]
+    // [MapperIgnoreTarget(nameof(AssignmentSolution.File))]
+    // public partial AssignmentSolution Map(ManageAssignmentSolutionDto dto);
 
     private string? FormatDateToBulgarianDateTime(DateTime? dateTime) => dateTime?.ToBulgarianDateTimeFormatString();
 }

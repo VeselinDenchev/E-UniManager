@@ -16,4 +16,6 @@ public sealed record AssignmentSolutionDto : IEntityDto
     public required string? Text { get; set; }
     
     public required Mark? Mark { get; set; }
+    
+    public required string? Comment { get; set; }
 }
