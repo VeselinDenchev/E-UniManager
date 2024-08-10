@@ -21,11 +21,11 @@ namespace EUniManager.Api.CarterModules
             app.MapGet("/download/{id}", Download);
         }
 
-        private async Task<IResult> Download(ICloudinaryService service,
+        private async Task<IResult> Download(ICloudinaryService cloudinaryService,
                                              [FromRoute] string id,
                                              CancellationToken cancellationToken)
         {
-            (byte[] fileBytes, string mimeType) = await service.DownloadAsync(id, cancellationToken);
+            (byte[] fileBytes, string mimeType) = await cloudinaryService.DownloadAsync(id, cancellationToken);
                     
             return TypedResults.File(fileBytes, mimeType);
         }
