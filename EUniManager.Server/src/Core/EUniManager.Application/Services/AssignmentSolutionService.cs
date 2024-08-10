@@ -171,23 +171,45 @@ public sealed class AssignmentSolutionService
         return solutionDtos;
     }
 
-    public async Task UpdateMarkAsync(Guid id, UpdateAssignmentSolutionMarkDto markDto, CancellationToken cancellationToken)
+    public async Task UpdateMarkAsync(Guid id, Mark mark, CancellationToken cancellationToken)
     {
+        if (!Enum.IsDefined(mark))
+        {
+            throw new ArgumentException("Such mark doesn't exist!");
+        }
+        
         bool exists = await _dbSet.AsNoTracking()
                                   .AnyAsync(asol => asol.Id == id, cancellationToken);
         if (!exists) throw new ArgumentException($"Such assignment solution doesn't exist!");
         
-        Guid assignmentTeacherId = await _dbSet.Include(asol => asol.Assignment).ThenInclude(a => a.Teacher)
-                                               .Where(asol => asol.Id == id)
-                                               .Select(asol => asol.Assignment.Teacher.Id)
-                                               .FirstOrDefaultAsync(cancellationToken);
-
+        Guid assignmentTeacherId = await GetAssignmentTeacherBySolutionIdAsync(id, cancellationToken);
         await AuthorizeAssignmentTeacherAsync(assignmentTeacherId, cancellationToken);
         
         int rowsAffected = await _dbSet.Where(asol => asol.Id == id)
-                                       .ExecuteUpdateAsync(s => s.SetProperty(a => a.Mark, a => markDto.Mark)
+                                       .ExecuteUpdateAsync(s => s.SetProperty(a => a.Mark, a => mark)
                                                                  .SetProperty(a => a.MarkedOn, a => DateTime.Now)
-                                                                 .SetProperty(a => a.Comment, a => markDto.Comment),
+                                                                 .SetProperty(a => a.Comment, a => null)
+                                                                 .SetProperty(a => a.ModifiedAt, a => DateTime.Now),
+                                                           cancellationToken);
+
+        if (rowsAffected > 0) return;
+        
+        throw new ArgumentException($"Such assignment solution doesn't exist");
+    }
+    
+    
+    public async Task UpdateCommentAsync(Guid id, string comment, CancellationToken cancellationToken)
+    {
+        bool exists = await _dbSet.AsNoTracking()
+                                  .AnyAsync(asol => asol.Id == id && asol.Mark == null, cancellationToken);
+        if (!exists) throw new ArgumentException($"Such assignment solution doesn't exist or it doesn't have mark!");
+        
+        Guid assignmentTeacherId = await GetAssignmentTeacherBySolutionIdAsync(id, cancellationToken);
+        await AuthorizeAssignmentTeacherAsync(assignmentTeacherId, cancellationToken);
+        
+        int rowsAffected = await _dbSet.Where(asol => asol.Id == id)
+                                       .ExecuteUpdateAsync(s => s.SetProperty(a => a.Comment, a => comment)
+                                                                 .SetProperty(a => a.ModifiedAt, a => DateTime.Now),
                                                            cancellationToken);
 
         if (rowsAffected > 0) return;
@@ -229,5 +251,15 @@ public sealed class AssignmentSolutionService
         {
             throw new ArgumentException("Unauthorized access!");
         }
+    }
+
+    private async Task<Guid> GetAssignmentTeacherBySolutionIdAsync(Guid assignmentSolutionId, CancellationToken cancellationToken)
+    {
+        Guid teacherId = await _dbSet.Include(asol => asol.Assignment).ThenInclude(a => a.Teacher)
+                                     .Where(asol => asol.Id == assignmentSolutionId)
+                                     .Select(asol => asol.Assignment.Teacher.Id)
+                                     .FirstOrDefaultAsync(cancellationToken);
+
+        return teacherId;
     }
 }

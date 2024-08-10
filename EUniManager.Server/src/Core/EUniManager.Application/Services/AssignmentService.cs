@@ -143,13 +143,13 @@ public sealed class AssignmentService
         Guid studentId = await GetStudentIdFromHttpContextAsync(_httpContextAccessor, cancellationToken);
         
         Assignment assignmentEntity = await _dbSet.AsNoTracking()
-                                          .Include(a => a.Solutions).ThenInclude(asol => asol.Student)
-                                          .Include(a => a.Solutions).ThenInclude(asol => asol.File)
-                                          .FirstOrDefaultAsync(a => a.Id == id && 
-                                                               a.Solutions.Any(asol => asol.Student.Id == studentId), 
-                                                               cancellationToken) ??
-                                      throw new ArgumentException(
-                                          $"Such {nameof(Assignment).ToLowerInvariant()} doesn't exist!");
+                                                  .Include(a => a.Solutions).ThenInclude(asol => asol.Student)
+                                                  .Include(a => a.Solutions).ThenInclude(asol => asol.File)
+                                                  .FirstOrDefaultAsync(a => a.Id == id && 
+                                                                       a.Solutions.Any(asol => asol.Student.Id == studentId), 
+                                                                       cancellationToken) ??
+                                              throw new ArgumentException(
+                                                  $"Such {nameof(Assignment).ToLowerInvariant()} doesn't exist!");
 
         AssignmentSolution solution = assignmentEntity.Solutions.First();
         if (solution.SeenOn is null)

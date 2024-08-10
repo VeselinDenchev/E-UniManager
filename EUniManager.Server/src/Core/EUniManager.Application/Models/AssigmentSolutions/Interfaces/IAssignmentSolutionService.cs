@@ -11,6 +11,7 @@ public interface IAssignmentSolutionService :
 {
     Task CreateAsync(Assignment assignment, Student student, CancellationToken cancellationToken);
     Task<List<AssignmentSolutionDto>> GetAllSolutionsToAssignmentAsync(Guid assignmentId, CancellationToken cancellationToken);
-    Task UpdateMarkAsync(Guid id, UpdateAssignmentSolutionMarkDto markDto, CancellationToken cancellationToken);
+    Task UpdateMarkAsync(Guid id, Mark mark, CancellationToken cancellationToken);
+    Task UpdateCommentAsync(Guid id, string comment, CancellationToken cancellationToken);
     Task DeleteAllSolutionsToAssignmentAsync(List<AssignmentSolution> assignmentSolutions, AssignmentType assignmentType);
 }
