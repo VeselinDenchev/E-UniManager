@@ -1,26 +1,30 @@
 import React from 'react';
-import { useState, useContext } from 'react';
-import { useNavigate } from "react-router-dom";
-import { Container, Box, Button, Typography, TextField } from '@mui/material';
+import { useState, useContext, useEffect } from 'react';
+import { useNavigate, useLocation } from "react-router-dom";
 import { login } from '../../../services/identityService';
 import { UserContext } from '../../../contexts/UserContext';
 import { RoleContext } from '../../../contexts/RoleContext';
 import { containsOnlyDigits } from '../../../utils/regexUtil';
-// import { ThemeContext } from '../../../contexts/ThemeContext';
 import { UserRoles } from '../../../utils/userRoles';
+import { Container, Box, Button, Typography, TextField, CircularProgress } from '@mui/material';
 
 export default function Login() {
-    // const { isDarkMode, toggleTheme } = useContext(ThemeContext);
-    const { userLogin } = useContext(UserContext);
-    const { setUserRole } = useContext(RoleContext);
+    const { userLogin, isAuthenticated  } = useContext(UserContext);
+    const { userRole, setUserRole } = useContext(RoleContext);
 
     const navigate = useNavigate();
+    const location = useLocation();
+
+    // Extract the `from` path from the location state, if available
+    const from = location.state?.from?.pathname;
 
     const [loginData, setLoginData] = useState({
         email: '',
         password: ''
     });
-    
+
+    const [loading, setLoading] = useState(true);
+
     const inputChangeHandler = (event) => setLoginData({...loginData, [event.target.name]: event.target.value});
 
     const handleLogin = () => {
@@ -29,24 +33,61 @@ export default function Login() {
 
             if (containsOnlyDigits(loginData.email)) {
                 setUserRole(UserRoles.STUDENT);
-                navigate('/students/home');
-            }
-            else {
+                // Navigate to the previous page if it exists, otherwise to the student home
+                navigate(from || '/students/home', { replace: true });
+            } else {
                 setUserRole(UserRoles.TEACHER);
-                navigate('/teachers/home');
+                // Navigate to the previous page if it exists, otherwise to the teacher home
+                navigate(from || '/teachers/home', { replace: true });
             }
-
         })
         .catch(error => {
             console.log(error);
         });
-    }
+    };
 
     const handleKeyPress = (event) => {
         if (event.key === 'Enter') {
             handleLogin();
         }
     };
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            // Avoid triggering the effect unnecessarily by adding a condition
+            setLoading(false); // Stop loading before navigating
+
+            // Navigate to the previous page if it exists, otherwise to the appropriate home page
+            if (from) {
+                navigate(from, { replace: true });
+            } 
+            else {
+                if (userRole === UserRoles.STUDENT) {
+                    navigate('/students/home', { replace: true });
+                } else if (userRole === UserRoles.TEACHER) {
+                    navigate('/teachers/home', { replace: true });
+                }
+            }
+        } else {
+            setLoading(false); // Stop loading if user is not authenticated
+        }
+    }, [isAuthenticated, navigate, from]);
+
+    if (loading) {
+        return (
+            <Container
+                maxWidth="sm"
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minHeight: '100vh',
+                }}
+            >
+                <CircularProgress />
+            </Container>
+        );
+    }
 
     return (
         <Container
@@ -118,4 +159,4 @@ export default function Login() {
           </Box>
         </Container>
     );
-};
+}
