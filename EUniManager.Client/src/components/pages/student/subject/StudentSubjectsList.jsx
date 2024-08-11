@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { getStudentSubjects } from '../../../../services/subjectService';
+import { UserContext } from '../../../../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Box,
@@ -11,9 +14,6 @@ import {
   TableRow,
   Paper 
 } from '@mui/material';
-import { getStudentSubjects } from '../../../../services/subjectService';
-import { UserContext } from '../../../../contexts/UserContext';
-import { useNavigate } from 'react-router-dom';
 
 export default function StudentSubjectsList() {
   const [subjects, setSubjects] = useState([]);

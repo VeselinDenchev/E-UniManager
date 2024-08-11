@@ -35,3 +35,27 @@ export async function getAllAssignmentsForTeacher(bearerToken) {
 
     return assignments;
 }
+
+export async function createAssignment(assignment, bearerToken) {
+    const response = await fetch(baseUrl, {
+        method: HttpMethod.POST,
+        headers: getDefaultHeaders(bearerToken),
+        body: JSON.stringify(assignment)
+    });
+
+    const result = await handleHttpResponse(response);
+
+    return result;
+}
+
+export async function updateAssignment(id, assignment, bearerToken) {
+    const response = await fetch(`${baseUrl}/${id}`, {
+        method: HttpMethod.PUT,
+        headers: getDefaultHeaders(bearerToken),
+        body: JSON.stringify(assignment)
+    });
+
+    const result = await handleHttpResponse(response);
+
+    return result;
+}

@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { UserContext } from '../../../../contexts/UserContext';
+import { getStudentActivities } from '../../../../services/activityService';
 import { 
     Container,
     Box,
@@ -15,7 +16,7 @@ import {
     IconButton
 } from '@mui/material';
 import InputIcon from '@mui/icons-material/Input'; // Import the Enter icon
-import { getStudentActivities } from '../../../../services/activityService';
+import EnterButton from '../../../common/buttons/EnterButton';
 
 export default function StudentActivitiesList() {
   const [activities, setActivities] = useState([]);
@@ -60,25 +61,7 @@ export default function StudentActivitiesList() {
                 <TableCell align="center" sx={{ border: '1px solid #ddd' }}>{activity.isStopped ? 'Спрян' : 'Активен'}</TableCell>
                 <TableCell align="center" sx={{ border: '1px solid #ddd' }}>
                   {!activity.isStopped && (
-                    <IconButton
-                      component={Link}
-                      to={`/students/activities/${activity.id}/resources`}
-                      state = {{ activity }}
-                      rel="noopener noreferrer"
-                      sx={{
-                        backgroundColor: '#4caf50',
-                        color: 'white',
-                        '&:hover': {
-                          backgroundColor: '#388e3c',
-                          color: 'white', // Keep text color white on hover
-                        },
-                        borderRadius: '50%',
-                        width: 40,
-                        height: 40
-                      }}
-                    >
-                      <InputIcon />
-                    </IconButton>
+                    <EnterButton to={`/students/activities/${activity.id}/resources`} state = {{ activity }} />
                   )}
                 </TableCell>
               </TableRow>

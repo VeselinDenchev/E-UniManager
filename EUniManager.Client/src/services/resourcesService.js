@@ -38,11 +38,10 @@ export async function updateResource(id, resource, bearerToken) {
     return result;
 }
 
-export async function deleteResource(id, resource, bearerToken) {
+export async function deleteResource(id, bearerToken) {
     const response = await fetch(`${baseUrl}/${id}`, {
         method: HttpMethod.DELETE,
         headers: getDefaultHeaders(bearerToken),
-        body: JSON.stringify(resource)
     });
 
     const result = await handleHttpResponse(response);

@@ -34,18 +34,15 @@ export const handleHttpResponse = async (httpResponse) => {
         case HttpResponseStatusCode.ACCEPTED:
         case HttpResponseStatusCode.NO_CONTENT:
           return null;
-        case HttpResponseStatusCode.BAD_REQUEST:
-          return 'Bad Request';
         case HttpResponseStatusCode.UNAUTHORIZED:
-          return 'Unauthorized';
+          window.location.href = '/login';
+          return null;
+        case HttpResponseStatusCode.BAD_REQUEST:
         case HttpResponseStatusCode.FORBIDDEN:
-          return 'Forbidden';
         case HttpResponseStatusCode.NOT_FOUND:
-          return 'Not Found';
         case HttpResponseStatusCode.METHOD_NOT_ALLOWED:
-          return 'Method Not Allowed';
         case HttpResponseStatusCode.INTERNAL_SERVER_ERROR:
-          return 'Internal Server Error';
+          throw new Error(httpResponse.statusText);
         default:
           return 'Unknown Status Code';
       }

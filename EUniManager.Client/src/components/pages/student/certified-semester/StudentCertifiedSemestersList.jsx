@@ -42,9 +42,9 @@ export default function StudentSertifiedSemestersList() {
             <TableHead>
               <TableRow sx={{ backgroundColor: '#1976d2' }}>
                 <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>ПИН</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>СЕМЕСТЪР</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>ВИД</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>ДАТА</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Семестър</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Вид</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Дата</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
