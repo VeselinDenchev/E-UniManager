@@ -1,1 +1,1 @@
-export const apiRoute = 'https://localhost:8080';
+export const apiRoute = import.meta.env.VITE_API_BASE_URL;
