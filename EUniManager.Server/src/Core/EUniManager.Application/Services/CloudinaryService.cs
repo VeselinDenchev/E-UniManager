@@ -184,6 +184,9 @@ public sealed class CloudinaryService : ICloudinaryService
         await DeleteFromCloudinaryAndDatabaseByIdAsync(cloudinaryFile);
     }
 
+    public async Task<PingResult> PingAsync(CancellationToken cancellationToken)
+        => await _cloudinary.PingAsync(cancellationToken);
+
     private async Task DeleteFromCloudinaryAndDatabaseByIdAsync(CloudinaryFile cloudinaryFile)
     {
         DeletionParams deletionParams = new(cloudinaryFile.Id);

@@ -1,11 +1,18 @@
 using Carter;
 
+using CloudinaryDotNet;
+
 using EUniManager.Api.Extensions;
+using EUniManager.Api.Health;
 using EUniManager.Application.Extensions;
 using EUniManager.Application.Models.DbContexts;
 using EUniManager.Domain.Enums;
 using EUniManager.Persistence;
+using EUniManager.Persistence.Helpers;
 
+using HealthChecks.UI.Client;
+
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Identity;
 
 using static EUniManager.Api.Configurations.SwaggerGenConfiguration;
@@ -13,6 +20,10 @@ using static EUniManager.Api.Constants.IdentityConstant;
 using static EUniManager.Api.Constants.PoliciesConstant;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHealthChecks()
+                .AddSqlServer(ConnectionStringHelper.GetConnectionString())
+                .AddCheck<CloudinaryHealthCheck>(nameof(Cloudinary));
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -66,13 +77,20 @@ builder.Services.AddCarter();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+bool isDevelopment = app.Environment.IsDevelopment();
+if (isDevelopment)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
+
+app.MapHealthChecks("/_health", new HealthCheckOptions()
+{
+    ResponseWriter = isDevelopment ? UIResponseWriter.WriteHealthCheckUIResponse 
+                                   : UIResponseWriter.WriteHealthCheckUIResponseNoExceptionDetails
+});
 
 app.UseCors(CORS_POLICY_NAME);
 

@@ -43,9 +43,9 @@ services:
       - backend_network
       - web_network
     healthcheck:
-      test: ["CMD-SHELL", "curl -f ${API_BASE_URL}/health"]
+      test: ["CMD-SHELL", "curl -f ${API_BASE_URL}/_health"]
       interval: 30s
-      timeout: 10s
+      timeout: 20s
       retries: 3
 
   sqlserver:

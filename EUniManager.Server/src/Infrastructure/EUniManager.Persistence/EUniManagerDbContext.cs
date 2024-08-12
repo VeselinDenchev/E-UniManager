@@ -4,6 +4,7 @@ using EUniManager.Application.Models.DbContexts;
 using EUniManager.Domain.Abstraction.Base;
 using EUniManager.Domain.Entities;
 using EUniManager.Domain.Entities.Students;
+using EUniManager.Persistence.Helpers;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -82,22 +83,7 @@ public class EUniManagerDbContext
             return;
         }
         
-        const string DATABASE_NAME_ENV_VARIABLE_NAME = "DATABASE_NAME";
-        const string SA_PASSWORD_ENV_VARIABLE_NAME = "SA_PASSWORD";
-
-        string canNotLoadEnvVariableMessage =
-            string.Format(CAN_NOT_LOAD_ENV_VARIABLE_MESSAGE_TEMPLATE, DATABASE_NAME_ENV_VARIABLE_NAME);
-        string databaseName = Environment.GetEnvironmentVariable(DATABASE_NAME_ENV_VARIABLE_NAME) ?? 
-                              throw new ArgumentNullException(canNotLoadEnvVariableMessage);
-
-        canNotLoadEnvVariableMessage =
-            canNotLoadEnvVariableMessage.Replace(DATABASE_NAME_ENV_VARIABLE_NAME, SA_PASSWORD_ENV_VARIABLE_NAME);
-        string saPassword = Environment.GetEnvironmentVariable(SA_PASSWORD_ENV_VARIABLE_NAME) ?? 
-                            throw new ArgumentNullException(canNotLoadEnvVariableMessage);
-        
-        string connectionString = $"Data Source=sqlserver;Initial Catalog={databaseName};TrustServerCertificate=True;User ID=SA;Password={saPassword}";
-        
-        optionsBuilder.UseSqlServer(connectionString);
+        optionsBuilder.UseSqlServer(ConnectionStringHelper.GetConnectionString());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

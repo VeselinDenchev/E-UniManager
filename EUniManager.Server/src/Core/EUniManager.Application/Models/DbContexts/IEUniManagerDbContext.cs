@@ -1,5 +1,4 @@
-﻿using EUniManager.Domain.Abstraction.Base;
-using EUniManager.Domain.Entities;
+﻿using EUniManager.Domain.Entities;
 using EUniManager.Domain.Entities.Students;
 
 using Microsoft.EntityFrameworkCore;
@@ -56,7 +55,6 @@ public interface IEUniManagerDbContext
     EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
     
     public EntityEntry Attach (object entity);
-    
     
     int SaveChanges();
     
