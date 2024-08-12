@@ -32,8 +32,9 @@ public sealed class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, 
                                     .IsUnicode()
                                     .HasMaxLength(NAME_MAX_STRING_LENGTH);
 
-        string uniqueIndexColumnsJoined = string.Join('_', nameof(Specialty.Name), nameof(Specialty.FirstAcademicYearStart));
-        entity.HasIndex(s => new { s.Name, s.FirstAcademicYearStart })
+        string[] uniqueColumnNames = [ nameof(Specialty.Name), nameof(Specialty.EducationType), nameof(Specialty.FirstAcademicYearStart) ];
+        string uniqueIndexColumnsJoined = string.Join('_', uniqueColumnNames);
+        entity.HasIndex(s => new { s.Name, s.EducationType, s.FirstAcademicYearStart })
               .IsUnique()
               .HasDatabaseName(string.Format(UNIQUE_INDEX_TEMPLATE, uniqueIndexColumnsJoined));
 
@@ -59,7 +60,7 @@ public sealed class SpecialtyConfiguration : BaseEntityConfiguration<Specialty, 
 
         entity.ToTable(table =>
         {
-              List<string> checkConstraintTokens = [nameof(Specialty), nameof(Specialty.FirstAcademicYearStart)];
+              List<string> checkConstraintTokens = [ nameof(Specialty), nameof(Specialty.FirstAcademicYearStart) ];
               string checkConstraintTableColumn = string.Join('_', checkConstraintTokens);
               table.HasCheckConstraint(string.Format(CHECK_CONSTRAINT_TEMPLATE, checkConstraintTableColumn), 
                     $"{nameof(Specialty.FirstAcademicYearStart)} BETWEEN {MIN_YEAR} AND {MAX_YEAR}");
