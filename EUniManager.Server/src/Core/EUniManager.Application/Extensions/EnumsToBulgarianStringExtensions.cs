@@ -31,6 +31,7 @@ internal static class EnumsToBulgarianStringExtensions
         {
             SpecialtyEducationType.FullTime => "Редовна",
             SpecialtyEducationType.PartTime => "Задочна",
+            SpecialtyEducationType.Remote => "Дистанционна",
             _ => throw new ArgumentException("Such education type doesn't exist!")
         };
     }

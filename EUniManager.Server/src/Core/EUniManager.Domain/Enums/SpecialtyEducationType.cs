@@ -3,5 +3,6 @@
 public enum SpecialtyEducationType
 {
     FullTime = 0,
-    PartTime = 1
+    PartTime = 1,
+    Remote = 2
 }

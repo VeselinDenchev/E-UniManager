@@ -195,6 +195,7 @@ public partial class StudentMapper
         {
             SpecialtyEducationType.FullTime => "Редовна",
             SpecialtyEducationType.PartTime => "Задочна",
+            SpecialtyEducationType.Remote => "Дистанционна",
             _ => throw new ArgumentException("Invalid specialty education type!")
         };
     }
