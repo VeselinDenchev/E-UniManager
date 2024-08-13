@@ -12,7 +12,7 @@ export async function login(userData) {
         body: JSON.stringify(userData)
     });
 
-    const result = await handleHttpResponse(response);
+    const result = await handleHttpResponse(response, true);
 
     return result;
 }

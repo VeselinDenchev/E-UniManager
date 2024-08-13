@@ -26,7 +26,7 @@ export const getDefaultHeaders = (bearerToken) => {
     };
 }
 
-export const handleHttpResponse = async (httpResponse) => {
+export const handleHttpResponse = async (httpResponse, isLogin) => {
     switch (httpResponse.status) {
         case HttpResponseStatusCode.OK:
           return await httpResponse.json();
@@ -34,7 +34,7 @@ export const handleHttpResponse = async (httpResponse) => {
         case HttpResponseStatusCode.ACCEPTED:
         case HttpResponseStatusCode.NO_CONTENT:
           return null;
-        case HttpResponseStatusCode.UNAUTHORIZED:
+        case HttpResponseStatusCode.UNAUTHORIZED && !isLogin:
           window.location.href = '/login';
           return null;
         case HttpResponseStatusCode.BAD_REQUEST:
