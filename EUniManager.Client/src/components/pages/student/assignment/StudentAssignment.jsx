@@ -207,7 +207,7 @@ export default function StudentAssignment() {
               <br />
               <strong>Отговор:</strong>{' '}
               {assignment.solution.fileId
-                ? `${assignment.solution.fileId}.${assignment.solution.fileExtension}`
+                ? `${assignment.solution.fileId}${assignment.solution.fileExtension}`
                 : assignment.solution.text ?? ''}
               <br />
               {assignment.solution.mark !== null && (

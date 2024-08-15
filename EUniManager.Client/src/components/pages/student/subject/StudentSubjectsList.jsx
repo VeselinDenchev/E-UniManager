@@ -58,7 +58,7 @@ export default function StudentSubjectsList() {
                   <TableCell align="center" sx={{ border: '1px solid #ddd' }}>{subject.exercisesCount}</TableCell>
                   <TableCell align="center" sx={{ border: '1px solid #ddd' }}>
                     {subject.markWithWords}
-                    {subject.markNumeric && `(${subject.markNumeric})`}
+                    {subject.markNumeric && ` (${subject.markNumeric})`}
                   </TableCell>
                   <TableCell align="center" sx={{ border: '1px solid #ddd' }}>{subject.creditsCount}</TableCell>
                   <TableCell align="center" sx={{ border: '1px solid #ddd' }}>{subject.lecturerFullNameWithRank}</TableCell>

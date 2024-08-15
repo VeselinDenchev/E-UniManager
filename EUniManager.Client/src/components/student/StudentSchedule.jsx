@@ -41,7 +41,7 @@ export default function StudentSchedule({ title, type }) {
   };
 
   return (
-    <Container sx={{ mt: 4 }}>
+    <Container sx={{ mt: 10 }}>
       <Box sx={{ mb: 6 }}>
         <Typography variant="h4" gutterBottom>{title}</Typography>
       </Box>

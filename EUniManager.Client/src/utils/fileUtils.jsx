@@ -11,10 +11,11 @@ export function getIcon(type) {
       case '.jpg':
       case '.gif':
       case '.tiff':
+      case '.bmp':      
         return <ImageIcon sx={{ color: '#4caf50', fontSize: 40 }} />;
       case '.docx':
         return <DescriptionIcon sx={{ color: '#3b5998', fontSize: 40 }} />;
-      case '.xslx':
+      case '.xlsx':
         return <InsertDriveFileIcon sx={{ color: '#0d820d', fontSize: 40 }} />;
       case '.pptx':
         return <InsertDriveFileIcon sx={{ color: '#d24726', fontSize: 40 }} />;

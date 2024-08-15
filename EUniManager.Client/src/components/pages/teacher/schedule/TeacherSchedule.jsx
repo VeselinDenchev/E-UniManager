@@ -40,7 +40,7 @@ export default function TeacherSchedule() {
   };
 
   return (
-    <Container disableGutters sx={{ mt: 4, maxWidth: 'xl' }}>
+    <Container disableGutters sx={{ mt: 10, maxWidth: 'xl' }}>
       <Box sx={{ mb: 6 }}>
         <Typography variant="h4" gutterBottom>График на занятията</Typography>
       </Box>
