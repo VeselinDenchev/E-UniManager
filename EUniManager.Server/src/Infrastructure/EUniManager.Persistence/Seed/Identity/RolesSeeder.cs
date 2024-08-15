@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace EUniManager.Persistence.Seed;
+namespace EUniManager.Persistence.Seed.Identity;
 
 public static class RolesSeeder
 {
@@ -11,7 +11,7 @@ public static class RolesSeeder
     {
         if (await roleManager.Roles.AnyAsync()) return;
         
-        List<IdentityRole<Guid>> roles =
+        IdentityRole<Guid>[] roles =
         [
             new() { Name = nameof(UserRole.Admin), NormalizedName = nameof(UserRole.Admin).ToUpper() },
             new() { Name = nameof(UserRole.Student), NormalizedName = nameof(UserRole.Student).ToUpper() },
@@ -22,5 +22,7 @@ public static class RolesSeeder
         {
             await roleManager.CreateAsync(role);
         }
+        
+        Console.WriteLine("Roles seeded successfully");
     }
 }

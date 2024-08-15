@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 using static EUniManager.Persistence.Constants.Entities.AdminCredentialsConstant;
 
-namespace EUniManager.Persistence.Seed;
+namespace EUniManager.Persistence.Seed.Identity;
 
 public static class AdminSeeder
 {
@@ -27,5 +27,7 @@ public static class AdminSeeder
             // Assign the admin role to the user
             await userManager.AddToRoleAsync(admin, nameof(UserRole.Admin));
         }
+        
+        Console.WriteLine("Admin seeded successfully");
     }
 }

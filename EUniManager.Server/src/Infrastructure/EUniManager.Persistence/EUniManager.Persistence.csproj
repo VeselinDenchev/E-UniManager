@@ -29,6 +29,7 @@
 
     <ItemGroup>
       <Folder Include="Configurations\" />
+      <Folder Include="Seed\Entities\Files\" />
     </ItemGroup>
 
 </Project>
