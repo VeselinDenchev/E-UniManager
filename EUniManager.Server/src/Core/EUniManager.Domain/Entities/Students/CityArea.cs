@@ -1,6 +1,4 @@
-﻿using EUniManager.Domain.Abstraction.Base;
-
-namespace EUniManager.Domain.Abstraction.Student;
+﻿namespace EUniManager.Domain.Entities.Students;
 
 public class CityArea
 {

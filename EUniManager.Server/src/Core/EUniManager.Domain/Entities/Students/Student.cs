@@ -1,5 +1,4 @@
 ﻿using EUniManager.Domain.Abstraction.Base;
-using EUniManager.Domain.Abstraction.Student;
 
 using Microsoft.AspNetCore.Identity;
 

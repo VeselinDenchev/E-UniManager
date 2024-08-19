@@ -1,7 +1,5 @@
 ﻿using EUniManager.Application.Extensions;
 using EUniManager.Application.Models.DbContexts;
-using EUniManager.Domain.Abstraction.Student;
-using EUniManager.Domain.Entities;
 using EUniManager.Domain.Entities.Students;
 using EUniManager.Domain.Enums;
 

@@ -1,5 +1,4 @@
-﻿using EUniManager.Domain.Abstraction.Student;
-using EUniManager.Domain.Entities.Students;
+﻿using EUniManager.Domain.Entities.Students;
 using EUniManager.Persistence.Configurations.EntityTypes.Base;
 
 using Microsoft.EntityFrameworkCore;
