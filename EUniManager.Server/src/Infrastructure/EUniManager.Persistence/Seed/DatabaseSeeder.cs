@@ -14,10 +14,6 @@ public static class DatabaseSeeder
     {
         UserManager<IdentityUser<Guid>> userManager = serviceProvider.GetService<UserManager<IdentityUser<Guid>>>()!;
         IEUniManagerDbContext dbContext = serviceProvider.GetService<IEUniManagerDbContext>()!;
-
-        Console.WriteLine();       
-        Console.WriteLine("Seeding data...");
-        Console.WriteLine();
         
         await CloudinaryFilesSeeder.SeedAsync(dbContext, serviceProvider.GetService<ICloudinaryService>()!);
         await RolesSeeder.SeedAsync(serviceProvider.GetService<RoleManager<IdentityRole<Guid>>>()!);
@@ -39,9 +35,5 @@ public static class DatabaseSeeder
         await ResourcesSeeder.SeedAsync(dbContext);
         await AssignmentsSeeder.SeedAsync(dbContext);
         await AssignmentSolutionsSeeder.SeedAsync(dbContext);
-        
-        Console.WriteLine();
-        Console.WriteLine("All required data seeded successfully");
-        Console.WriteLine();
     }
 }   
