@@ -3,8 +3,8 @@ import './App.css'
 import Login from './components/pages/login/Login'
 import { UserProvider } from './contexts/UserContext'
 import { RoleProvider } from './contexts/RoleContext';
-import StudentLayout from './layouts/StudentLayout';
-import TeacherLayout from './layouts/TeacherLayout';
+import StudentLayout from './components/layouts/StudentLayout';
+import TeacherLayout from './components//layouts/TeacherLayout';
 import Forbidden from './components/pages/error/Forbidden';
 import NotFound from './components/pages/error/NotFound';
 
