@@ -33,7 +33,7 @@ export default function StudentActivitiesList() {
   }, [bearerToken, navigate]);
 
   return (
-    <Container sx={{ mt: 4 }}>
+    <Container sx={{ mt: 10 }}>
       <Box sx={{ mb: 6 }}>
         <Typography variant="h4" gutterBottom>Учебни ресурси</Typography>
       </Box>
