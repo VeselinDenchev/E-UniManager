@@ -43,10 +43,10 @@ export default function StudentRequestApplicationsList() {
               <TableRow sx={{ backgroundColor: '#1976d2' }}>
                 <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Номер</TableCell>
                 <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>ПИН</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Дата на регистр.</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Дата на регистрация</TableCell>
                 <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Вид</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Дата на резол.</TableCell>
-                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}></TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Дата на резолюция</TableCell>
+                <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Изтегли</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
