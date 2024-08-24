@@ -78,7 +78,7 @@ export default function TeacherActivitiesList() {
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd', width: '20%' }}>Факултет</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd', width: '26%' }}>Дисциплина</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd', width: '5%' }}>Семестър</TableCell>
-              <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd', width: '5%' }}>Вид занятие</TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd', width: '5%' }}>Вид заетост</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd', width: '5%' }}>Статус</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd', width: '5%' }}>Вход</TableCell>
             </TableRow>

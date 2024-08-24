@@ -15,7 +15,6 @@ import {
     Paper,
     IconButton
 } from '@mui/material';
-import InputIcon from '@mui/icons-material/Input'; // Import the Enter icon
 import EnterButton from '../../../common/buttons/EnterButton';
 
 export default function StudentActivitiesList() {
@@ -44,7 +43,7 @@ export default function StudentActivitiesList() {
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Създадена на</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Семестър</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Дисциплина</TableCell>
-              <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Вид занятие</TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Вид заетост</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Преподавател</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Статус</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Вход</TableCell>
