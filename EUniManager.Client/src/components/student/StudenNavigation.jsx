@@ -33,7 +33,7 @@ const navItems = [
   { label: 'Индивидуални протоколи', path: '/students/individual-protocols' },
   { label: 'Заверени семестри', path: '/students/certified-semesters' },
   { label: 'Платени такси', path: '/students/payed-taxes' },
-  { label: 'График за занятия', path: '/students/schedule/specialties' },
+  { label: 'График на занятия', path: '/students/schedule/specialties' },
   { label: 'Филтриран график на занятия', path: '/students/schedule/filtered' },
   { label: 'График на изпитите', path: '/students/exams-schedule' }
 ];
