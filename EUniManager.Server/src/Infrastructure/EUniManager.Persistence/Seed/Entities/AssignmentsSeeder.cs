@@ -29,12 +29,12 @@ public static class AssignmentsSeeder
             {
                 Resource = assignmentResources[i],
                 ResourceId = assignmentResources[i].Id,
-                Title = $"Задание {assignmentTypeString}",
+                Title = $"Задача {assignmentTypeString}",
                 StartDate = DateTime.Now.AddMinutes(1),
                 DueDate = DateTime.Now.AddDays(30),
                 Type = (AssignmentType)(i % 2),
                 Students = [ student ],
-                Description = $"Това задание е от тип {assignmentTypeString}",
+                Description = $"Тази задача е от тип {assignmentTypeString}",
                 Teacher = assignmentResources[i].Activity.Teacher
             };
         }
