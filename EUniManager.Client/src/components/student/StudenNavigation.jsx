@@ -67,7 +67,7 @@ export default function StudentNavigation() {
       .then(data => setHeaderData(data))
       .catch(error => {
         console.log(error);
-        navigate('/login');
+        navigate('/logout');
       });
   }, [bearerToken]);
 
@@ -130,11 +130,11 @@ export default function StudentNavigation() {
               <Typography variant="body2" sx={{ fontWeight: 'bold', display: 'flex', flexWrap: 'wrap' }}>
                 Група: <span style={{ fontWeight: 'normal', marginLeft: 4 }}>{headerData.groupNumber}</span>
                 <span style={{ marginLeft: 20 }}></span>Статус: <span style={{ fontWeight: 'normal', marginLeft: 4 }}>{headerData.status}</span>
-                <span style={{ marginLeft: 20 }}></span>Спец.: <span style={{ fontWeight: 'normal', marginLeft: 4 }}>{headerData.specialtyName}</span>
+                <span style={{ marginLeft: 20 }}></span>Специалност: <span style={{ fontWeight: 'normal', marginLeft: 4 }}>{headerData.specialtyName}</span>
               </Typography>
               <Typography variant="body2" sx={{ fontWeight: 'bold', display: 'flex', flexWrap: 'wrap' }}>
                 Форма: <span style={{ fontWeight: 'normal', marginLeft: 4 }}>{headerData.specialtyEducationType}</span>
-                <span style={{ marginLeft: 20 }}></span>Брой зав.: <span style={{ fontWeight: 'normal', marginLeft: 4 }}>{headerData.certifiedSemesterCount}</span>
+                <span style={{ marginLeft: 20 }}></span>Брой заверки: <span style={{ fontWeight: 'normal', marginLeft: 4 }}>{headerData.certifiedSemesterCount}</span>
                 <span style={{ marginLeft: 20 }}></span>Служебна поща: <span style={{ fontWeight: 'normal', marginLeft: 4 }}>{headerData.universityEmail}</span>
               </Typography>
             </Box>
