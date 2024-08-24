@@ -162,8 +162,8 @@ public partial class StudentMapper
     {
         return gender switch
         {
-            Gender.Male => "мъжки",
-            Gender.Female => "женски",
+            Gender.Male => "Мъж",
+            Gender.Female => "Жена",
             _ => throw new ArgumentException("Invalid gender!")
         };
     }
