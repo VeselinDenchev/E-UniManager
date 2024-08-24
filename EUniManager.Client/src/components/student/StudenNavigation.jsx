@@ -67,7 +67,7 @@ export default function StudentNavigation() {
       .then(data => setHeaderData(data))
       .catch(error => {
         console.log(error);
-        navigate('/error');
+        navigate('/login');
       });
   }, [bearerToken]);
 
