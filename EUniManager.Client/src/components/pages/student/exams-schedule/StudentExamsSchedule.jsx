@@ -42,7 +42,7 @@ export default function StudentExamsSchedule() {
           <TableHead>
             <TableRow sx={{ backgroundColor: '#1976d2' }}>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd', width: '25%' }}>Дисциплина</TableCell>
-              <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Вид</TableCell>
+              <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd', width: '15%' }}>Вид</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd', width: '20%' }}>Преподавател</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd', width: '11%' }}>Дата</TableCell>
               <TableCell align="center" sx={{ fontWeight: 'bold', color: 'white', border: '1px solid #ddd' }}>Час</TableCell>
