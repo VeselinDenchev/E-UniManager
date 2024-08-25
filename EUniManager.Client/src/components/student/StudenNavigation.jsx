@@ -67,7 +67,7 @@ export default function StudentNavigation() {
       .then(data => setHeaderData(data))
       .catch(error => {
         console.log(error);
-        navigate('/logout');
+        navigate('/login');
       });
   }, [bearerToken]);
 
@@ -166,7 +166,7 @@ export default function StudentNavigation() {
               <Button
                 color="inherit"
                 component={NavLink}
-                to="/logout"
+                to="/login"
                 onClick={(e) => {
                   e.preventDefault(); // Prevents navigation
                   handleLogout();

@@ -93,7 +93,7 @@ export default function TeacherNavigation() {
               <Button
                 color="inherit"
                 component={NavLink}
-                to="/logout"
+                to="/login"
                 onClick={(e) => {
                   e.preventDefault(); // Prevents navigation
                   handleLogout();
