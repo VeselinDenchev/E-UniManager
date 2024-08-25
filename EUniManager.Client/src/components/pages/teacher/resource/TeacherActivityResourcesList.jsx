@@ -94,7 +94,7 @@ export default function TeacherActivityResourcesList() {
         base64String = result.base64String;
         mimeType = result.mimeType;
       }
-
+  
       const data = {
         activityId: activityId,
         title: resourceType === 'Assignment' ? null : title,
@@ -107,13 +107,13 @@ export default function TeacherActivityResourcesList() {
             }
           : null,
       };
-
+  
       console.log('Creating new resource:', data);
-
+  
       await createResource(data, bearerToken);
-
+  
       await fetchResources();
-
+  
       if (resourceType === 'Assignment') {
         const updatedResources = await getActivityResources(activityId, bearerToken);
         const latestResource = updatedResources[updatedResources.length - 1];
@@ -121,18 +121,18 @@ export default function TeacherActivityResourcesList() {
           resourceId: latestResource.id,
           title: title,
           type: resourceAssignment.type,
-          startDate: resourceAssignment.startDate.toISOString(),
-          dueDate: resourceAssignment.dueDate.toISOString(),
+          startDate: new Date(resourceAssignment.startDate.getTime() - (resourceAssignment.startDate.getTimezoneOffset() * 60000)).toISOString(),
+          dueDate: new Date(resourceAssignment.dueDate.getTime() - (resourceAssignment.dueDate.getTimezoneOffset() * 60000)).toISOString(),
           description: info,
         };
-
+  
         console.log('Creating new assignment:', assignment);
-
+  
         await createAssignment(assignment, bearerToken);
-
+  
         await fetchResources();
       }
-
+  
       setSnackbarMessage('Новият ресурс е добавен успешно');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
@@ -369,7 +369,7 @@ export default function TeacherActivityResourcesList() {
             disabled={loading}
           >
             <MenuItem value="Info">Информация</MenuItem>
-            <MenuItem value="Assignment">Задание</MenuItem>
+            <MenuItem value="Assignment">Задача</MenuItem>
           </TextField>
           <TextField
             fullWidth
@@ -388,7 +388,7 @@ export default function TeacherActivityResourcesList() {
                 select
                 fullWidth
                 variant="outlined"
-                label="Тип задание"
+                label="Тип задача"
                 value={resourceAssignment.type}
                 onChange={(e) => setResourceAssignment(prevState => ({...prevState, type: e.target.value}))}
                 sx={{ mt: 2 }}

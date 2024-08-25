@@ -43,7 +43,7 @@ public partial class ResourceMapper
     //     return resourceType switch
     //     {
     //         ResourceType.Info => "Информация",
-    //         ResourceType.Assignment => "Задание",
+    //         ResourceType.Assignment => "Задача",
     //         _ => throw new ArgumentException("Invalid resource type!")
     //     };
     // }
