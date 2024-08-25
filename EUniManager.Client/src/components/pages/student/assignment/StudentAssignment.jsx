@@ -236,6 +236,7 @@ export default function StudentAssignment() {
                 text={text}
                 onChange={handleTextChange}
                 loading={loading}
+                disabled={loading}
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}
               />

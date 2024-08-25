@@ -4,14 +4,14 @@ import Modal from './Modal';
 import SendButton from '../buttons/SendButton';
 import { TextField } from '@mui/material';
 
-export default function SubmitTextModal({ title, text, onChange, onSubmit, loading, isOpen, onClose }) {
+export default function SubmitTextModal({ title, text, onChange, onSubmit, loading, disabled, isOpen, onClose }) {
   return (
     <Modal
       title={title}
       loading={loading}
       isOpen={isOpen}
       onClose={onClose}
-      footer={<SendButton onClick={onSubmit} disabled={loading} />}
+      footer={disabled ? <></> : <SendButton onClick={onSubmit} disabled={loading} />}
     >
       <TextField
         fullWidth
@@ -21,7 +21,7 @@ export default function SubmitTextModal({ title, text, onChange, onSubmit, loadi
         value={text}
         onChange={onChange}
         sx={{ mt: 2 }}
-        disabled={loading}
+        disabled={disabled}
       />
     </Modal>
   );

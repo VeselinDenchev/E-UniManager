@@ -41,12 +41,13 @@ export default function AssignmentSolutionsList() {
   const [solutions, setSolutions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentSolutionText, setCurrentSolutionText] = useState('');
+  const [currentSolutionText, setCurrentSolutionText] = useState(null);
   const [currentComment, setCurrentComment] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('success');
   const [selectedSolutionId, setSelectedSolutionId] = useState(null);
+  const [modalTitle, setModalTitle] = useState('');
 
   useEffect(() => {
     const fetchSolutions = async () => {
@@ -104,14 +105,16 @@ export default function AssignmentSolutionsList() {
     setSnackbarOpen(false);
   };
 
-  const handleView = (text) => {
+  const handleView = (text, studentFullName) => {
     setCurrentSolutionText(text);
+    setModalTitle(`Решение на ${studentFullName}`); // Set the title with the student's full name
     setIsModalOpen(true);
   };
 
   const handleComment = (id, comment) => {
     setSelectedSolutionId(id);
     setCurrentComment(comment || '');
+    setModalTitle('Коментар на оценката'); // Title for comment modal
     setIsModalOpen(true);
   };
 
@@ -119,7 +122,7 @@ export default function AssignmentSolutionsList() {
     setIsModalOpen(false);
     setSelectedSolutionId(null);
     setTimeout(() => {
-      setCurrentSolutionText('');
+      setCurrentSolutionText(null); // Reset to null
       setCurrentComment('');
     }, 300);
   };
@@ -250,7 +253,7 @@ export default function AssignmentSolutionsList() {
                     </TableCell>
                     <TableCell align="center" sx={{ border: '1px solid #ddd' }}>
                       {solution.text ? (
-                        <ViewButton onClick={() => handleView(solution.text)} />
+                        <ViewButton onClick={() => handleView(solution.text, solution.studentFullName)} />
                       ) : solution.fileId ? (
                         <DownloadButton
                           fileId={solution.fileId}
@@ -298,11 +301,12 @@ export default function AssignmentSolutionsList() {
         </Box>
       )}
       <SubmitTextModal
-        title="Коментар на оценката"
-        text={currentComment}
-        onChange={handleCommentChange}
-        onSubmit={handleSubmitComment}
+        title={modalTitle} // Use the dynamic title
+        text={currentSolutionText !== null ? currentSolutionText : currentComment} // Display either the solution text or comment
+        onChange={handleCommentChange} // Handles comment change
+        onSubmit={handleSubmitComment} // Handles comment submission
         loading={loading}
+        disabled={currentSolutionText !== null} // Disable if viewing solution text
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
