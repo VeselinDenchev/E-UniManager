@@ -81,7 +81,16 @@ export default function Resource({
               sx={{ wordBreak: 'break-word' }}
             />
           </ListItem>
-          <ViewButton to={getViewButtonUrl(isTeacher, resource.assignment.id)} />
+          {isTeacher && (
+              <>
+                <EditButton marginLeft='0.5rem' onClick={() => handleEdit(resource)} disabled={false} />
+                <DeleteButton onClick={() => handleDelete(resource.id, resource.title)} disabled={false}  />
+              </>
+            )}
+          <ViewButton 
+            to={getViewButtonUrl(isTeacher, resource.assignment.id)}
+            marginLeft={isTeacher ? '0.5rem' : '0'}
+          />
         </Box>
       )}
     </Paper>

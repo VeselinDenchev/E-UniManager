@@ -32,7 +32,7 @@ import SaveButton from '../../../common/buttons/SaveButton';
 const emptyAssignment = {
   startDate: null,
   dueDate: null,
-  type: 'Text'
+  type: 'Text' // Default value set to 'Text'
 };
 
 export default function TeacherActivityResourcesList() {
@@ -157,16 +157,16 @@ export default function TeacherActivityResourcesList() {
     try {
       if (resourceType === 'Assignment') {
         const assignmentData = {
-          id: editingResourceId, // Include the id in the assignment data
+          id: editingResourceId,
           title: title,
           type: resourceAssignment.type,
-          startDate: resourceAssignment.startDate.toISOString(),
-          dueDate: resourceAssignment.dueDate.toISOString(),
+          startDate: new Date(resourceAssignment.startDate.getTime() - (resourceAssignment.startDate.getTimezoneOffset() * 60000)).toISOString(),
+          dueDate: new Date(resourceAssignment.dueDate.getTime() - (resourceAssignment.dueDate.getTimezoneOffset() * 60000)).toISOString(),
           description: info,
         };
-
+  
         console.log('Updating assignment:', assignmentData);
-
+  
         await updateAssignment(editingResourceId, assignmentData, bearerToken);
       } else {
         let base64String = '';
@@ -176,7 +176,7 @@ export default function TeacherActivityResourcesList() {
           base64String = result.base64String;
           mimeType = result.mimeType;
         }
-
+  
         const resourceData = {
           activityId: activityId,
           title: title,
@@ -190,16 +190,16 @@ export default function TeacherActivityResourcesList() {
               }
             : null,
         };
-
+  
         console.log('Updating resource:', resourceData);
-
+  
         await updateResource(editingResourceId, resourceData, bearerToken);
       }
-
+  
       setSnackbarMessage('Ресурсът беше успешно обновен');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-
+  
       await fetchResources();
     } catch (error) {
       console.error('Error updating resource:', error);
@@ -230,9 +230,9 @@ export default function TeacherActivityResourcesList() {
     }
     if (resource.assignment) {
       setResourceAssignment({
-        startDate: new Date(resource.assignment.startDate),
-        dueDate: new Date(resource.assignment.dueDate),
-        type: resource.assignment.type //=== 'Text' ? 'Text' : 'File'
+        startDate: resource.assignment.startDate ? new Date(resource.assignment.startDate) : null,
+        dueDate: resource.assignment.dueDate ? new Date(resource.assignment.dueDate) : null,
+        type: resource.assignment.type || 'Text' // Default to 'Text' if type is not set
       });
     }
   };
@@ -338,7 +338,7 @@ export default function TeacherActivityResourcesList() {
         </Box>
 
         <Box sx={{ mb: 2, textAlign: 'right', paddingTop: 5 }}>
-          <AddButton onClick={openAddResourceModal}>Добавяне на нов ресурса</AddButton>
+          <AddButton onClick={openAddResourceModal}>Добавяне на нов ресурс</AddButton>
         </Box>
 
         <Modal
