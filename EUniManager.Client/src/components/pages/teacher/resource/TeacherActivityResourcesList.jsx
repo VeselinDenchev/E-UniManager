@@ -32,7 +32,13 @@ import SaveButton from '../../../common/buttons/SaveButton';
 const emptyAssignment = {
   startDate: null,
   dueDate: null,
-  type: 'Text' // Default value set to 'Text'
+  type: 'Text' // Default internal value
+};
+
+// Reverse mapping to convert back from display value to internal value
+const typeMapping = {
+  'Текст': 'Text',
+  'Файл': 'File'
 };
 
 export default function TeacherActivityResourcesList() {
@@ -72,7 +78,7 @@ export default function TeacherActivityResourcesList() {
       setResources(data);
     } catch (error) {
       console.log(error);
-      navigate('/login'); // change with error page
+      navigate('/login'); // Redirect to login or error page
     }
   };
 
@@ -94,7 +100,7 @@ export default function TeacherActivityResourcesList() {
         base64String = result.base64String;
         mimeType = result.mimeType;
       }
-  
+
       const data = {
         activityId: activityId,
         title: resourceType === 'Assignment' ? null : title,
@@ -107,32 +113,32 @@ export default function TeacherActivityResourcesList() {
             }
           : null,
       };
-  
+
       console.log('Creating new resource:', data);
-  
+
       await createResource(data, bearerToken);
-  
+
       await fetchResources();
-  
+
       if (resourceType === 'Assignment') {
         const updatedResources = await getActivityResources(activityId, bearerToken);
         const latestResource = updatedResources[updatedResources.length - 1];
         const assignment = {
           resourceId: latestResource.id,
           title: title,
-          type: resourceAssignment.type,
+          type: resourceAssignment.type, // Correctly send type
           startDate: new Date(resourceAssignment.startDate.getTime() - (resourceAssignment.startDate.getTimezoneOffset() * 60000)).toISOString(),
           dueDate: new Date(resourceAssignment.dueDate.getTime() - (resourceAssignment.dueDate.getTimezoneOffset() * 60000)).toISOString(),
           description: info,
         };
-  
+
         console.log('Creating new assignment:', assignment);
-  
+
         await createAssignment(assignment, bearerToken);
-  
+
         await fetchResources();
       }
-  
+
       setSnackbarMessage('Новият ресурс е добавен успешно');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
@@ -159,14 +165,13 @@ export default function TeacherActivityResourcesList() {
         const assignmentData = {
           id: editingResourceId,
           title: title,
-          type: resourceAssignment.type,
           startDate: new Date(resourceAssignment.startDate.getTime() - (resourceAssignment.startDate.getTimezoneOffset() * 60000)).toISOString(),
           dueDate: new Date(resourceAssignment.dueDate.getTime() - (resourceAssignment.dueDate.getTimezoneOffset() * 60000)).toISOString(),
           description: info,
         };
-  
+
         console.log('Updating assignment:', assignmentData);
-  
+
         await updateAssignment(editingResourceId, assignmentData, bearerToken);
       } else {
         let base64String = '';
@@ -176,7 +181,7 @@ export default function TeacherActivityResourcesList() {
           base64String = result.base64String;
           mimeType = result.mimeType;
         }
-  
+
         const resourceData = {
           activityId: activityId,
           title: title,
@@ -190,16 +195,16 @@ export default function TeacherActivityResourcesList() {
               }
             : null,
         };
-  
+
         console.log('Updating resource:', resourceData);
-  
+
         await updateResource(editingResourceId, resourceData, bearerToken);
       }
-  
+
       setSnackbarMessage('Ресурсът беше успешно обновен');
       setSnackbarSeverity('success');
       setSnackbarOpen(true);
-  
+
       await fetchResources();
     } catch (error) {
       console.error('Error updating resource:', error);
@@ -221,6 +226,7 @@ export default function TeacherActivityResourcesList() {
     setIsEditMode(true);
     setEditingResourceId(resource.assignment ? resource.assignment.id : resource.id);
     setIsModalOpen(true);
+
     if (resource.file) {
       setCurrentFileName(`${resource.file.id}${resource.file.extension.startsWith('.') ? '' : '.'}${resource.file.extension}`);
       setCurrentFileId(resource.file.id); // Set current file id
@@ -228,12 +234,15 @@ export default function TeacherActivityResourcesList() {
       setCurrentFileName('');
       setCurrentFileId(null);
     }
+
     if (resource.assignment) {
       setResourceAssignment({
         startDate: resource.assignment.startDate ? new Date(resource.assignment.startDate) : null,
         dueDate: resource.assignment.dueDate ? new Date(resource.assignment.dueDate) : null,
-        type: resource.assignment.type || 'Text' // Default to 'Text' if type is not set
+        type: typeMapping[resource.assignment.type] || '' // Ensure the correct internal value is set
       });
+    } else {
+      setResourceAssignment(emptyAssignment); // Reset to default if no assignment
     }
   };
 
@@ -302,9 +311,9 @@ export default function TeacherActivityResourcesList() {
     setIsFileChanged(true); // Set the flag to true when a file is deleted
   };
 
-  const openDeleteDialog = (resourceId, resourceName) => {
+  const openDeleteDialog = (resourceId, resourceOrAssignmentTitle) => {
     setResourceToDelete(resourceId);
-    setResourceToDeleteName(resourceName);
+    setResourceToDeleteName(resourceOrAssignmentTitle);
     setIsDialogOpen(true);
   };
 
@@ -320,6 +329,14 @@ export default function TeacherActivityResourcesList() {
     setResourceType(event.target.value);
     // Reset dates when resource type changes
     setResourceAssignment(emptyAssignment);
+  };
+
+  const handleAssignmentTypeChange = (event) => {
+    const selectedType = event.target.value;
+    setResourceAssignment(prevState => ({
+      ...prevState,
+      type: selectedType // Set the display value
+    }));
   };
 
   return (
@@ -366,7 +383,7 @@ export default function TeacherActivityResourcesList() {
             value={resourceType}
             onChange={handleResourceTypeChange}
             sx={{ mt: 2 }}
-            disabled={loading}
+            disabled={loading} // No disabling based on edit mode
           >
             <MenuItem value="Info">Информация</MenuItem>
             <MenuItem value="Assignment">Задача</MenuItem>
@@ -389,10 +406,10 @@ export default function TeacherActivityResourcesList() {
                 fullWidth
                 variant="outlined"
                 label="Тип задача"
-                value={resourceAssignment.type}
-                onChange={(e) => setResourceAssignment(prevState => ({...prevState, type: e.target.value}))}
+                value={resourceAssignment.type} // Use the internal value for selection
+                onChange={handleAssignmentTypeChange} // Directly update the type with display value
                 sx={{ mt: 2 }}
-                disabled={loading}
+                disabled={loading || isEditMode}
               >
                 <MenuItem value="Text">Текст</MenuItem>
                 <MenuItem value="File">Файл</MenuItem>
@@ -436,7 +453,7 @@ export default function TeacherActivityResourcesList() {
                 key={resource.id}
                 resource={resource}
                 handleEdit={handleUpdateResource}
-                handleDelete={openDeleteDialog}
+                handleDelete={() => openDeleteDialog(resource.id, resource.title ?? resource.assignment.title)}
                 isTeacher={true}
               />
             ))}

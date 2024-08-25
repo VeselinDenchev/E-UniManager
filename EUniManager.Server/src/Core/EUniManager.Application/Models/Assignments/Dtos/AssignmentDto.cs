@@ -5,6 +5,8 @@ namespace EUniManager.Application.Models.Assignments.Dtos;
 public record AssignmentDto : IEntityDto
 {
     public Guid Id { get; set; }
+
+    public string Type { get; set; } = null!;
     
     public string Title { get; set; } = null!;
 

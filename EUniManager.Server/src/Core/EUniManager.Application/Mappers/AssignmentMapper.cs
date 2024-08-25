@@ -13,6 +13,7 @@ public partial class AssignmentMapper
 {
     public partial List<AssignmentDto> Map(List<Assignment> entities);
     
+    [MapProperty(nameof(Assignment.Type), nameof(AssignmentDetailsDto.Type), Use = nameof(GetTypeString))]
     public partial AssignmentDto MapAssignmentToAssignmentDto(Assignment entity);
     
     [MapProperty(nameof(Assignment.Type), nameof(AssignmentDetailsDto.Type), Use = nameof(GetTypeString))]
