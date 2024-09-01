@@ -1,6 +1,6 @@
 services:
   client:
-    image: client-development
+    image: e-uni-manager-client-development
     build:
       dockerfile: Dockerfile.Development
     volumes:
@@ -13,7 +13,7 @@ services:
       - WDS_SOCKET_PORT=3000
       
   api:
-    image: api-development
+    image: e-uni-manager-api-development
     build:
       dockerfile: Dockerfile.Development
     volumes:
