@@ -8,10 +8,10 @@
 
     <ItemGroup>
       <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.6" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.6" />
-      <PackageReference Include="PommaLabs.MimeTypes" Version="2.9.2" />
-      <PackageReference Include="Riok.Mapperly" Version="3.5.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.8" />
+      <PackageReference Include="PommaLabs.MimeTypes" Version="2.9.4" />
+      <PackageReference Include="Riok.Mapperly" Version="3.6.0" />
       <PackageReference Include="Scrutor" Version="4.2.2" />
       <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
